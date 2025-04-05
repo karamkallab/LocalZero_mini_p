@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LocalZero Login</title>
+  <link rel="stylesheet" href="css/login.css" />
+</head>
+<body>
+  <div class="loginContainer">
+    <div class="loginBox">
+      <h2>LocalZero</h2>
+      <form action="#" method="POST" onsubmit="event.preventDefault(); window.location.href='dashboard.html';">
+        <input type="text" placeholder="Email" required />
+        <input type="password" placeholder="Password" required />
+        <button type="submit">Login</button>
+        <div class="registerBtn">
+          <button type="button">Register</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
+
+<script>
+  document.querySelector('.registerBtn').addEventListener('click', function() {
+    window.location.href = 'register.html';
+  });
+
+</script>

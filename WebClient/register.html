@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LocalZero Register</title>
+  <link rel="stylesheet" href="css/register.css" />
+</head>
+<body>
+  <div class="loginContainer">
+    <div class="loginBox">
+      <h2>LocalZero</h2>
+      <form id="registerForm">
+        <input type="text" placeholder="Name" required />
+        <input type="password" placeholder="Password" required />
+        <input type="email" placeholder="Email" required />
+        <input type="text" placeholder="Location" required />
+        <button type="submit" class="createAccountBtn">Create account</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('registerForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      window.location.href = 'login.html'; 
+    });
+  </script>
+</body>
+</html>
