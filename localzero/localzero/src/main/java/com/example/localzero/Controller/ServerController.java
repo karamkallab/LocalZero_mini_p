@@ -39,6 +39,6 @@ public class ServerController {
 
     @PostMapping("/api/authenticator")
     public String loginUser(@RequestBody UserDTO userData) {
-        
+        return "login not implemented yet";
     }
 }
