@@ -1,35 +1,80 @@
-body {
-  background-color: #336633;
-  color: white;
+* {
+  box-sizing: border-box;
   font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: #3f6537;
+  color: #fff;
   margin: 0;
-  padding: 20px;
+  padding: 0;
 }
 
-.top-bar {
+.container {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 30px;
+  height: 100vh;
 }
 
-.nav-button,
-.sign-out {
-  background-color: #225522;
+.sidebar {
+  width: 230px;
+  background-color: #2e4b27;
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+}
+
+.logo {
+  font-size: 40px;
+  font-weight: bolder;
+  margin-bottom: 10px;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav button {
+  padding: 50px 10px;
+  margin: 10% 0;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.nav button:hover {
+  background: #5f9e53;
+}
+
+.signout {
+  background: #803b3b;
+  color: #fff;
   border: none;
-  color: white;
-  padding: 10px 16px;
+  padding: 10px;
   border-radius: 5px;
   cursor: pointer;
-  font-weight: bold;
+  width: 100%;
+  margin-top: 15%;
+  font-size: 16px;
 }
 
-.nav-button:hover,
-.sign-out:hover {
-  background-color: #1a441a;
+.signout:hover {
+  background: #a84545;
 }
 
-.page-title {
-  font-size: 32px;
+.main-content {
+  flex-grow: 1;
+  padding: 30px;
+  background-color: #4d7b3c;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
+
+.main-content h1 {
+  font-size: 40px;
   margin-bottom: 20px;
   text-align: center;
 }
@@ -37,11 +82,12 @@ body {
 .initiative-form {
   background-color: #a3caa5;
   color: black;
-  max-width: 500px;
-  margin: auto;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .initiative-form label {

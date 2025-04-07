@@ -11,11 +11,11 @@
     <div class="sidebar">
       <div class="logo">LocalZero</div>
       <nav class="nav">
-        <button>Dashboard</button>
-        <button>Create Initiative</button>
-        <button>Eco Actions</button>
-        <button>Inbox</button>
-        <button>Achievements</button>
+        <button data-page="dashboard">Dashboard</button>
+        <button data-page="initiative">Create Initiative</button>
+        <button data-page="ecoactions">Eco Actions</button>
+        <button data-page="inbox">Inbox</button>
+        <button data-page="achievements">Achievements</button>
       </nav>
       <button class="signout">Sign out</button>
     </div>
@@ -67,32 +67,19 @@
 
     </main>
   </div>
+
+  <script>
+    document.querySelector('.signout').addEventListener('click', () => {
+      localStorage.clear();
+      window.location.href = 'login.html';
+    });
+
+    document.querySelectorAll('.nav button').forEach(button => {
+      button.addEventListener('click', () => {
+        const page = button.getAttribute('data-page');
+        window.location.href = `${page}.html`;
+      });
+    });
+  </script>
 </body>
 </html>
-
-<script>
-  // Sign out
-  document.querySelector('.signout').addEventListener('click', function () {
-    localStorage.clear(); // Rensa eventuell auth-data
-    window.location.href = 'login.html';
-  });
-
-  // Navigera till Create Initiative och Dashboard
-  const navButtons = document.querySelectorAll('.nav button');
-
-  navButtons.forEach(button => {
-    const text = button.textContent.trim();
-
-    if (text === 'Create Initiative') {
-      button.addEventListener('click', () => {
-        window.location.href = 'initiative.html'; // byt till rätt filnamn
-      });
-    }
-
-    if (text === 'Dashboard') {
-      button.addEventListener('click', () => {
-        window.location.href = 'dashboard.html'; // byt till rätt filnamn
-      });
-    }
-  });
-</script>

@@ -16,11 +16,11 @@ body {
 }
 
 .sidebar {
-  width: 220px;
+  width: 230px;
   background-color: #2e4b27;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 30px;
 }
 
 .logo {
@@ -37,12 +37,12 @@ body {
 .nav button {
   padding: 10px;
   border-radius: 10px;
-  padding: 55px 10px;
+  padding: 53px 10px;
   border-radius: 20px;
   font-size: 16px;
   flex: 1;
   cursor: pointer;
-  margin-top: 10%;
+  margin-top: 10.5%;
   margin-bottom: 10px;
   transition: 0.2s;
 }
@@ -60,7 +60,7 @@ body {
   border-radius: 5px;
   cursor: pointer;
   width: 100%;
-  margin-top: 15%;
+  margin-top: 16%;
   font-size: 16px;
 }
 
@@ -87,22 +87,18 @@ body {
 }
 
 .card {
-  background-color: #a3cd84;
+  background-color: #d7e7c1;
   border-radius: 10px;
-  padding: 21.5px;
-  margin-bottom: 30px;
-  margin-top: 14px;
+  padding: 14px;
+  margin: 14px 0;
   color: #2e2e2e;
-  width: 350%;
+  width: 100%;
   max-width: 1000px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .card h2 {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
 }
 
