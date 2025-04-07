@@ -17,13 +17,28 @@ public class ServerController {
 
     @PostMapping("/api/registration")
     public String authenticateUser(@RequestBody UserDTO userData) {
-        
+        // Skapa databas-kontroll
+        DatabaseController dbController = new DatabaseController(null); // null för att vi inte använder Controller-klassen här
+    
+        // Anropa metoden som sparar användaren
+        boolean success = dbController.registerUser(
+            userData.name,
+            userData.email,
+            userData.password,
+            userData.location,
+            userData.role
+        );
+
+        // Svara till frontend
+        if (success) {
+            return "Registration successful!";
+        } else {
+            return "Something went wrong.";
+        }
     }
 
     @PostMapping("/api/authenticator")
     public String loginUser(@RequestBody UserDTO userData) {
         
     }
-
-
 }

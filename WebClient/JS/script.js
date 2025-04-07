@@ -54,20 +54,23 @@ document.addEventListener("DOMContentLoaded", function() {
       fetch("http://127.0.0.1:8080/api/registration", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({  user_email: email,
-          user_password: password,
-          username: username,
+        body: JSON.stringify({
+          name: username,
+          email: email,
+          password: password,
           location: location,
-          roles: selectedRoles})
-      })
+          role: selectedRoles.join(', ') 
+        })
+        
       .then(res => res.text())
       .then(result => {
-        if (result.trim() === "true") {
-          window.location.href = "html\dashboard.html";
+        if (result.toLowerCase().includes("success")) {
+          window.location.href = "html/dashboard.html";
         } else {
-          alert("Your email or password is incorrect.");
+          alert("Something went wrong: " + result);
         }
       })
+      
       .catch(error => {
         console.error("Login error:", error);
       });
