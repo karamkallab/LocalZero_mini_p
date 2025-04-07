@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <title>Skapa initiativ</title>
+  <link rel="stylesheet" href="css/initiative.css">
+</head>
+<body>
+  <div class="top-bar">
+    <button onclick="window.location.href='dashboard.html'" class="nav-button">Dashboard</button>
+    <button id="sign-out-button" class="sign-out">Sign out</button>
+  </div>
+
+  <h1 class="page-title">Skapa initiativ</h1>
+
+  <form class="initiative-form">
+    <label for="title">Titel</label>
+    <input type="text" id="title" name="title" required>
+
+    <label for="description">Beskrivning</label>
+    <textarea id="description" name="description" rows="4" required></textarea>
+
+    <label for="location">Plats</label>
+    <input type="text" id="location" name="location" required>
+
+    <label for="category">Kategori</label>
+    <input type="text" id="category" name="category" required>
+
+    <label>Synlighet</label>
+    <div class="radio-group">
+      <label><input type="radio" name="visibility" value="public" required> Publik</label>
+      <label><input type="radio" name="visibility" value="area"> Områdesspecifik</label>
+    </div>
+
+    <button type="submit" class="submit-button">Skapa initiativ</button>
+  </form>
+
+  <script>
+    document.getElementById('sign-out-button').addEventListener('click', function () {
+      window.location.href = 'login.html';
+    });
+  </script>
+</body>
+</html>
