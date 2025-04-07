@@ -71,8 +71,28 @@
 </html>
 
 <script>
-    document.querySelector('.signout').addEventListener('click', function() {
-      window.location.href = 'login.html';
-    });
+  // Sign out
+  document.querySelector('.signout').addEventListener('click', function () {
+    localStorage.clear(); // Rensa eventuell auth-data
+    window.location.href = 'login.html';
+  });
 
+  // Navigera till Create Initiative och Dashboard
+  const navButtons = document.querySelectorAll('.nav button');
+
+  navButtons.forEach(button => {
+    const text = button.textContent.trim();
+
+    if (text === 'Create Initiative') {
+      button.addEventListener('click', () => {
+        window.location.href = 'initiative.html'; // byt till rätt filnamn
+      });
+    }
+
+    if (text === 'Dashboard') {
+      button.addEventListener('click', () => {
+        window.location.href = 'dashboard.html'; // byt till rätt filnamn
+      });
+    }
+  });
 </script>
