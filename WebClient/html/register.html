@@ -4,17 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>LocalZero Register</title>
-  <link rel="stylesheet" href="css/register.css" />
+  <link rel="stylesheet" href="../css/register.css" />
 </head>
 <body>
   <div class="loginContainer">
     <div class="loginBox">
       <h2>LocalZero</h2>
       <form id="registerForm">
-        <input type="text" placeholder="Name" required />
-        <input type="password" placeholder="Password" required />
-        <input type="email" placeholder="Email" required />
-        <input type="text" placeholder="Location" required />
+        <input type="text" id="username" placeholder="Name" required />
+        <input type="password" id="password" placeholder="Password" required />
+        <input type="email" id ="email" placeholder="Email" required />
+        <input type="text" id="location" placeholder="Location" required />
         
         <div class="dropdown">
           <div id="roleButton" class="roleButton">Role</div>
@@ -33,7 +33,9 @@
     </div>
   </div>
 
-  <script>
+  <script src="JS\script.js"></script>
+
+  <!--   <script>
     document.getElementById('registerForm').addEventListener('submit', function (e) {
       e.preventDefault();
       window.location.href = 'login.html'; 
@@ -47,6 +49,8 @@
         roleButton.textContent = option.textContent;
       });
     });
-  </script>
+
+  </script> -->
+
 </body>
 </html>

@@ -1,0 +1,80 @@
+document.addEventListener("DOMContentLoaded", function() {
+  const registerForm = document.getElementById("registerForm");
+  const loginForm = document.getElementById("loginform");
+
+  if (loginForm) {
+    loginForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      fetch("http://127.0.0.1:8080/api/authenticator", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_email: email, user_password: password})
+      })
+      .then(res => res.text())
+      .then(result => {
+        if (result.trim() === "true") {
+          window.location.href = "html\dashboard.html";
+        } else {
+          alert("Your email or password is incorrect.");
+        }
+      })
+      .catch(error => {
+        console.error("Login error:", error);
+      });
+    });
+  }
+
+  if(registerForm){
+    let selectedRoles = [];
+
+  document.querySelectorAll('.roleOption').forEach(option => {
+  option.addEventListener('click', function () {
+    const role = option.textContent.trim();
+
+    if (!selectedRoles.includes(role)) {
+      selectedRoles.push(role);
+    } else {
+      selectedRoles = selectedRoles.filter(r => r !== role);
+    }
+
+    document.getElementById('roleButton').textContent = selectedRoles.join(', ');
+  });
+});
+
+      registerForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      const username = document.getElementById("username").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const location = document.getElementById("location").value;
+
+      fetch("http://127.0.0.1:8080/api/registration", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({  user_email: email,
+          user_password: password,
+          username: username,
+          location: location,
+          roles: selectedRoles})
+      })
+      .then(res => res.text())
+      .then(result => {
+        if (result.trim() === "true") {
+          window.location.href = "html\dashboard.html";
+        } else {
+          alert("Your email or password is incorrect.");
+        }
+      })
+      .catch(error => {
+        console.error("Login error:", error);
+      });
+    });
+  }
+
+});
+
+
+
