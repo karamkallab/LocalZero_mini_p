@@ -38,28 +38,6 @@
 
 
 
-  <script> 
-  document.addEventListener("DOMContentLoaded", function () {
-    let selectedRole = null;
-  
-    const roleButton = document.getElementById("roleButton");
-    const roleOptions = document.querySelectorAll(".roleOption");
-  
-    roleButton.addEventListener("click", function () {
-  document.querySelector(".dropdown .content").style.display = "block";
-});
-    roleOptions.forEach(option => {
-      option.addEventListener("click", function (event) {
-        event.preventDefault(); 
-        selectedRole = option.textContent.trim();
-        roleButton.textContent = selectedRole;
-        document.querySelector(".dropdown .content").style.display = "none";
-      });
-    });
-  
-    window.getSelectedRole = () => selectedRole;
-  });
-</script>
 
   <!--   <script>
     document.getElementById('registerForm').addEventListener('submit', function (e) {

@@ -7,11 +7,10 @@ public class DatabaseConnection {
     private static DatabaseConnection instance;
     private Connection connection;
 
-    private DatabaseConnection() {
+    public DatabaseConnection() {
         try {
-            Dotenv dotenv = Dotenv.load();
-            String user = dotenv.get("SQL_NAME");
-            String password = dotenv.get("SQL_PASSWORD");
+            String user = getSQLUserName();
+            String password = getSQLPassword();
             String url = "jdbc:postgresql://pgserver.mau.se:5432/" + user;
 
             connection = DriverManager.getConnection(url, user, password);
@@ -20,6 +19,26 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
     }
+
+    public String getSQLPassword(){
+        Dotenv dotenv = Dotenv.configure()
+                .directory(System.getProperty("user.dir"))
+                .filename(".env")
+                .load();
+
+        String password = dotenv.get("SQL_PASSWORD");
+        return password;
+    }
+
+    public String getSQLUserName(){
+        Dotenv dotenv = Dotenv.configure()
+                .directory(System.getProperty("user.dir"))
+                .filename(".env")
+                .load();
+
+        String userNameEnvSQL = dotenv.get("SQL_NAME");
+        return userNameEnvSQL;
+    } 
 
     public static DatabaseConnection getInstance() {
         if (instance == null) {

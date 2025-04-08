@@ -7,19 +7,19 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class DatabaseController {
     private ServerController controller;
     private Connection conn;
+    private DatabaseConnection dbConnection;
 
     public DatabaseController(ServerController controller) {
         this.controller = controller;
-        this.conn = DatabaseConnection.getInstance().getConnection();
+        this.dbConnection = DatabaseConnection.getInstance();
+        this.conn = dbConnection.getConnection();
     }
 
     public boolean registerUser(String name, String email, String password, String location, String role) {
-        String URL = getSQLURL();
-        String SQLpassword = getSQLPassword();
-        String userNameEnvSQL = getSQLUserName();
+        CallableStatement stmt = null;
+    
         try {
-            Connection con = DatabaseConnection.getInstance().getConnection();
-            CallableStatement stmt = con.prepareCall("CALL register_user(?, ?, ?, ?, ?)");
+            stmt = conn.prepareCall("CALL register_user(?, ?, ?, ?, ?)");
     
             stmt.setString(1, name);
             stmt.setString(2, email);
@@ -28,46 +28,22 @@ public class DatabaseController {
             stmt.setString(5, role);
     
             stmt.executeUpdate();
-            stmt.close();
     
             System.out.println("User registered!");
             return true;
+    
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+    
+        } finally {
+            try {
+                if (stmt != null) stmt.close();  // ✅ Stäng bara statement
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-
     }
-
-    public String getSQLURL(){
-        Dotenv dotenv = Dotenv.configure()
-                .directory(System.getProperty("user.dir"))
-                .filename(".env")
-                .load();
-
-        String URL = dotenv.get("SQL_URL");
-        return URL;
-    }
-
-    public String getSQLPassword(){
-        Dotenv dotenv = Dotenv.configure()
-                .directory(System.getProperty("user.dir"))
-                .filename(".env")
-                .load();
-
-        String password = dotenv.get("SQL_PASSWORD");
-        return password;
-    }
-
-    public String getSQLUserName(){
-        Dotenv dotenv = Dotenv.configure()
-                .directory(System.getProperty("user.dir"))
-                .filename(".env")
-                .load();
-
-        String userNameEnvSQL = dotenv.get("SQL_NAME");
-        return userNameEnvSQL;
-    } 
     
 }
 

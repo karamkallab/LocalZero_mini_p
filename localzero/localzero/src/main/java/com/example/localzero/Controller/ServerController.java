@@ -21,13 +21,12 @@ public class ServerController {
 
         DatabaseController dbController = new DatabaseController(this); // null för att vi inte använder Controller-klassen här
     
-        
         boolean success = dbController.registerUser(
-            userData.name,
-            userData.email,
-            userData.password,
-            userData.location,
-            userData.role
+            userData.getName(),
+            userData.getEmail(),
+            userData.getPassword(),
+            userData.getLocation(),
+            userData.getRole()
         );
         
         if (success) {
