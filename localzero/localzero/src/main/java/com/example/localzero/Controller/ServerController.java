@@ -1,5 +1,6 @@
 package com.example.localzero.Controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,13 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*") // This annotation allows cross-origin requests from any origin.
 @RequestMapping("/api")
 public class ServerController {
+    private DatabaseController dbController = new DatabaseController(this);
 
-    @PostMapping("/api/registration")
-    public String authenticateUser(@RequestBody UserDTO userData) {
-        System.out.println("Registration endpoint hit!");
-
-        DatabaseController dbController = new DatabaseController(this); // null för att vi inte använder Controller-klassen här
-    
+    @PostMapping("/registration")
+    public String authenticateUser(@RequestBody UserDTO userData) {            
         boolean success = dbController.registerUser(
             userData.getName(),
             userData.getEmail(),
@@ -30,14 +28,24 @@ public class ServerController {
         );
         
         if (success) {
-            return "Registration successful!";
+            return "success";
         } else {
             return "Something went wrong.";
         }
     }
 
-    @PostMapping("/api/authenticator")
-    public String loginUser(@RequestBody UserDTO userData) {
-        return "login not implemented yet";
+    @PostMapping("/authenticator")
+    public String loginUser(@RequestBody HashMap<String, String> user) {
+        String email = user.get("user_email");
+        String password = user.get("user_password");
+
+        boolean success = dbController.checkIfUserExistsBeforeLogIn(
+            email, password);
+
+        if(success) {
+            return "true";
+        } else {
+            return "Login failed!";
+        }
     }
 }

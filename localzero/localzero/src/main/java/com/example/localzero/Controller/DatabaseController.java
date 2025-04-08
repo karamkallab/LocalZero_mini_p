@@ -12,24 +12,31 @@ public class DatabaseController {
     public DatabaseController(ServerController controller) {
         this.controller = controller;
         this.dbConnection = DatabaseConnection.getInstance();
-        this.conn = dbConnection.getConnection();
+
+        if(dbConnection != null) {
+            this.conn = dbConnection.getConnection();
+        }
     }
 
     public boolean registerUser(String name, String email, String password, String location, String role) {
         CallableStatement stmt = null;
-    
+        String[] array = role.split(",");
+
         try {
-            stmt = conn.prepareCall("CALL register_user(?, ?, ?, ?, ?)");
+            stmt = conn.prepareCall("CALL new_register_user(?, ?, ?, ?)");
     
             stmt.setString(1, name);
             stmt.setString(2, email);
             stmt.setString(3, password);
             stmt.setString(4, location);
-            stmt.setString(5, role);
     
             stmt.executeUpdate();
+
+            addRole(email, array[0]);
+            if(array.length == 2) {
+                addRole(email, array[1]);
+            }
     
-            System.out.println("User registered!");
             return true;
     
         } catch (Exception e) {
@@ -39,6 +46,62 @@ public class DatabaseController {
         } finally {
             try {
                 if (stmt != null) stmt.close();  // ✅ Stäng bara statement
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean checkIfUserExistsBeforeLogIn(String email, String password) {
+        CallableStatement stmt = null;
+        int result = -1;
+
+        try{
+            stmt = conn.prepareCall("{ ? = call check_if_user_exists(?, ?) }");
+            stmt.registerOutParameter(1, Types.INTEGER);
+            stmt.setString(2, email);
+            stmt.setString(3, password);
+            stmt.execute();
+            result = stmt.getInt(1);
+
+
+            if(result == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+    
+        } finally {
+            try {
+                if (stmt != null) stmt.close();  // ✅ Stäng bara statement
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean addRole(String name, String role){
+        CallableStatement stmt = null;
+
+        try {
+            stmt = conn.prepareCall("CALL add_onerole(?, ?)");
+    
+            stmt.setString(1, role);
+            stmt.setString(2, name);
+            stmt.executeUpdate();
+    
+            return true;
+    
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+    
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

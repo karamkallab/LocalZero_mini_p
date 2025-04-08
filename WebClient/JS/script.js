@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
       .then(res => res.text())
       .then(result => {
         if (result.trim() === "true") {
-          window.location.href = "html\dashboard.html";
+          window.location.href = "dashboard.html";
         } else {
           alert("Your email or password is incorrect.");
         }
@@ -67,7 +67,7 @@ registerForm.addEventListener("submit", function (event) {
   .then(res => res.text())
   .then(result => {
     if (result.toLowerCase().includes("success")) {
-      window.location.href = "html/dashboard.html";
+      window.location.href = "dashboard.html";
     } else {
       alert("Something went wrong: " + result);
     }
