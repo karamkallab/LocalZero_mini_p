@@ -5,10 +5,10 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 
 public class DatabaseController {
-    private Controller controller;
+    private ServerController controller;
     private Connection conn;
 
-    public DatabaseController(Controller controller) {
+    public DatabaseController(ServerController controller) {
         this.controller = controller;
         this.conn = DatabaseConnection.getInstance().getConnection();
     }

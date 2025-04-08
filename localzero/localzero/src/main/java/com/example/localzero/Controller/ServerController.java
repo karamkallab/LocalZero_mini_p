@@ -19,7 +19,7 @@ public class ServerController {
     public String authenticateUser(@RequestBody UserDTO userData) {
         System.out.println("Registration endpoint hit!");
 
-        DatabaseController dbController = new DatabaseController(null); // null för att vi inte använder Controller-klassen här
+        DatabaseController dbController = new DatabaseController(this); // null för att vi inte använder Controller-klassen här
     
         
         boolean success = dbController.registerUser(
