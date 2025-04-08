@@ -21,6 +21,20 @@
     </div>
 
     <main class="main-content">
+      
+  <div class="notification-wrapper">
+    <div class="notification-icon" title="Notifications">
+      🔔
+      <span class="notification-count">3</span>
+    </div>
+    <div class="notification-dropdown hidden">
+      <ul>
+        <li>New message from LocalZero</li>
+        <li>Your initiative was approved ✅</li>
+        <li>Achievement unlocked: Green Steps 🥾</li>
+      </ul>
+    </div>
+  </div>  
       <h1>Dashboard</h1>
 
       <div class="card">
@@ -80,6 +94,19 @@
         window.location.href = `${page}.html`;
       });
     });
+
+    const notifIcon = document.querySelector('.notification-icon');
+const notifDropdown = document.querySelector('.notification-dropdown');
+
+notifIcon.addEventListener('click', () => {
+  notifDropdown.classList.toggle('hidden');
+});
+
+document.addEventListener('click', (event) => {
+  if (!notifIcon.contains(event.target) && !notifDropdown.contains(event.target)) {
+    notifDropdown.classList.add('hidden');
+  }
+});
   </script>
 </body>
 </html>
