@@ -33,7 +33,5 @@ public class Controller {
             dbController.registerUser(name, email, password, location, "User");
         }
 
-
-
-    }
+    } 
 }

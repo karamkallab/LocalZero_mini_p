@@ -10,19 +10,18 @@ public class DatabaseConnection {
     private DatabaseConnection() {
         try {
             Dotenv dotenv = Dotenv.load();
-            String username = dotenv.get("SQL_NAME");
+            String user = dotenv.get("SQL_NAME");
             String password = dotenv.get("SQL_PASSWORD");
+            String url = "jdbc:postgresql://pgserver.mau.se:5432/" + user;
 
-            String url = "jdbc:postgresql://pgserver.mau.se:5432/" + username;
-
-            connection = DriverManager.getConnection(url, username, password);
-            System.out.println("Ansluten till databasen via .env!");
+            connection = DriverManager.getConnection(url, user, password);
+            System.out.println("Connected to database.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static synchronized DatabaseConnection getInstance() {
+    public static DatabaseConnection getInstance() {
         if (instance == null) {
             instance = new DatabaseConnection();
         }
@@ -33,3 +32,4 @@ public class DatabaseConnection {
         return connection;
     }
 }
+

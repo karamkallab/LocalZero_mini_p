@@ -17,10 +17,11 @@ public class ServerController {
 
     @PostMapping("/api/registration")
     public String authenticateUser(@RequestBody UserDTO userData) {
-        // Skapa databas-kontroll
+        System.out.println("Registration endpoint hit!");
+
         DatabaseController dbController = new DatabaseController(null); // null för att vi inte använder Controller-klassen här
     
-        // Anropa metoden som sparar användaren
+        
         boolean success = dbController.registerUser(
             userData.name,
             userData.email,
@@ -28,8 +29,7 @@ public class ServerController {
             userData.location,
             userData.role
         );
-
-        // Svara till frontend
+        
         if (success) {
             return "Registration successful!";
         } else {
