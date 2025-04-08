@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
       .then(res => res.text())
       .then(result => {
         if (result.trim() === "true") {
-          window.location.href = "html\dashboard.html";
+          window.location.href = "dashboard.html";
         } else {
           alert("Your email or password is incorrect.");
         }
@@ -44,34 +44,39 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 });
 
-      registerForm.addEventListener("submit", function (event) {
-      event.preventDefault();
-      const username = document.getElementById("username").value;
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const location = document.getElementById("location").value;
+registerForm.addEventListener("submit", function (event) {
+  console.log("Form submitted");  // <--- Lägg till den
 
-      fetch("http://127.0.0.1:8080/api/registration", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({  user_email: email,
-          user_password: password,
-          username: username,
-          location: location,
-          roles: selectedRoles})
-      })
-      .then(res => res.text())
-      .then(result => {
-        if (result.trim() === "true") {
-          window.location.href = "html\dashboard.html";
-        } else {
-          alert("Your email or password is incorrect.");
-        }
-      })
-      .catch(error => {
-        console.error("Login error:", error);
-      });
-    });
+  event.preventDefault();
+  const username = document.getElementById("username").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const location = document.getElementById("location").value;
+
+  fetch("http://127.0.0.1:8080/api/registration", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name: username,
+      email: email,
+      password: password,
+      location: location,
+      role: selectedRoles.join(', ')
+    })
+  })
+  .then(res => res.text())
+  .then(result => {
+    if (result.toLowerCase().includes("success")) {
+      window.location.href = "dashboard.html";
+    } else {
+      alert("Something went wrong: " + result);
+    }
+  })
+  .catch(error => {
+    console.error("Registration error:", error);
+  });
+});
+
   }
 
 });
