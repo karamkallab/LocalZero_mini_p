@@ -107,6 +107,38 @@ public class DatabaseController {
             }
         }
     }
+
+
+    public boolean createInitiative(String title, String description, String location, String category, String visibility) {
+        CallableStatement stmt = null;
+    
+        try {
+            //stmt = conn.prepareCall("CALL create_initiative(?, ?, ?, ?, ?)");
+            stmt = conn.prepareCall("CALL create_initiative(?::varchar, ?::varchar, ?::varchar, ?::varchar, ?::varchar)");
+
+
+            stmt.setString(1, title);
+            stmt.setString(2, description);
+            stmt.setString(3, location);
+            stmt.setString(4, category);
+            stmt.setString(5, visibility);
+    
+            stmt.executeUpdate();
+            return true;
+    
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+    
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
     
 }
 

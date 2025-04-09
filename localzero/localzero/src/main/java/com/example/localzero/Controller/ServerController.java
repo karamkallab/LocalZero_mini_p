@@ -48,4 +48,22 @@ public class ServerController {
             return "Login failed!";
         }
     }
+
+    @PostMapping("/initiative")
+    public String createInitiative(@RequestBody InitiativeDTO data) {
+    boolean success = dbController.createInitiative(
+        data.getTitle(),
+        data.getDescription(),
+        data.getLocation(),
+        data.getCategory(),
+        data.getVisibility()
+    );
+
+    if (success) {
+        return "Initiative created!";
+    } else {
+        return "Something went wrong.";
+    }
+}
+
 }

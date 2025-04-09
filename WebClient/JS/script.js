@@ -79,6 +79,35 @@ registerForm.addEventListener("submit", function (event) {
 
   }
 
+  document.getElementById("initiative-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+  
+    const formData = new FormData(e.target);
+    const jsonData = {
+      title: formData.get("title"),
+      description: formData.get("description"),
+      location: formData.get("location"),
+      category: formData.get("category"),
+      visibility: formData.get("visibility")
+    };
+  
+    fetch("http://localhost:8080/api/initiative", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(jsonData)
+    })
+    .then(res => res.text())
+    .then(data => {
+      alert("Svar från servern: " + data);
+    })
+    .catch(err => {
+      console.error("Fel vid skickande:", err);
+      alert("Något gick fel!");
+    });
+  });
+
 });
 
 
