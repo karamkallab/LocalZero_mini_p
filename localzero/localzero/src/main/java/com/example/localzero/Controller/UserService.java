@@ -1,8 +1,15 @@
 package com.example.localzero.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
 
+import com.example.localzero.UserCommand;
+import com.example.localzero.Command.CommandCreateInitiative;
+import com.example.localzero.Command.CommandLogIn;
+import com.example.localzero.Command.CommandRegisterUser;
+// @Service marks this class as a service component in the Spring container.
+// It is automatically managed as a singleton and used for business logic.
 @Service
 public class UserService {
 
@@ -14,19 +21,19 @@ public class UserService {
     }
 
     public boolean registerUser(String name, String email, String password, String location, String role) {
-        return dbController.registerUser(name, email, password, location, role);
+        UserCommand command = new CommandRegisterUser(dbController, name, email, password, location, role);
+        return command.executeAction();
     }
 
     public boolean checkIfUserExistsBeforeLogIn(String email, String password) {
-        return dbController.checkIfUserExistsBeforeLogIn(email, password);
+        UserCommand command = new CommandLogIn(dbController, email, password);
+        return command.executeAction();
     }
 
     public boolean createInitiative(String title, String description, String location, String category,
             String visibility) {
-        return dbController.createInitiative(title, description, location, category, visibility);
+        UserCommand command = new CommandCreateInitiative(title, description, location, category, visibility, dbController);
+        return command.executeAction();
     }
-
-
-
 
 }

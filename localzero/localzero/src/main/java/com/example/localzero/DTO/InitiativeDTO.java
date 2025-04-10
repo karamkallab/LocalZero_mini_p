@@ -1,4 +1,4 @@
-package com.example.localzero.Controller;
+package com.example.localzero.DTO;
 
 //It is not suitable to implement Singleton here. Because DTO class 
 // holds data and and should have multiple instances.

@@ -1,4 +1,4 @@
-package com.example.localzero.Controller;
+package com.example.localzero.DTO;
 
 //Same as InitiativeDTO, it is not suitable to implement Singleton here.
 public class UserDTO {

@@ -5,6 +5,9 @@ import java.sql.*;
 import org.springframework.stereotype.Component;
 
 import io.github.cdimascio.dotenv.Dotenv;
+// @Component tells Spring to create one shared instance of this class.
+// We use it here because we want Spring to manage the database connection
+// and allow other classes to access it using @Autowired.
 
 @Component
 public class DatabaseConnection {

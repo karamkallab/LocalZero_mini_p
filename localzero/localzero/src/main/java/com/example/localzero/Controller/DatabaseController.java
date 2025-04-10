@@ -7,11 +7,14 @@ import org.springframework.stereotype.Repository;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
+// @Repository is used for classes that handle communication with the database.
 @Repository
 public class DatabaseController {
     private Connection conn;
     private DatabaseConnection dbConnection;
 
+    //@Autowired is used to automatically inject (provide) an instance of 
+    // a class that is managed by Spring.
     @Autowired
     public DatabaseController(DatabaseConnection dbConnection) {
         this.dbConnection = dbConnection;

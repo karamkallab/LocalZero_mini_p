@@ -11,7 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-//TODO: Skapa en UserDTO klass, sedan gör du databas uppkopplingen.
+import com.example.localzero.DTO.InitiativeDTO;
+import com.example.localzero.DTO.UserDTO;
+
+// @RestController makes this class a web controller that handles HTTP requests and returns responses as JSON.
+// @CrossOrigin allows cross-origin requests from any origin, which is useful for development when the frontend and backend are on different servers.
+// @RequestMapping specifies the base URL for all endpoints in this controller, in this case, "/api".
 @RestController
 @CrossOrigin(origins = "*") // This annotation allows cross-origin requests from any origin.
 @RequestMapping("/api")
@@ -42,6 +47,7 @@ public class ServerController {
 
     @PostMapping("/authenticator")
     public String loginUser(@RequestBody HashMap<String, String> user) {
+        System.out.println("JAAAAAG BEFINNNEER MIG HÄR");
         String email = user.get("user_email");
         String password = user.get("user_password");
 
