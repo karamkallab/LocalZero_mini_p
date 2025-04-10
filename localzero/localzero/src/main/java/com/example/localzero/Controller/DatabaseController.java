@@ -36,6 +36,8 @@ public class DatabaseController {
             if(array.length == 2) {
                 addRole(email, array[1]);
             }
+
+            System.out.println("✅ Lyckades skapa användare");
     
             return true;
     
@@ -113,7 +115,7 @@ public class DatabaseController {
         CallableStatement stmt = null;
     
         try {
-            stmt = conn.prepareCall("CALL create_initiative(?, ?, ?, ?, ?)");
+            stmt = conn.prepareCall("call create_initiative(?, ?, ?, ?, ?)");
 
             stmt.setString(1, title);
             stmt.setString(2, description);
@@ -135,8 +137,7 @@ public class DatabaseController {
                 e.printStackTrace();
             }
         }
-    }
-    
+    }   
     
 }
 

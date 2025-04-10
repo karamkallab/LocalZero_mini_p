@@ -78,36 +78,49 @@ registerForm.addEventListener("submit", function (event) {
 });
 
   }
+  const initiativeForm = document.querySelector('.initiative-form');  
+  if (initiativeForm) {
+    initiativeForm.addEventListener('submit', function (e) {
+      e.preventDefault();  
 
-  document.getElementById("initiative-form").addEventListener("submit", function(e) {
-    e.preventDefault();
-  
-    const formData = new FormData(e.target);
-    const jsonData = {
-      title: formData.get("title"),
-      description: formData.get("description"),
-      location: formData.get("location"),
-      category: formData.get("category"),
-      visibility: formData.get("visibility")
-    };
-  
-    fetch("http://localhost:8080/api/initiative", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(jsonData)
-    })
-    .then(res => res.text())
-    .then(data => {
-      alert("Svar från servern: " + data);
-    })
-    .catch(err => {
-      console.error("Fel vid skickande:", err);
-      alert("Något gick fel!");
+      const title = document.getElementById("title").value;
+      const description = document.getElementById("description").value;
+      const location = document.getElementById("location").value;
+      const category = document.getElementById("category").value;
+      const visibility = document.querySelector('input[name="visibility"]:checked').value;
+
+      console.log("Sending data:", {
+        title,
+        description,
+        location,
+        category,
+        visibility
+      });
+
+      fetch("http://localhost:8080/api/initiative", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          location,
+          category,
+          visibility
+        })
+      })
+      .then(res => res.text())  
+      .then(data => {
+        alert("Server response: " + data);  
+        initiativeForm.reset();
+      })
+      .catch(err => {
+        console.error("Error while sending:", err);
+        alert("Something went wrong while submitting the initiative.");
+      });
     });
-  });
-
+  }
 });
 
 

@@ -22,9 +22,9 @@ public class DatabaseConnection {
 
 
             connection = DriverManager.getConnection(url, user, password);
-            System.out.println("Databasanslutning lyckades!");
+            System.out.println("Database connection successful!");
         } catch (SQLException e) {
-            System.out.println("Fel vid anslutning:");
+            System.out.println("Error during database connection:");
             e.printStackTrace();
         }
     }
