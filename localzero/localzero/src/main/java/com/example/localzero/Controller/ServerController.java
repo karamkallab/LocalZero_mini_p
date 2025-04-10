@@ -3,6 +3,7 @@ package com.example.localzero.Controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,14 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*") // This annotation allows cross-origin requests from any origin.
 @RequestMapping("/api")
 public class ServerController {
-    private DatabaseController dbController;
+    private final UserService userService;
+
+    @Autowired
+    public ServerController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/registration")
-    public String authenticateUser(@RequestBody UserDTO userData) {   
-        dbController = DatabaseController.getInstance();
-        
-
-        boolean success = dbController.registerUser(
+    public String authenticateUser(@RequestBody UserDTO userData) {           
+        boolean success = userService.registerUser(
             userData.getName(),
             userData.getEmail(),
             userData.getPassword(),
@@ -42,7 +45,7 @@ public class ServerController {
         String email = user.get("user_email");
         String password = user.get("user_password");
 
-        boolean success = dbController.checkIfUserExistsBeforeLogIn(
+        boolean success = userService.checkIfUserExistsBeforeLogIn(
             email, password);
 
         if(success) {
@@ -54,7 +57,7 @@ public class ServerController {
 
     @PostMapping("/initiative")
     public String createInitiative(@RequestBody InitiativeDTO data) {
-    boolean success = dbController.createInitiative(
+    boolean success = userService.createInitiative(
         data.getTitle(),
         data.getDescription(),
         data.getLocation(),

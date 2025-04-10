@@ -1,8 +1,12 @@
 package com.example.localzero.Controller;
 
 import java.sql.*;
+
+import org.springframework.stereotype.Component;
+
 import io.github.cdimascio.dotenv.Dotenv;
 
+@Component
 public class DatabaseConnection {
     private static DatabaseConnection instance;
     private Connection connection;

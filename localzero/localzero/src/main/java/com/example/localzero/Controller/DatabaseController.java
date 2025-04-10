@@ -2,6 +2,7 @@ package com.example.localzero.Controller;
 
 import java.sql.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import io.github.cdimascio.dotenv.Dotenv;
@@ -10,14 +11,11 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class DatabaseController {
     private Connection conn;
     private DatabaseConnection dbConnection;
-    private static DatabaseController dbController;
 
-    public DatabaseController() {
-        this.dbConnection = DatabaseConnection.getInstance();
-
-        if(dbConnection != null) {
-            this.conn = dbConnection.getConnection();
-        }
+    @Autowired
+    public DatabaseController(DatabaseConnection dbConnection) {
+        this.dbConnection = dbConnection;
+        this.conn = dbConnection.getConnection();
     }
 
     public boolean registerUser(String name, String email, String password, String location, String role) {
@@ -140,13 +138,6 @@ public class DatabaseController {
             }
         }
     }
-
-    public static DatabaseController getInstance() {
-        if (dbController == null) {
-            dbController = new DatabaseController();
-        }
-        return dbController;
-    }   
     
 }
 
