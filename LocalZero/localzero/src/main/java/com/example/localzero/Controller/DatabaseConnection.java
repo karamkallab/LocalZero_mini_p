@@ -8,7 +8,6 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 @Component
 public class DatabaseConnection {
-    private static DatabaseConnection instance;
     private Connection connection;
     private Dotenv dotenv;
 
@@ -46,13 +45,6 @@ public class DatabaseConnection {
     public String getSQLUserName() {
         String userNameEnvSQL = dotenv.get("USER_NAME");
         return userNameEnvSQL;
-    }
-
-    public static DatabaseConnection getInstance() {
-        if (instance == null) {
-            instance = new DatabaseConnection();
-        }
-        return instance;
     }
 
     public Connection getConnection() {
