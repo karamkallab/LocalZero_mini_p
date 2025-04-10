@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
 
-import com.example.localzero.UserCommand;
 import com.example.localzero.Command.CommandCreateInitiative;
 import com.example.localzero.Command.CommandLogIn;
 import com.example.localzero.Command.CommandRegisterUser;
+import com.example.localzero.Command.UserCommand;
 // @Service marks this class as a service component in the Spring container.
 // It is automatically managed as a singleton and used for business logic.
 @Service

@@ -1,6 +1,5 @@
 package com.example.localzero.Command;
 
-import com.example.localzero.UserCommand;
 import com.example.localzero.Controller.DatabaseController;
 
 public class CommandCreateInitiative implements UserCommand {

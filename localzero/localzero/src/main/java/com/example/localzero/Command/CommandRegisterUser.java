@@ -2,7 +2,6 @@ package com.example.localzero.Command;
 
 import javax.xml.crypto.Data;
 
-import com.example.localzero.UserCommand;
 import com.example.localzero.Controller.DatabaseController;
 
 public class CommandRegisterUser implements UserCommand {
