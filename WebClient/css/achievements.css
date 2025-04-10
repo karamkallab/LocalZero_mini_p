@@ -1,0 +1,167 @@
+/* Base: ecoactions.css with golden touches for achievement flair */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  body {
+    background-color: #3f6537;
+    color: #fff;
+  }
+  
+  .container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 230px;
+    background-color: #2e4b27;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    }
+  
+  .logo {
+    font-size: 40px;
+    font-weight: bolder;
+    margin-bottom: 10px;
+  }
+  
+  .nav {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .nav button {
+    padding: 50px 10px;
+    margin: 10% 0;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+  
+  .nav button:hover {
+    background: #5f9e53;
+  }
+  
+  .signout {
+    background: #803b3b;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15%;
+    font-size: 16px;
+  }
+  
+  .signout:hover {
+    background: #a84545;
+  }
+  
+  .main-content {
+    flex-grow: 1;
+    padding: 30px;
+    background-color: #4d7b3c;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    position: relative; 
+  }
+  
+  .main-content h1 {
+    font-size: 40px;
+    margin-bottom: 1px;
+    max-width: 1000px;
+    text-align: center;
+  }
+  
+  .card {
+    background-color: #d7e7c1;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 14px 0;
+    color: #2e2e2e;
+    width: 100%;
+    max-width: 1000px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+  .card h2 {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .card p {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  
+  .card .dates {
+    color: #6b4500;
+    font-weight: bold;
+    font-size: 14px;
+  }
+  
+  .notification-wrapper {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+  }
+  
+  .notification-icon {
+    position: relative;
+    font-size: 30px;
+    cursor: pointer;
+    color: white;
+  }
+  
+  .notification-count {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: red;
+    color: white;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 50%;
+  }
+  
+  .notification-dropdown {
+    position: absolute;
+    top: 35px;
+    right: 0;
+    background-color: #d7e7c1;
+    color: #2e2e2e;
+    width: 250px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    padding: 10px;
+    z-index: 999;
+  }
+  
+  .notification-dropdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .notification-dropdown li {
+    padding: 8px 10px;
+    border-bottom: 1px solid #b2c59b;
+    font-size: 14px;
+  }
+  
+  .notification-dropdown li:last-child {
+    border-bottom: none;
+  }
+  
+  .hidden {
+    display: none;
+  }

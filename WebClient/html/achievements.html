@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Achievements</title>
+  <link rel="stylesheet" href="../css/achievements.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <div class="logo">LocalZero</div>
+      <nav class="nav">
+        <button data-page="dashboard">Dashboard</button>
+        <button data-page="initiative">Create Initiative</button>
+        <button data-page="ecoactions">Eco Actions</button>
+        <button data-page="inbox">Inbox</button>
+        <button data-page="achievements">Achievements</button>
+      </nav>
+      <button class="signout">Sign out</button>
+    </div>
+
+    <main class="main-content">
+      <div class="notification-wrapper">
+        <div class="notification-icon" title="Notifications">
+          🔔
+          <span class="notification-count">3</span>
+        </div>
+        <div class="notification-dropdown hidden">
+          <ul>
+            <li>New message from LocalZero</li>
+            <li>Your initiative was approved ✅</li>
+            <li>Achievement unlocked: Green Steps 🥾</li>
+          </ul>
+        </div>
+      </div>  
+      <h1>Achievements</h1>
+
+      <div class="card">
+        <h2>Community Hero 🌟</h2>
+        <p>Participated in 10 sustainability initiatives!</p>
+        <p class="dates">Earned: 01/04/2025</p>
+      </div>
+
+      <div class="card">
+        <h2>Green Steps 🚶</h2>
+        <p>Logged 50 eco actions in one month!</p>
+        <p class="dates">Earned: 28/03/2025</p>
+      </div>
+    </main>
+</div>
+
+<script>
+  document.querySelector('.signout').addEventListener('click', () => {
+    localStorage.clear();
+    window.location.href = 'login.html';
+  });
+
+  document.querySelectorAll('.nav button').forEach(button => {
+    button.addEventListener('click', () => {
+      const page = button.getAttribute('data-page');
+      window.location.href = `${page}.html`;
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Eco Actions</title>
+  <link rel="stylesheet" href="../css/ecoactions.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <div class="logo">LocalZero</div>
+      <nav class="nav">
+        <button data-page="dashboard">Dashboard</button>
+        <button data-page="initiative">Create Initiative</button>
+        <button data-page="ecoactions">Eco Actions</button>
+        <button data-page="inbox">Inbox</button>
+        <button data-page="achievements">Achievements</button>
+      </nav>
+      <button class="signout">Sign out</button>
+    </div>
+
+    <main class="main-content">
+      <div class="notification-wrapper">
+        <div class="notification-icon" title="Notifications">
+          🔔
+          <span class="notification-count">3</span>
+        </div>
+        <div class="notification-dropdown hidden">
+          <ul>
+            <li>New message from LocalZero</li>
+            <li>Your initiative was approved ✅</li>
+            <li>Achievement unlocked: Green Steps 🥾</li>
+          </ul>
+        </div>
+      </div>  
+      <h1>Eco Actions</h1>
+
+      <div class="card">
+        <h2>Biked to Work</h2>
+        <p>Saved approximately 2.5 kg of CO₂</p>
+        <p class="dates">John Doe – 04/04/2025</p>
+      </div>
+
+      <div class="card">
+        <h2>Used Reusable Bags</h2>
+        <p>Reduced plastic waste on shopping trip</p>
+        <p class="dates">Jane Smith – 03/04/2025</p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Sign out and go to login page
+    document.querySelector('.signout').addEventListener('click', () => {
+      localStorage.clear();
+      window.location.href = 'login.html';
+    });
+
+    // Reusable navigation handler
+    document.querySelectorAll('.nav button').forEach(button => {
+      button.addEventListener('click', () => {
+        const targetPage = button.getAttribute('data-page');
+        window.location.href = `${targetPage}.html`;
+      });
+    });
+  </script>
+</body>
+</html>

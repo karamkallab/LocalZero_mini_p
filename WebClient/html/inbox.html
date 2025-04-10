@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inbox</title>
+  <link rel="stylesheet" href="../css/inbox.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <div class="logo">LocalZero</div>
+      <nav class="nav">
+        <button data-page="dashboard">Dashboard</button>
+        <button data-page="initiative">Create Initiative</button>
+        <button data-page="ecoactions">Eco Actions</button>
+        <button data-page="inbox">Inbox</button>
+        <button data-page="achievements">Achievements</button>
+      </nav>
+      <button class="signout">Sign out</button>
+    </div>
+      <main class="main-content">
+        <div class="notification-wrapper">
+          <div class="notification-icon" title="Notifications">
+            🔔
+            <span class="notification-count">3</span>
+          </div>
+          <div class="notification-dropdown hidden">
+            <ul>
+              <li>New message from LocalZero</li>
+              <li>Your initiative was approved ✅</li>
+              <li>Achievement unlocked: Green Steps 🥾</li>
+            </ul>
+          </div>
+        </div>  
+        <h1>Inbox</h1>
+  
+        <div class="card">
+          <h2>Tool Sharing Update</h2>
+          <p>Hi! Are you still interested in borrowing the hedge trimmer this weekend?</p>
+          <p class="dates">From: Alex Green – 04/04/2025</p>
+        </div>
+  
+        <div class="card">
+          <h2>Ride Sharing Available</h2>
+          <p>I’m driving to the farmer’s market Saturday morning. Want to come?</p>
+          <p class="dates">From: Lisa Blue – 03/04/2025</p>
+        </div>
+      </main>
+  <script>
+    document.querySelector('.signout').addEventListener('click', () => {
+      localStorage.clear();
+      window.location.href = 'login.html';
+    });
+
+    document.querySelectorAll('.nav button').forEach(button => {
+      button.addEventListener('click', () => {
+        const page = button.getAttribute('data-page');
+        window.location.href = `${page}.html`;
+      });
+    });
+  </script>
+</body>
+</html>

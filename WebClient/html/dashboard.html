@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LocalZero Dashboard</title>
+  <link rel="stylesheet" href="../css/dashboard.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <div class="logo">LocalZero</div>
+      <nav class="nav">
+        <button data-page="dashboard">Dashboard</button>
+        <button data-page="initiative">Create Initiative</button>
+        <button data-page="ecoactions">Eco Actions</button>
+        <button data-page="inbox">Inbox</button>
+        <button data-page="achievements">Achievements</button>
+      </nav>
+      <button class="signout">Sign out</button>
+    </div>
+
+    <main class="main-content">
+      
+  <div class="notification-wrapper">
+    <div class="notification-icon" title="Notifications">
+      🔔
+      <span class="notification-count">3</span>
+    </div>
+    <div class="notification-dropdown hidden">
+      <ul>
+        <li>New message from LocalZero</li>
+        <li>Your initiative was approved ✅</li>
+        <li>Achievement unlocked: Green Steps 🥾</li>
+      </ul>
+    </div>
+  </div>  
+      <h1>Dashboard</h1>
+
+      <div class="card">
+        <h2>Aenean quis risus accumsan – Location A, Category 1</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas quis rutrum ipsum...</p>
+        <strong>Aenean nec vehicula nibh. Aliquam sit amet mauris augue.</strong>
+        <p class="dates">Firstname Lastname, From dd/mm/yyyy To dd/mm/yyyy</p>
+      </div>
+
+      <div class="card">
+        <h2>Aenean quis risus accumsan – Location B, Category 2</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas quis rutrum ipsum...</p>
+        <strong>Aenean nec vehicula nibh. Aliquam sit amet mauris augue.</strong>
+        <p class="dates">Firstname Lastname, From dd/mm/yyyy To dd/mm/yyyy</p>
+      </div>
+
+      <div class="card">
+        <h2>Aenean quis risus accumsan – Location C, Category 3</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas quis rutrum ipsum...</p>
+        <strong>Aenean nec vehicula nibh. Aliquam sit amet mauris augue.</strong>
+        <p class="dates">Firstname Lastname, From dd/mm/yyyy To dd/mm/yyyy</p>
+      </div>
+
+      <div class="card">
+        <h2>Aenean quis risus accumsan – Location C, Category 4</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas quis rutrum ipsum...</p>
+        <strong>Aenean nec vehicula nibh. Aliquam sit amet mauris augue.</strong>
+        <p class="dates">Firstname Lastname, From dd/mm/yyyy To dd/mm/yyyy</p>
+      </div>
+
+      <div class="card">
+        <h2>Aenean quis risus accumsan – Location C, Category 5</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas quis rutrum ipsum...</p>
+        <strong>Aenean nec vehicula nibh. Aliquam sit amet mauris augue.</strong>
+        <p class="dates">Firstname Lastname, From dd/mm/yyyy To dd/mm/yyyy</p>
+      </div>
+
+      <div class="card">
+        <h2>Aenean quis risus accumsan – Location C, Category 6</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas quis rutrum ipsum...</p>
+        <strong>Aenean nec vehicula nibh. Aliquam sit amet mauris augue.</strong>
+        <p class="dates">Firstname Lastname, From dd/mm/yyyy To dd/mm/yyyy</p>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    document.querySelector('.signout').addEventListener('click', () => {
+      localStorage.clear();
+      window.location.href = 'login.html';
+    });
+
+    document.querySelectorAll('.nav button').forEach(button => {
+      button.addEventListener('click', () => {
+        const page = button.getAttribute('data-page');
+        window.location.href = `${page}.html`;
+      });
+    });
+
+    const notifIcon = document.querySelector('.notification-icon');
+const notifDropdown = document.querySelector('.notification-dropdown');
+
+notifIcon.addEventListener('click', () => {
+  notifDropdown.classList.toggle('hidden');
+});
+
+document.addEventListener('click', (event) => {
+  if (!notifIcon.contains(event.target) && !notifDropdown.contains(event.target)) {
+    notifDropdown.classList.add('hidden');
+  }
+});
+  </script>
+</body>
+</html>

@@ -1,4 +1,9 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.project.sourcePaths": [
+        "LocalZero\\localzero\\src\\main\\java\\com\\example\\localzero",
+        "LocalZero\\src"
+    ],
+    "java.project.referencedLibraries": []
 }

@@ -1,0 +1,115 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: #3f6537;
+  color: #fff;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.loginBox {
+  background-color: #2e4b27;
+  padding: 60px;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  width: 400px;
+  text-align: center;
+}
+
+.loginBox h2 {
+  margin-bottom: 30px;
+  font-size: 32px;
+  color: #a3cd84;
+}
+
+.loginBox input {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.createAccountBtn {
+  margin-top: 10px;
+  width: 100%;
+  padding: 14px;
+  background-color: #4a7740;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.createAccountBtn:hover {
+  background-color: #5f9e53;
+}
+
+/* Adjust Dropdown and Role Button */
+.dropdown {
+  width: 100%; /* Ensure it matches the width of the inputs */
+  margin-bottom: 20px;
+  padding-bottom: 5px;
+}
+
+.roleButton {
+  background-color: white;
+  border: 1px solid #ccc; 
+  width: 100%;
+  padding: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  color: black;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.roleButton:hover {
+  background-color: hsl(0, 0%, 90%);
+}
+
+.dropdown .content {
+  display: none;
+  position: absolute;
+  background-color: hsl(0, 0%, 95%);
+  width: 19.5%;
+  box-shadow: 2px 2px 5px hsla(0, 0%, 0%, 0.8);
+  margin-top: 5px;
+  border-radius: 8px;
+}
+
+.dropdown:hover .content {
+  display: block;
+}
+
+.dropdown a {
+  display: block;
+  color: black;
+  text-decoration: none;
+  padding: 10px 15px;
+  width: 100%; 
+}
+
+.dropdown a:hover {
+  background-color: hsl(0, 0%, 90%);
+  border-radius: 8px;
+}
