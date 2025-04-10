@@ -113,9 +113,7 @@ public class DatabaseController {
         CallableStatement stmt = null;
     
         try {
-            //stmt = conn.prepareCall("CALL create_initiative(?, ?, ?, ?, ?)");
-            stmt = conn.prepareCall("CALL create_initiative(?::varchar, ?::varchar, ?::varchar, ?::varchar, ?::varchar)");
-
+            stmt = conn.prepareCall("CALL create_initiative(?, ?, ?, ?, ?)");
 
             stmt.setString(1, title);
             stmt.setString(2, description);

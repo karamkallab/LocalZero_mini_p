@@ -10,7 +10,6 @@ public class DatabaseConnection {
 
     public DatabaseConnection() {
         try {
-            System.out.println("⏳ Laddar .env...");
             dotenv = Dotenv.configure()
         .directory(System.getProperty("user.dir"))
         .filename("localzero\\localzero\\.env")
@@ -21,14 +20,11 @@ public class DatabaseConnection {
             String password = getSQLPassword();
             String url = "jdbc:postgresql://pgserver.mau.se:5432/" + databasename;
 
-            System.out.println("📦 DATABASE_NAME: " + databasename);
-        System.out.println("👤 USER_NAME: " + user);
-        System.out.println("🔗 URL: " + url);
 
             connection = DriverManager.getConnection(url, user, password);
-            System.out.println("✅ Databasanslutning lyckades!");
+            System.out.println("Databasanslutning lyckades!");
         } catch (SQLException e) {
-            System.out.println("❌ Fel vid anslutning:");
+            System.out.println("Fel vid anslutning:");
             e.printStackTrace();
         }
     }
