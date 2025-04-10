@@ -1,0 +1,117 @@
+Men ska jag ha något i den här stilen?, observera att det nu är pseudo-kod:
+
+@RestController
+public class ServerController{
+private final UserService userService;
+
+@AutoWired
+public ServerController(UserService userService){
+    this.userService = userService
+}
+
+    @PostMapping("/authenticator")
+    public String loginUser(@RequestBody HashMap<String, String> user) {
+        String email = user.get("user_email");
+        String password = user.get("user_password");
+
+        boolean success = UserService.loginUser(email, password);
+
+        if(success){
+            return "true";
+        }
+
+        return "false";
+
+    }
+}
+
+@Service
+public class UserService{
+    private DatabaseController dbController;
+
+    @Autowired
+    public UserService(DatabaseController dbController) {
+        this.dbController = dbController;
+    }
+
+    public boolean loginUser(String email, String password){
+        boolean success = dbController.loginUser(email, password);
+        return success;
+    }
+}
+
+@Repository
+public DatabaseController{
+    private Connection conn;
+    private DatabaseConnection dbConnection;
+
+    @AutoWired
+    public DatabaseController(DatabaseConnection dbConnection){
+        this.dbConnection = dbConnection;
+    }
+
+        public boolean registerUser(String name, String email, String password, String location, String role) {
+        CallableStatement stmt = null;
+        String[] array = role.split(",");
+
+        try {
+            stmt = conn.prepareCall("CALL new_register_user(?, ?, ?, ?)");
+    
+            stmt.setString(1, name);
+            stmt.setString(2, email);
+            stmt.setString(3, password);
+            stmt.setString(4, location);
+    
+            stmt.executeUpdate();
+
+            addRole(email, array[0]);
+            if(array.length == 2) {
+                addRole(email, array[1]);
+            }
+    
+            return true;
+    
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+    
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+@Service
+public class DatabaseConnection{
+    @AutoWired
+    private DatabaseConnection dbConnection;
+    private static DatabaseConnection instance;
+    private Connection connection;
+    private Dotenv dotenv;
+
+        public DatabaseConnection() {
+        try {
+            dotenv = Dotenv.configure()
+        .directory(System.getProperty("user.dir"))
+        .filename("localzero\\localzero\\.env")
+        .load();
+
+            String databasename = getDatabaseName();
+            String user = getSQLUserName();
+            String password = getSQLPassword();
+            String url = "jdbc:postgresql://pgserver.mau.se:5432/" + databasename;
+
+
+            connection = DriverManager.getConnection(url, user, password);
+            System.out.println("Database connection successful!");
+        } catch (SQLException e) {
+            System.out.println("Error during database connection:");
+            e.printStackTrace();
+        }
+    }
+}
+

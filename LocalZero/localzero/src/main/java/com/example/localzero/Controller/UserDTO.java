@@ -1,5 +1,6 @@
 package com.example.localzero.Controller;
 
+//Same as InitiativeDTO, it is not suitable to implement Singleton here.
 public class UserDTO {
     private String name;
     private String email;

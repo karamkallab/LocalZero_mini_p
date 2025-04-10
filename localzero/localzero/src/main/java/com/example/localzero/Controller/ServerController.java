@@ -15,10 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*") // This annotation allows cross-origin requests from any origin.
 @RequestMapping("/api")
 public class ServerController {
-    private DatabaseController dbController = new DatabaseController(this);
+    private DatabaseController dbController;
 
     @PostMapping("/registration")
-    public String authenticateUser(@RequestBody UserDTO userData) {            
+    public String authenticateUser(@RequestBody UserDTO userData) {   
+        dbController = DatabaseController.getInstance();
+        
+
         boolean success = dbController.registerUser(
             userData.getName(),
             userData.getEmail(),
