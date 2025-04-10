@@ -17,6 +17,7 @@ public class CommandCreateInitiative implements UserCommand {
         this.location = location;
         this.category = category;
         this.visibility = visibility;
+        this.db = db;
     }
 
 
