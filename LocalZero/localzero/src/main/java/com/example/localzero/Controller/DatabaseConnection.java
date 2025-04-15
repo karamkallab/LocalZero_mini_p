@@ -18,7 +18,7 @@ public class DatabaseConnection {
         try {
             dotenv = Dotenv.configure()
         .directory(System.getProperty("user.dir"))
-        .filename("localzero\\localzero\\.env")
+        .filename(".env")
         .load();
 
             String databasename = getDatabaseName();

@@ -1,6 +1,7 @@
 package com.example.localzero.Controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,21 +62,27 @@ public class ServerController {
         }
     }
 
-    @PostMapping("/initiative")
+    @PostMapping("/CreateInitiative")
     public String createInitiative(@RequestBody InitiativeDTO data) {
-    boolean success = userService.createInitiative(
-        data.getTitle(),
-        data.getDescription(),
-        data.getLocation(),
-        data.getCategory(),
-        data.getVisibility()
-    );
+        boolean success = userService.createInitiative(
+            data.getTitle(),
+            data.getDescription(),
+            data.getLocation(),
+            data.getCategory(),
+            data.getVisibility()
+        );
 
-    if (success) {
-        return "Initiative created!";
-    } else {
-        return "Something went wrong.";
+
+        if (success) {
+            return "Initiative created!";
+        } else {
+            return "Something went wrong.";
+        }
     }
-}
+
+    @GetMapping("/FetchInitiatives")
+    public List<InitiativeDTO> fetchInitiative() {
+        return userService.fetchInitiative();
+    }
 
 }

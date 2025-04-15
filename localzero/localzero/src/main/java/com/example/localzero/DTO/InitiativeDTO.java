@@ -1,8 +1,9 @@
 package com.example.localzero.DTO;
 
 //It is not suitable to implement Singleton here. Because DTO class 
-// holds data and and should have multiple instances.
+// holds data and should have multiple instances.
 public class InitiativeDTO {
+    private String id;
     private String title;
     private String description;
     private String location;
@@ -23,4 +24,7 @@ public class InitiativeDTO {
 
     public String getVisibility() { return visibility; }
     public void setVisibility(String visibility) { this.visibility = visibility; }
+
+    public String getId() { return id; }
+    public void setID(String id) { this.id = id; }
 }
