@@ -1,0 +1,168 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #2d572c;
+    color: white;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  .container {
+    display: flex;
+  }
+  
+  .sidebar {
+    width: 220px;
+    background-color: #1f3b1f;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 30px;
+  }
+  
+  .nav button, .signout {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: bold;
+  }
+  
+  .main-content {
+    flex-grow: 1;
+    padding: 30px;
+    background-color: #2d572c;
+  }
+  
+  .initiative-post {
+    background-color: #3c6e3c;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .initiative-header h2 {
+    margin-top: 0;
+    color: #fff;
+  }
+  
+  .initiative-header p {
+    margin: 4px 0;
+    color: #d8fcd4;
+  }
+  
+  .new-update {
+    margin-top: 30px;
+    background-color: #4a864a;
+    border-radius: 8px;
+    padding: 20px;
+  }
+  
+  .new-update textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    margin-bottom: 10px;
+    resize: vertical;
+  }
+  
+  .new-update input[type="file"] {
+    margin-bottom: 10px;
+  }
+  
+  .new-update button {
+    background-color: white;
+    color: #2d572c;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .update-feed {
+    margin-top: 40px;
+  }
+  
+  .update-card {
+    background-color: #daf5d4;
+    color: #1f3b1f;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .update-card img {
+    max-width: 100%;
+    border-radius: 6px;
+    margin-top: 10px;
+    display: block;
+  }
+  
+  .post-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .like-button, .comment-toggle {
+    background-color: white;
+    color: #2d572c;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .comments-section {
+    margin-top: 15px;
+    background-color: #4a864a;
+    border-radius: 8px;
+    padding: 15px;
+  }
+  
+  .comments-section h4 {
+    margin-top: 0;
+  }
+  
+  .comment {
+    margin-bottom: 8px;
+    padding-left: 10px;
+  }
+  
+  .comment-form {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .comment-form input {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+  }
+  
+  .comment-form button {
+    padding: 8px 14px;
+    background-color: white;
+    color: #2d572c;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+  }
+  
