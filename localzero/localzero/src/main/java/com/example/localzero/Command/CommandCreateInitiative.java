@@ -1,6 +1,9 @@
 package com.example.localzero.Command;
 
 import com.example.localzero.Controller.DatabaseController;
+import com.example.localzero.DTO.InitiativeDTO;
+
+import java.util.List;
 
 public class CommandCreateInitiative implements UserCommand {
     private DatabaseController db;
@@ -25,5 +28,10 @@ public class CommandCreateInitiative implements UserCommand {
     public boolean executeAction() {
         return db.createInitiative(title, description, location, category, visibility);
     }
-    
+
+    @Override
+    public List<InitiativeDTO> fetchDatabase() {
+        return List.of();
+    }
+
 }

@@ -37,94 +37,12 @@
     </div>
   </div>  
       <h1>Dashboard</h1>
-
-      <a href="initiative_view.html?id=1" class="initiative-box-link">
-        <div class="card">
-          <h2>Aenean quis risus accumsan – Location A, Category 1</h2>
-          <p>Lorem ipsum dolor sit amet...</p>
-          <strong>Aenean nec vehicula nibh. Aliquam sit amet mauris augue.</strong>
-          <p class="dates">Firstname Lastname, From dd/mm/yyyy To dd/mm/yyyy</p>
-        </div>
-      </a>
-      
-
-      <a href="initiative_view.html?id=1" class="initiative-box-link">
-        <div class="card">
-          <h2>Aenean quis risus accumsan – Location A, Category 1</h2>
-          <p>Lorem ipsum dolor sit amet...</p>
-          <strong>Aenean nec vehicula nibh. Aliquam sit amet mauris augue.</strong>
-          <p class="dates">Firstname Lastname, From dd/mm/yyyy To dd/mm/yyyy</p>
-        </div>
-      </a>
-      
-
-      <a href="initiative_view.html?id=1" class="initiative-box-link">
-        <div class="card">
-          <h2>Aenean quis risus accumsan – Location A, Category 1</h2>
-          <p>Lorem ipsum dolor sit amet...</p>
-          <strong>Aenean nec vehicula nibh. Aliquam sit amet mauris augue.</strong>
-          <p class="dates">Firstname Lastname, From dd/mm/yyyy To dd/mm/yyyy</p>
-        </div>
-      </a>
-      
-
-      <a href="initiative_view.html?id=1" class="initiative-box-link">
-        <div class="card">
-          <h2>Aenean quis risus accumsan – Location A, Category 1</h2>
-          <p>Lorem ipsum dolor sit amet...</p>
-          <strong>Aenean nec vehicula nibh. Aliquam sit amet mauris augue.</strong>
-          <p class="dates">Firstname Lastname, From dd/mm/yyyy To dd/mm/yyyy</p>
-        </div>
-      </a>
-      
-
-      <a href="initiative_view.html?id=1" class="initiative-box-link">
-        <div class="card">
-          <h2>Aenean quis risus accumsan – Location A, Category 1</h2>
-          <p>Lorem ipsum dolor sit amet...</p>
-          <strong>Aenean nec vehicula nibh. Aliquam sit amet mauris augue.</strong>
-          <p class="dates">Firstname Lastname, From dd/mm/yyyy To dd/mm/yyyy</p>
-        </div>
-      </a>
-      
-      <a href="initiative_view.html?id=1" class="initiative-box-link">
-        <div class="card">
-          <h2>Aenean quis risus accumsan – Location A, Category 1</h2>
-          <p>Lorem ipsum dolor sit amet...</p>
-          <strong>Aenean nec vehicula nibh. Aliquam sit amet mauris augue.</strong>
-          <p class="dates">Firstname Lastname, From dd/mm/yyyy To dd/mm/yyyy</p>
-        </div>
-      </a>
-      
+      <div id="initiativeList">
+      </div>
 
     </main>
   </div>
 
-  <script>
-    document.querySelector('.signout').addEventListener('click', () => {
-      localStorage.clear();
-      window.location.href = 'login.html';
-    });
-
-    document.querySelectorAll('.nav button').forEach(button => {
-      button.addEventListener('click', () => {
-        const page = button.getAttribute('data-page');
-        window.location.href = `${page}.html`;
-      });
-    });
-
-    const notifIcon = document.querySelector('.notification-icon');
-const notifDropdown = document.querySelector('.notification-dropdown');
-
-notifIcon.addEventListener('click', () => {
-  notifDropdown.classList.toggle('hidden');
-});
-
-document.addEventListener('click', (event) => {
-  if (!notifIcon.contains(event.target) && !notifDropdown.contains(event.target)) {
-    notifDropdown.classList.add('hidden');
-  }
-});
-  </script>
+  <script src="../JS/dashboard.js"></script>
 </body>
 </html>

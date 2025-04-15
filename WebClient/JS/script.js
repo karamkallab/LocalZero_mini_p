@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('roleButton').textContent = selectedRoles.join(', ');
   });
 });
+}
 
 registerForm.addEventListener("submit", function (event) {
   console.log("Form submitted");  // <--- Lägg till den
@@ -76,52 +77,98 @@ registerForm.addEventListener("submit", function (event) {
     console.error("Registration error:", error);
   });
 });
+});
 
-  }
-  const initiativeForm = document.querySelector('.initiative-form');  
-  if (initiativeForm) {
-    initiativeForm.addEventListener('submit', function (e) {
-      e.preventDefault();  
+const initiativeForm = document.querySelector('.initiative-form');  
+if (initiativeForm) {
+  initiativeForm.addEventListener('submit', function (e) {
+    e.preventDefault();  
 
-      const title = document.getElementById("title").value;
-      const description = document.getElementById("description").value;
-      const location = document.getElementById("location").value;
-      const category = document.getElementById("category").value;
-      const visibility = document.querySelector('input[name="visibility"]:checked').value;
+    const title = document.getElementById("title").value;
+    const description = document.getElementById("description").value;
+    const location = document.getElementById("location").value;
+    const category = document.getElementById("category").value;
+    const visibility = document.querySelector('input[name="visibility"]:checked').value;
 
-      console.log("Sending data:", {
+    console.log("Sending data:", {
+      title,
+      description,
+      location,
+      category,
+      visibility
+    });
+
+    fetch("http://localhost:8080/api/CreateInitiative", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
         title,
         description,
         location,
         category,
         visibility
-      });
-
-      fetch("http://localhost:8080/api/initiative", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          title,
-          description,
-          location,
-          category,
-          visibility
-        })
       })
-      .then(res => res.text())  
-      .then(data => {
-        alert("Server response: " + data);  
-        initiativeForm.reset();
-      })
-      .catch(err => {
-        console.error("Error while sending:", err);
-        alert("Something went wrong while submitting the initiative.");
-      });
+    })
+    .then(res => res.text())  
+    .then(data => {
+      alert("Server response: " + data);  
+      initiativeForm.reset();
+    })
+    .catch(err => {
+      console.error("Error while sending:", err);
+      alert("Something went wrong while submitting the initiative.");
     });
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const initiativeList = document.getElementById("initiativeList");
+  if (!initiativeList) {
+    console.warn("Element #initiativeList not found.");
+    return;
   }
+
+  fetch("http://localhost:8080/api/FetchInitiatives")
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+      return res.json();
+    })
+    .then(data => {
+      initiativeList.innerHTML = '';
+
+      data.forEach(initiative => {
+        const link = document.createElement("a");
+        link.href = `initiative_view.html?id=${initiative.id || 1}`;
+        link.className = "initiative-box-link";
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const h2 = document.createElement("h2");
+        h2.textContent = `${initiative.title} – ${initiative.location}, ${initiative.category}`;
+
+        const p1 = document.createElement("p");
+        p1.textContent = initiative.description;
+
+        const dates = document.createElement("p");
+        dates.className = "dates";
+        dates.textContent = "Posted by LocalZero";
+
+        card.appendChild(h2);
+        card.appendChild(p1);
+        card.appendChild(dates);
+        link.appendChild(card);
+        initiativeList.appendChild(link);
+      });
+    })
+    .catch(err => {
+      console.error("Error fetching initiatives:", err);
+    });
 });
+
+
 
 
 

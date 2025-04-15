@@ -3,6 +3,9 @@ package com.example.localzero.Command;
 import javax.xml.crypto.Data;
 
 import com.example.localzero.Controller.DatabaseController;
+import com.example.localzero.DTO.InitiativeDTO;
+
+import java.util.List;
 
 public class CommandRegisterUser implements UserCommand {
     private DatabaseController dbController;
@@ -23,6 +26,11 @@ public class CommandRegisterUser implements UserCommand {
 
     @Override
     public boolean executeAction() {
-        return dbController.registerUser(name, email, password, location, role);
+        return true;
+    }
+
+    @Override
+    public List<InitiativeDTO> fetchDatabase() {
+        return dbController.fetchInitiative();
     }
 }
