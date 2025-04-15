@@ -21,7 +21,7 @@
     display: flex;
     flex-direction: column;
     padding: 30px;
-}
+  }
   
   .logo {
     font-size: 40px;
@@ -41,7 +41,7 @@
     font-size: 16px;
     cursor: pointer;
     transition: 0.2s;
-}
+  }
   
   .nav button:hover {
     background: #5f9e53;
@@ -67,16 +67,17 @@
     flex-grow: 1;
     padding: 30px;
     background-color: #4d7b3c;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow-y: auto;
-    position: relative; 
+    position: relative;
   }
   
   .main-content h1 {
     font-size: 40px;
     margin-bottom: 1px;
+    width: 100%;
     max-width: 1000px;
     text-align: center;
   }
@@ -84,13 +85,13 @@
   .card {
     background-color: #d7e7c1;
     border-radius: 10px;
-    padding: 21.5px;
+    padding: 14px;
     margin: 14px 0;
     color: #2e2e2e;
     width: 100%;
     max-width: 1000px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
+  }
   
   .card h2 {
     font-size: 16px;
@@ -99,7 +100,7 @@
   
   .card p {
     font-size: 14px;
-    line-height: 1.6;
+    line-height: 1.5;
   }
   
   .card .dates {
@@ -165,3 +166,4 @@
   .hidden {
     display: none;
   }
+  

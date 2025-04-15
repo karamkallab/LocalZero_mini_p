@@ -36,13 +36,13 @@
   }
   
   .nav button {
-    padding: 50px 10px;
+    padding: 20px 10px;
     margin: 10% 0;
     border-radius: 20px;
     font-size: 16px;
     cursor: pointer;
     transition: 0.2s;
-}
+  }
   
   .nav button:hover {
     background: #5f9e53;
