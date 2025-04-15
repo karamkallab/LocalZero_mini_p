@@ -1,13 +1,13 @@
 package com.example.localzero.Controller;
 
+import com.example.localzero.Command.*;
+import com.example.localzero.DTO.InitiativeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
 
-import com.example.localzero.Command.CommandCreateInitiative;
-import com.example.localzero.Command.CommandLogIn;
-import com.example.localzero.Command.CommandRegisterUser;
-import com.example.localzero.Command.UserCommand;
+import java.util.List;
+
 // @Service marks this class as a service component in the Spring container.
 // It is automatically managed as a singleton and used for business logic.
 @Service
@@ -34,6 +34,11 @@ public class UserService {
             String visibility) {
         UserCommand command = new CommandCreateInitiative(title, description, location, category, visibility, dbController);
         return command.executeAction();
+    }
+
+    public List<InitiativeDTO> fetchInitiative() {
+        UserCommand command = new CommandFetchInitiative(dbController);
+        return command.fetchDatabase();
     }
 
 }

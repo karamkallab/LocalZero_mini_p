@@ -5,25 +5,22 @@ import com.example.localzero.DTO.InitiativeDTO;
 
 import java.util.List;
 
-public class CommandLogIn implements UserCommand {
+public class CommandFetchInitiative implements UserCommand{
     private DatabaseController dbController;
-    private String email;
-    private String password;
 
-    public CommandLogIn(DatabaseController dbController, String email, String password) {
+    public CommandFetchInitiative(DatabaseController dbController) {
         this.dbController = dbController;
-        this.email = email;
-        this.password = password;
     }
 
     @Override
     public boolean executeAction() {
-        return dbController.checkIfUserExistsBeforeLogIn(email, password);
+
+        return true;
     }
 
     @Override
     public List<InitiativeDTO> fetchDatabase() {
-        return List.of();
+        return dbController.fetchInitiative();
     }
 
 

@@ -1,7 +1,10 @@
 package com.example.localzero.Controller;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.example.localzero.DTO.InitiativeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -40,7 +43,7 @@ public class DatabaseController {
                 addRole(email, array[1]);
             }
 
-            System.out.println("✅ Lyckades skapa användare");
+            System.out.println("Lyckades skapa användare");
     
             return true;
     
@@ -50,7 +53,7 @@ public class DatabaseController {
     
         } finally {
             try {
-                if (stmt != null) stmt.close();  // ✅ Stäng bara statement
+                if (stmt != null) stmt.close();  // Stäng bara statement
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -81,7 +84,7 @@ public class DatabaseController {
     
         } finally {
             try {
-                if (stmt != null) stmt.close();  // ✅ Stäng bara statement
+                if (stmt != null) stmt.close();  // Stäng bara statement
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -140,6 +143,39 @@ public class DatabaseController {
                 e.printStackTrace();
             }
         }
+    }
+
+    public List<InitiativeDTO> fetchInitiative(){
+        List<InitiativeDTO> initiatives = new ArrayList<>();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = conn.prepareStatement("SELECT id, title, description, location, category, visibility FROM initiatives");
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                InitiativeDTO initiative = new InitiativeDTO();
+                initiative.setID(rs.getString("id"));
+                initiative.setTitle(rs.getString("title"));
+                initiative.setDescription(rs.getString("description"));
+                initiative.setLocation(rs.getString("location"));
+                initiative.setCategory(rs.getString("category"));
+                initiative.setVisibility(rs.getString("visibility"));
+                initiatives.add(initiative);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return initiatives;
     }
     
 }
