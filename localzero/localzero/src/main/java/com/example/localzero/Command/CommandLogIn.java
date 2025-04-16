@@ -22,9 +22,15 @@ public class CommandLogIn implements UserCommand {
     }
 
     @Override
-    public List<InitiativeDTO> fetchDatabase() {
+    public List<InitiativeDTO> fetchInitiatives() {
         return List.of();
     }
+
+    @Override
+    public InitiativeDTO fetchInitiativeByID() {
+        return null;
+    }
+
 
 
 }

@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface UserCommand {
     boolean executeAction();
-    List<InitiativeDTO> fetchDatabase();
+    List<InitiativeDTO> fetchInitiatives();
+    InitiativeDTO fetchInitiativeByID();
 }

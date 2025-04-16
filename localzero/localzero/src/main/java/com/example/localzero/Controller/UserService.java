@@ -38,7 +38,12 @@ public class UserService {
 
     public List<InitiativeDTO> fetchInitiative() {
         UserCommand command = new CommandFetchInitiative(dbController);
-        return command.fetchDatabase();
+        return command.fetchInitiatives();
+    }
+
+    public InitiativeDTO fetchInitiativeByID(String id) {
+        UserCommand command = new CommandFetchInitiativeByID(dbController, id);
+        return command.fetchInitiativeByID();
     }
 
 }
