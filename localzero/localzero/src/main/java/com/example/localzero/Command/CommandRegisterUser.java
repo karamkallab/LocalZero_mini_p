@@ -30,7 +30,12 @@ public class CommandRegisterUser implements UserCommand {
     }
 
     @Override
-    public List<InitiativeDTO> fetchDatabase() {
-        return dbController.fetchInitiative();
+    public List<InitiativeDTO> fetchInitiatives() {
+        return List.of();
+    }
+
+    @Override
+    public InitiativeDTO fetchInitiativeByID() {
+        return null;
     }
 }
