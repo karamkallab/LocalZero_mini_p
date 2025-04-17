@@ -22,8 +22,11 @@ document.addEventListener("DOMContentLoaded", () => {
           card.className = "card";
   
           const h2 = document.createElement("h2");
-          h2.textContent = `${initiative.title} – ${initiative.location}, ${initiative.category}`;
-  
+          h2.textContent = `${initiative.title} – At ${initiative.location}`;
+
+          const p = document.createElement("p")
+          p.textContent = `Category: ${initiative.category}`;
+          
           const p1 = document.createElement("p");
           p1.textContent = initiative.description;
   
@@ -32,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
           dates.textContent = "Posted by LocalZero";
   
           card.appendChild(h2);
+          card.appendChild(p);
           card.appendChild(p1);
           card.appendChild(dates);
           link.appendChild(card);
