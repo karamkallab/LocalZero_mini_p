@@ -5,12 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.localzero.DTO.InitiativeDTO;
 import com.example.localzero.DTO.UserDTO;
@@ -83,6 +78,12 @@ public class ServerController {
     @GetMapping("/FetchInitiatives")
     public List<InitiativeDTO> fetchInitiative() {
         return userService.fetchInitiative();
+    }
+
+    @PostMapping("/FetchInitiativeByID")
+    @ResponseBody
+    public InitiativeDTO fetchInitiativeByID(@RequestBody String id) {
+        return userService.fetchInitiativeByID(id);
     }
 
 }

@@ -177,6 +177,44 @@ public class DatabaseController {
 
         return initiatives;
     }
-    
+
+    public InitiativeDTO fetchInitiativeByID(String id) {
+        InitiativeDTO initiative = new InitiativeDTO();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            stmt = conn.prepareStatement(
+                    "SELECT id, title, description, location, category, visibility FROM initiatives WHERE id = ?::int"
+            );
+            stmt.setString(1, String.valueOf(id));
+            System.out.println(stmt.toString());
+            rs = stmt.executeQuery();
+
+            if (rs.next()) {
+
+                initiative.setID(rs.getString("id"));
+                initiative.setTitle(rs.getString("title"));
+                initiative.setDescription(rs.getString("description"));
+                initiative.setLocation(rs.getString("location"));
+                initiative.setCategory(rs.getString("category"));
+                initiative.setVisibility(rs.getString("visibility"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return initiative;
+    }
+
+
 }
 
