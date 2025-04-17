@@ -185,12 +185,14 @@ public class DatabaseController {
 
         try {
             stmt = conn.prepareStatement(
-                    "SELECT id, title, description, location, category, visibility FROM initiatives WHERE id = ?"
+                    "SELECT id, title, description, location, category, visibility FROM initiatives WHERE id = ?::int"
             );
-            stmt.setString(1, id);
+            stmt.setString(1, String.valueOf(id));
+            System.out.println(stmt.toString());
             rs = stmt.executeQuery();
 
             if (rs.next()) {
+
                 initiative.setID(rs.getString("id"));
                 initiative.setTitle(rs.getString("title"));
                 initiative.setDescription(rs.getString("description"));
@@ -198,8 +200,6 @@ public class DatabaseController {
                 initiative.setCategory(rs.getString("category"));
                 initiative.setVisibility(rs.getString("visibility"));
             }
-
-            System.out.println(initiative.getDescription());
 
         } catch (Exception e) {
             e.printStackTrace();
