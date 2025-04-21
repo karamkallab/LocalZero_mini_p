@@ -35,7 +35,7 @@ body {
 }
 
 .nav button {
-  padding: 20px 10px;
+  padding: 37px 10px;
   margin: 10% 0;
   border-radius: 20px;
   font-size: 16px;
@@ -136,7 +136,7 @@ body {
 
 .notification-dropdown {
   position: absolute;
-  top: 35px;
+  top: 55px;
   right: 0;
   background-color: #d7e7c1;
   color: #2e2e2e;
@@ -165,4 +165,92 @@ body {
 
 .hidden {
   display: none;
+}
+
+.dm-toggle {
+  position: absolute;
+  top: 20px;
+  right: 80px;
+  background-color: #5f9e53;
+  color: white;
+  padding: 12px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  z-index: 1000;
+}
+
+.dm-panel {
+  position: absolute;
+  top: 75px;
+  right: 20px;
+  width: 600px;
+  height: 400px;
+  background-color: #d7e7c1;
+  color: #2e2e2e;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  display: flex;
+  overflow: hidden;
+  z-index: 1001;
+}
+
+.dm-panel.hidden {
+  display: none;
+}
+
+.dm-users {
+  width: 40%;
+  background-color: #c1d4a2;
+  border-right: 1px solid #a9bc8e;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.dm-users h3 {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.dm-users ul {
+  list-style: none;
+  padding: 0;
+}
+
+.dm-users li {
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  cursor: pointer;
+}
+
+.dm-users li:hover {
+  background-color: #b0cc8b;
+}
+
+.dm-chat {
+  width: 60%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dm-chat h3 {
+  margin-bottom: 10px;
+}
+
+.dm-chat .messages {
+  flex: 1;
+  background: #f0f8dc;
+  padding: 10px;
+  border-radius: 6px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.dm-chat input {
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
 }
