@@ -13,7 +13,7 @@ public class MessageHandler {
     
     @MessageMapping("/send") //frontend sends messages to this endpoint
     @SendTo("/topic/messages") //each client that is listening to this endpoint will receive the message
-    public String sendMessage(String message) {
+    public TextMessage sendMessage(TextMessage message) {
         return message;
     }
 }
