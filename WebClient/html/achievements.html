@@ -35,6 +35,26 @@
           </ul>
         </div>
       </div>  
+      <div class="dm-toggle">💬 Direktmeddelanden</div>
+    
+      <div class="dm-panel hidden">
+        <div class="dm-users">
+          <h3>Kontakter</h3>
+          <ul>
+            <li onclick="openChat('Saman')">Saman</li>
+            <li onclick="openChat('Abdulkadir Adde')">Abdulkadir Adde</li>
+            <li onclick="openChat('Adam')">Adam</li>
+            <li onclick="openChat('S.A.K.')">S.A.K.</li>
+            <li onclick="openChat('Huy')">Huy</li>
+            <li onclick="openChat('Karre')">Karre</li>
+          </ul>
+        </div>
+        <div class="dm-chat">
+          <h3 id="chatWith">Välj en kontakt</h3>
+          <div class="messages"></div>
+          <input type="text" placeholder="Skriv ett meddelande..." />
+        </div>
+      </div>
       <h1>Achievements</h1>
 
       <div class="card">
@@ -63,6 +83,39 @@
       window.location.href = `${page}.html`;
     });
   });
+
+const notifIcon = document.querySelector('.notification-icon');
+const notifDropdown = document.querySelector('.notification-dropdown');
+const dmToggle = document.querySelector('.dm-toggle');
+const dmPanel = document.querySelector('.dm-panel');
+const chatWith = document.getElementById('chatWith');
+const chatBox = document.querySelector('.dm-chat .messages');
+
+notifIcon.addEventListener('click', () => {
+notifDropdown.classList.toggle('hidden');
+});
+
+document.addEventListener('click', (event) => {
+if (!notifIcon.contains(event.target) && !notifDropdown.contains(event.target)) {
+  notifDropdown.classList.add('hidden');
+}
+});
+
+dmToggle.addEventListener('click', (event) => {
+event.stopPropagation(); 
+dmPanel.classList.toggle('hidden');
+});
+
+document.addEventListener('click', (event) => {
+if (!dmToggle.contains(event.target) && !dmPanel.contains(event.target)) {
+  dmPanel.classList.add('hidden');
+}
+});
+
+function openChat(user) {
+chatWith.innerText = `Chattar med: ${user}`;
+chatBox.innerHTML = `<p><em>Startade chatt med ${user}</em></p>`;
+}
 </script>
 </body>
 </html>
