@@ -43,19 +43,105 @@
           <p><strong>Date:</strong> 01-05-2025 to 31-12-2025</p>
           <p><strong>Category:</strong> Recycling</p>
           <p><strong>Description:</strong> Share tools with neighbors instead of buying new ones to reduce waste!</p>
-
-          <button class="like-button">❤️ Like (7) </button>
-          <button class="show-comment">💬 Show Comments</button>
-          <button class="show-comment">📝 Update initiative </button>
-          <button class="show-comment">✚ Join initiative</button>
-          
         </div>
 
         <hr>
+
+        <div class="new-update">
+          <h3>📝 Create Update</h3>
+          <form>
+            <textarea placeholder="What have you done in this initiative?" required></textarea>
+            <input type="file" accept="image/*">
+            <button type="submit">Post Update</button>
+          </form>
+        </div>
+
+        <div class="update-feed">
+          <h3>📢 Community Updates</h3>
+
+          <div class="update-card">
+            <p><strong>Maria – 2025-04-10</strong></p>
+            <p>I lent out my power drill!</p>
+            <img src="../images/sample.jpg" alt="Image">
+
+            <div class="post-actions">
+              <button class="like-button">❤️ Like (7)</button>
+              <button class="comment-toggle">💬 Show Comments</button>
+            </div>
+
+            <div class="comments-section hidden">
+              <h4>💬 Comments</h4>
+              <div class="comment">Oscar: Great job!</div>
+              <div class="comment">Anna: That's the spirit! 👏</div>
+
+              <form class="comment-form">
+                <input type="text" placeholder="Write a comment..." required>
+                <button type="submit">Send</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="update-card">
+            <p><strong>Johan – 2025-04-11</strong></p>
+            <p>Swapped a hammer with my neighbor, worked perfectly!</p>
+
+            <div class="post-actions">
+              <button class="like-button">❤️ Like (3)</button>
+              <button class="comment-toggle">💬 Show Comments</button>
+            </div>
+
+            <div class="comments-section hidden">
+              <h4>💬 Comments</h4>
+              <div class="comment">Ella: Love to see this!</div>
+
+              <form class="comment-form">
+                <input type="text" placeholder="Write a comment..." required>
+                <button type="submit">Send</button>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
   </div>
 
-  <script src="../JS/initiativeView.js"></script>
+  <script>
+    document.querySelector('.signout').addEventListener('click', () => {
+      localStorage.clear();
+      window.location.href = 'login.html';
+    });
+
+    document.querySelectorAll('.nav button').forEach(button => {
+      button.addEventListener('click', () => {
+        const page = button.getAttribute('data-page');
+        window.location.href = `${page}.html`;
+      });
+    });
+
+    const notifIcon = document.querySelector('.notification-icon');
+    const notifDropdown = document.querySelector('.notification-dropdown');
+
+    notifIcon.addEventListener('click', () => {
+      notifDropdown.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!notifIcon.contains(event.target) && !notifDropdown.contains(event.target)) {
+        notifDropdown.classList.add('hidden');
+      }
+    });
+
+    document.querySelectorAll('.comment-toggle').forEach(button => {
+      button.addEventListener('click', () => {
+        const comments = button.closest('.update-card').querySelector('.comments-section');
+        comments.classList.toggle('hidden');
+
+
+        button.textContent = comments.classList.contains('hidden')
+          ? '💬 Show Comments'
+          : '🙈 Hide Comments';
+      });
+    });
+  </script>
 </body>
 </html>
