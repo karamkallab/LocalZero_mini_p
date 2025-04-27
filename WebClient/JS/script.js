@@ -26,9 +26,8 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     });
   }
-
+  let selectedRoles = [];
   if(registerForm){
-    let selectedRoles = [];
 
   document.querySelectorAll('.roleOption').forEach(option => {
   option.addEventListener('click', function () {
@@ -41,6 +40,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     document.getElementById('roleButton').textContent = selectedRoles.join(', ');
+    console.log(selectedRoles)
   });
 });
 }

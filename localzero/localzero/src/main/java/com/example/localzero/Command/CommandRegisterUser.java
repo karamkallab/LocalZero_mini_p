@@ -26,7 +26,7 @@ public class CommandRegisterUser implements UserCommand {
 
     @Override
     public boolean executeAction() {
-        return true;
+        return dbController.registerUser(name, email, password, location, role);
     }
 
     @Override
