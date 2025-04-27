@@ -46,4 +46,9 @@ public class UserService {
         return command.fetchInitiativeByID();
     }
 
+    public boolean updateInitiative(InitiativeDTO initiativeDTO) {
+        UserCommand command = new CommandUpdateInitiative(dbController, initiativeDTO);
+        return command.executeAction();
+    }
+
 }

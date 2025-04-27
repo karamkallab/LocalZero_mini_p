@@ -215,6 +215,37 @@ public class DatabaseController {
         return initiative;
     }
 
+    public boolean updateInitiative(InitiativeDTO initiative){
+        PreparedStatement stmt = null;
+
+        try {
+            String sql = "UPDATE initiatives SET title = ?, description = ?, location = ?, category = ?, visibility = ? WHERE id = ?::int";
+            stmt = conn.prepareStatement(sql);
+
+            stmt.setString(1, initiative.getTitle());
+            stmt.setString(2, initiative.getDescription());
+            stmt.setString(3, initiative.getLocation());
+            stmt.setString(4, initiative.getCategory());
+            stmt.setString(5, initiative.getVisibility());
+            stmt.setInt(6, Integer.parseInt(initiative.getId()));
+
+            int affectedRows = stmt.executeUpdate();
+
+            return affectedRows > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
 }
 

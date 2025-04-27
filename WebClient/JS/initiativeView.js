@@ -48,14 +48,19 @@ document.addEventListener("DOMContentLoaded", () => {
       <p><strong>Category:</strong> ${data.category}</p>
 
       <button class="show-comment">💬 Show Comments</button>
-      <button class="show-comment">📝 Update initiative</button>
+      <button class="update-initiative-btn">📝 Update initiative</button>
       <button class="show-comment">✚ Join initiative</button>
     `;
+    document.querySelector('.update-initiative-btn').addEventListener('click', () => {
+      window.location.href = `update_initiative.html?id=${initiativeId}`;
+    });
   })
   .catch(err => {
     console.error("Error fetching initiative:", err);
     initiativePost.innerHTML = "<p style='color:red;'>Failed to load initiative details.</p>";
   });
 });
+
+
 
 

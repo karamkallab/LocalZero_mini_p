@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.localzero.DTO.InitiativeDTO;
@@ -86,4 +88,13 @@ public class ServerController {
         return userService.fetchInitiativeByID(id);
     }
 
+    @PostMapping("/UpdateInitiative")
+    public String updateInitiative(@RequestBody InitiativeDTO initiative) {
+        boolean success = userService.updateInitiative(initiative);
+        if (success) {
+            return "Initiative updated!";
+        } else {
+            return "Something went wrong.";
+        }
+    }
 }
