@@ -30,6 +30,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const initiativeId = urlParams.get('id');
+  localStorage.setItem('initiativeId', initiativeId);
+
 
   fetch("http://127.0.0.1:8080/api/FetchInitiativeByID", {
     method: "POST",
@@ -47,11 +49,49 @@ document.addEventListener("DOMContentLoaded", () => {
       <p><strong>Location:</strong> ${data.location}</p>
       <p><strong>Category:</strong> ${data.category}</p>
 
-      <button class="like-button">❤️ Like (7) </button>
+      <button class="like-button">❤️ Like (0) </button>
       <button class="show-comment">💬 Show Comments</button>
       <button class="update-initiative-btn">📝 Update initiative</button>
       <button class="join-initiative">✚ Join initiative</button>
     `;
+
+    const likeButton = document.querySelector('.like-button');
+
+    if (likeButton) {
+      likeButton.addEventListener('click', function () {
+        const userId = localStorage.getItem('userId');
+        const initiativeId = localStorage.getItem('initiativeId');
+      
+        console.log("Trying to like: ", userId, initiativeId);
+      
+        fetch('http://127.0.0.1:8080/api/LikeInitiative', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: userId, initiativeId: initiativeId })
+        })
+        .then(res => res.text())
+        .then(data => {
+      
+          // 💥 Lägg till detta för att uppdatera like-antalet:
+          const likeText = likeButton.innerText;
+          const likeMatch = likeText.match(/\d+/); // Hitta numret i texten
+      
+          if (likeMatch) {
+            const currentLikes = parseInt(likeMatch[0]);
+            const newLikes = currentLikes + 1;
+            likeButton.innerText = `❤️ Like (${newLikes})`;
+          }
+          alert(data);
+        })
+        .catch(error => {
+          console.error('Error liking initiative:', error);
+        });
+      });
+      
+    }
+    
+
+
     document.querySelector('.update-initiative-btn').addEventListener('click', () => {
       window.location.href = `update_initiative.html?id=${initiativeId}`;
     });
@@ -61,7 +101,3 @@ document.addEventListener("DOMContentLoaded", () => {
     initiativePost.innerHTML = "<p style='color:red;'>Failed to load initiative details.</p>";
   });
 });
-
-
-
-

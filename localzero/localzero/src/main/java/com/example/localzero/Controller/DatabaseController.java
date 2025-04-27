@@ -246,6 +246,53 @@ public class DatabaseController {
         }
     }
 
+    public boolean likeInitiative(int userId, int initiativeId) {
+        PreparedStatement stmt = null;
+        try {
+            String sql = "INSERT INTO initiative_likes (user_id, initiative_id) VALUES (?, ?) ON CONFLICT (user_id, initiative_id) DO NOTHING";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, userId);
+            stmt.setInt(2, initiativeId);
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
+    public int fetchUserIdByEmail(String email) {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        int userId = -1;
+    
+        try {
+            String sql = "SELECT user_id FROM users WHERE email = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, email);
+            rs = stmt.executeQuery();
+    
+            if (rs.next()) {
+                userId = rs.getInt("user_id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    
+        return userId;
+    }
 }
 

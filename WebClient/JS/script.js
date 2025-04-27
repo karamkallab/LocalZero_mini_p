@@ -13,9 +13,10 @@ document.addEventListener("DOMContentLoaded", function() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ user_email: email, user_password: password})
       })
-      .then(res => res.text())
+      .then(res => res.json())
       .then(result => {
-        if (result.trim() === "true") {
+        if (result.success) {
+          localStorage.setItem('userId', result.userId);
           window.location.href = "dashboard.html";
         } else {
           alert("Your email or password is incorrect.");

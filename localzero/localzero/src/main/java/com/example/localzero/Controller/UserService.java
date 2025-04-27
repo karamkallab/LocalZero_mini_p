@@ -51,4 +51,12 @@ public class UserService {
         return command.executeAction();
     }
 
+    public boolean likeInitiative(int userId, int initiativeId) {
+        CommandLikeInitiative likeCommand = new CommandLikeInitiative(dbController, userId, initiativeId);
+        return likeCommand.executeAction();
+    }
+
+    public int fetchUserIdByEmail(String email) {
+        return dbController.fetchUserIdByEmail(email);
+    }
 }

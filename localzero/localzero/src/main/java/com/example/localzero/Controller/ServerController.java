@@ -44,20 +44,24 @@ public class ServerController {
     }
 
     @PostMapping("/authenticator")
-    public String loginUser(@RequestBody HashMap<String, String> user) {
-        System.out.println("JAAAAAG BEFINNNEER MIG HÄR");
+    public Map<String, Object> loginUser(@RequestBody HashMap<String, String> user) {
+        System.out.println("JAG BEFINNER MIG HÄR");
         String email = user.get("user_email");
         String password = user.get("user_password");
-
-        boolean success = userService.checkIfUserExistsBeforeLogIn(
-            email, password);
-
-        if(success) {
-            return "true";
+    
+        boolean success = userService.checkIfUserExistsBeforeLogIn(email, password);
+        Map<String, Object> response = new HashMap<>();
+    
+        if (success) {
+            int userId = userService.fetchUserIdByEmail(email); // hämtar userId från email
+            response.put("success", true);
+            response.put("userId", userId);
         } else {
-            return "Login failed!";
+            response.put("success", false);
         }
+        return response;
     }
+    
 
     @PostMapping("/CreateInitiative")
     public String createInitiative(@RequestBody InitiativeDTO data) {
@@ -97,4 +101,18 @@ public class ServerController {
             return "Something went wrong.";
         }
     }
+
+    @PostMapping("/LikeInitiative")
+public String likeInitiative(@RequestBody Map<String, Integer> data) {
+    int userId = data.get("userId");
+    int initiativeId = data.get("initiativeId");
+    boolean success = userService.likeInitiative(userId, initiativeId);
+
+    if (success) {
+        return "Liked successfully!";
+    } else {
+        return "Already liked or error.";
+    }
+}
+
 }
