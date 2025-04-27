@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Skapa initiativ</title>
-  <link rel="stylesheet" href="../css/initiative.css">
+  <link rel="stylesheet" href="../css/update_initiative.css">
 </head>
 <body>
   <div class="container">
@@ -12,7 +12,7 @@
       <nav class="nav">
         <button data-page="dashboard">Dashboard</button>
         <button data-page="tracker">Tracker</button>
-        <button data-page="initiative">Create Initiative</button>
+        <button data-page="create_initiative">Create Initiative</button>
         <button data-page="ecoactions">Eco Actions</button>
         <button data-page="inbox">Inbox</button>
         <button data-page="achievements">Achievements</button>
@@ -53,7 +53,7 @@
           <input type="text" placeholder="Skriv ett meddelande..." />
         </div>
       </div>  
-      <h1 class="page-title">Skapa initiativ</h1>
+      <h1 class="page-title">Update initiativ</h1>
 
       <form class="initiative-form">
         <label for="title">Title</label>
@@ -74,7 +74,7 @@
           <label><input type="radio" name="visibility" value="area"> Local (area-specific) </label>
         </div>
 
-        <button type="submit" class="submit-button">Create initiative</button>
+        <button type="submit" class="submit-button">Update initiative</button>
       </form>
     </main>
   </div>
@@ -124,7 +124,7 @@ function openChat(user) {
   chatWith.innerText = `Chattar med: ${user}`;
   chatBox.innerHTML = `<p><em>Startade chatt med ${user}</em></p>`;
 }
-  </script>
-<script src="../JS/script.js"></script>
+</script>
+<script src="../JS/updateInitiatives.js"></script>
 </body>
 </html>
