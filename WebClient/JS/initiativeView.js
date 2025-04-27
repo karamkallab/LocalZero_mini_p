@@ -47,9 +47,10 @@ document.addEventListener("DOMContentLoaded", () => {
       <p><strong>Location:</strong> ${data.location}</p>
       <p><strong>Category:</strong> ${data.category}</p>
 
+      <button class="like-button">❤️ Like (7) </button>
       <button class="show-comment">💬 Show Comments</button>
       <button class="update-initiative-btn">📝 Update initiative</button>
-      <button class="show-comment">✚ Join initiative</button>
+      <button class="join-initiative">✚ Join initiative</button>
     `;
     document.querySelector('.update-initiative-btn').addEventListener('click', () => {
       window.location.href = `update_initiative.html?id=${initiativeId}`;
