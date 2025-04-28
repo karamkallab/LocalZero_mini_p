@@ -294,5 +294,56 @@ public class DatabaseController {
     
         return userId;
     }
+
+    public boolean joinInitiative(int userId, int initiativeId) {
+        PreparedStatement stmt = null;
+    
+        try {
+            String sql = "INSERT INTO initiative_participants (user_id, initiative_id) VALUES (?, ?) ON CONFLICT (user_id, initiative_id) DO NOTHING";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, userId);
+            stmt.setInt(2, initiativeId);
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    } 
+
+    public boolean checkJoinStatus(int userId, int initiativeId) {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        boolean joined = false;
+    
+        try {
+            String sql = "SELECT 1 FROM initiative_participants WHERE user_id = ? AND initiative_id = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, userId);
+            stmt.setInt(2, initiativeId);
+            rs = stmt.executeQuery();
+    
+            if (rs.next()) {
+                joined = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    
+        return joined;
+    }  
 }
 

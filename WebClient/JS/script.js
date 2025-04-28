@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function() {
 }
 
 registerForm.addEventListener("submit", function (event) {
-  console.log("Form submitted");  // <--- Lägg till den
+  console.log("Form submitted");  
 
   event.preventDefault();
   const username = document.getElementById("username").value;

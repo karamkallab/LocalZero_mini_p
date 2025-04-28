@@ -59,4 +59,12 @@ public class UserService {
     public int fetchUserIdByEmail(String email) {
         return dbController.fetchUserIdByEmail(email);
     }
+    public boolean joinInitiative(int userId, int initiativeId) {
+        CommandJoinInitiative joinCommand = new CommandJoinInitiative(dbController, userId, initiativeId);
+        return joinCommand.executeAction();
+    }
+
+    public boolean checkJoinStatus(int userId, int initiativeId) {
+        return dbController.checkJoinStatus(userId, initiativeId);
+    }  
 }

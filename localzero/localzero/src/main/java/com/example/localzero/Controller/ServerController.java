@@ -73,7 +73,6 @@ public class ServerController {
             data.getVisibility()
         );
 
-
         if (success) {
             return "Initiative created!";
         } else {
@@ -113,6 +112,26 @@ public String likeInitiative(@RequestBody Map<String, Integer> data) {
     } else {
         return "Already liked or error.";
     }
+}
+
+@PostMapping("/JoinInitiative")
+public String joinInitiative(@RequestBody Map<String, Integer> data) {
+    int userId = data.get("userId");
+    int initiativeId = data.get("initiativeId");
+    boolean success = userService.joinInitiative(userId, initiativeId);
+
+    if (success) {
+        return "Joined successfully!";
+    } else {
+        return "Already joined or error.";
+    }
+}
+
+@PostMapping("/CheckJoinStatus")
+public boolean checkJoinStatus(@RequestBody Map<String, Integer> data) {
+    int userId = data.get("userId");
+    int initiativeId = data.get("initiativeId");
+    return userService.checkJoinStatus(userId, initiativeId);
 }
 
 }
