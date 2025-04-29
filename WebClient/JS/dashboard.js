@@ -107,11 +107,10 @@ const dmToggle = document.querySelector('.dm-toggle');
       const input = document.getElementById("messageInput");
       const message = input.value;
       if (message && socket.readyState === WebSocket.OPEN) {
-        const recipient = document.getElementById("chatWith").innerText.replace("Chattar med: ", "");
-        socket.send(`${recipient}: ${message}`);
-        input.value = "";
+          socket.send(message); // Send message to WebSocket server
+          input.value = ""; // Clear input
       }
-    }
+  }
 
     function openChat(user) {
       const chatWith = document.getElementById("chatWith");
