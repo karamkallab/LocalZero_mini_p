@@ -2,7 +2,9 @@ package com.example.localzero.Controller;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.example.localzero.DTO.InitiativeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -345,5 +347,58 @@ public class DatabaseController {
     
         return joined;
     }  
+
+    public boolean commentInitiative(int userId, int initiativeId, String comment) {
+        PreparedStatement stmt = null;
+        try {
+            String sql = "INSERT INTO initiative_comments (user_id, initiative_id, comment) VALUES (?, ?, ?)";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, userId);
+            stmt.setInt(2, initiativeId);
+            stmt.setString(3, comment);
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public List<Map<String, String>> fetchCommentsByInitiativeId(int initiativeId) {
+    List<Map<String, String>> comments = new ArrayList<>();
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
+
+    try {
+        String sql = "SELECT comment, created_at FROM initiative_comments WHERE initiative_id = ? ORDER BY created_at DESC";
+        stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, initiativeId);
+        rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            Map<String, String> commentMap = new HashMap<>();
+            commentMap.put("comment", rs.getString("comment"));
+            commentMap.put("created_at", rs.getTimestamp("created_at").toString());
+            comments.add(commentMap);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    return comments;
+}    
 }
 

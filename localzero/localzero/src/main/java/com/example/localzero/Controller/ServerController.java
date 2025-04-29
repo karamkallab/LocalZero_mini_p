@@ -134,4 +134,26 @@ public boolean checkJoinStatus(@RequestBody Map<String, Integer> data) {
     return userService.checkJoinStatus(userId, initiativeId);
 }
 
+@PostMapping("/CommentInitiative")
+public String commentInitiative(@RequestBody Map<String, String> data) {
+    int userId = Integer.parseInt(data.get("userId"));
+    int initiativeId = Integer.parseInt(data.get("initiativeId"));
+    String comment = data.get("comment");
+
+    boolean success = userService.commentInitiative(userId, initiativeId, comment);
+
+    if (success) {
+        return "Comment added successfully!";
+    } else {
+        return "Failed to add comment.";
+    }
+}
+
+@PostMapping("/GetCommentsByInitiativeId")
+public List<Map<String, String>> getComments(@RequestBody Map<String, Integer> data) {
+    int initiativeId = data.get("initiativeId");
+    return userService.getCommentsByInitiativeId(initiativeId);
+}
+
+
 }

@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 // @Service marks this class as a service component in the Spring container.
 // It is automatically managed as a singleton and used for business logic.
@@ -67,4 +68,14 @@ public class UserService {
     public boolean checkJoinStatus(int userId, int initiativeId) {
         return dbController.checkJoinStatus(userId, initiativeId);
     }  
+
+    public boolean commentInitiative(int userId, int initiativeId, String comment) {
+        CommandCommentInitiative commentCommand = new CommandCommentInitiative(dbController, userId, initiativeId, comment);
+        return commentCommand.executeAction();
+    } 
+
+    public List<Map<String, String>> getCommentsByInitiativeId(int initiativeId) {
+    return dbController.fetchCommentsByInitiativeId(initiativeId);
+}
+
 }
