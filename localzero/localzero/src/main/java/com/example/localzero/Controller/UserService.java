@@ -14,10 +14,12 @@ import java.util.List;
 public class UserService {
 
     private final DatabaseController dbController;
+    private final ChatEndpoint chatEndpoint;
 
     @Autowired
     public UserService(DatabaseController dbController) {
         this.dbController = dbController;
+        this.chatEndpoint = new ChatEndpoint();
     }
 
     public boolean registerUser(String name, String email, String password, String location, String role) {

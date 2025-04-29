@@ -74,3 +74,48 @@ if (!notifIcon.contains(event.target) && !notifDropdown.contains(event.target)) 
   notifDropdown.classList.add('hidden');
 }
 });
+
+const dmToggle = document.querySelector('.dm-toggle');
+      const dmPanel = document.querySelector('.dm-panel');
+
+      dmToggle.addEventListener('click', (event) => {
+      event.stopPropagation(); 
+      dmPanel.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!dmToggle.contains(event.target) && !dmPanel.contains(event.target)) {
+        dmPanel.classList.add('hidden');
+      }
+    });
+    
+    function openChat(user) {
+      chatWith.innerText = `Chattar med: ${user}`;
+      chatBox.innerHTML = `<p><em>Startade chatt med ${user}</em></p>`;
+    }
+    
+    // --- WEBSOCKET CHAT ---
+    const socket = new WebSocket("ws://localhost:8080/LocalZero_mini_p/chat");
+
+    socket.onmessage = function(event) {
+      const chatBox = document.getElementById("chatBox");
+      chatBox.innerHTML += `<div>${event.data}</div>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
+    };
+
+    function sendMessage() {
+      const input = document.getElementById("messageInput");
+      const message = input.value;
+      if (message && socket.readyState === WebSocket.OPEN) {
+        const recipient = document.getElementById("chatWith").innerText.replace("Chattar med: ", "");
+        socket.send(`${recipient}: ${message}`);
+        input.value = "";
+      }
+    }
+
+    function openChat(user) {
+      const chatWith = document.getElementById("chatWith");
+      const chatBox = document.getElementById("chatBox");
+      chatWith.innerText = `Chattar med: ${user}`;
+      chatBox.innerHTML = `<p><em>Startade chatt med ${user}</em></p>`;
+    }
