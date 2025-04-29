@@ -376,7 +376,12 @@ public class DatabaseController {
     ResultSet rs = null;
 
     try {
-        String sql = "SELECT comment, created_at FROM initiative_comments WHERE initiative_id = ? ORDER BY created_at DESC";
+        String sql = "SELECT c.comment, c.created_at, u.name " +
+        "FROM initiative_comments c " +
+        "JOIN users u ON c.user_id = u.user_id " +
+        "WHERE c.initiative_id = ? " +
+        "ORDER BY c.created_at DESC";
+
         stmt = conn.prepareStatement(sql);
         stmt.setInt(1, initiativeId);
         rs = stmt.executeQuery();
@@ -385,6 +390,8 @@ public class DatabaseController {
             Map<String, String> commentMap = new HashMap<>();
             commentMap.put("comment", rs.getString("comment"));
             commentMap.put("created_at", rs.getTimestamp("created_at").toString());
+            commentMap.put("name", rs.getString("name"));
+
             comments.add(commentMap);
         }
     } catch (Exception e) {
