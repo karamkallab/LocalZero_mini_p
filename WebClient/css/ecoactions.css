@@ -255,3 +255,21 @@
     border-radius: 6px;
     border: none;
   }
+
+  .top-button {
+    background-color: #5f9e53;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 20px 0;
+    align-self: flex-start;
+    transition: background-color 0.2s ease;
+  }
+  
+  .top-button:hover {
+    background-color: #4d7b3c;
+  }

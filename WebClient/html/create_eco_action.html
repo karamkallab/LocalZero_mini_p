@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create Eco Action</title>
+  <link rel="stylesheet" href="../css/ecoactions.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <div class="logo">LocalZero</div>
+      <nav class="nav">
+        <button data-page="dashboard">Dashboard</button>
+        <button data-page="tracker">Tracker</button>
+        <button data-page="create_initiative">Create Initiative</button>
+        <button data-page="ecoactions">Eco Actions</button>
+        <button data-page="inbox">Inbox</button>
+        <button data-page="achievements">Achievements</button>
+      </nav>
+      <button class="signout">Sign out</button>
+    </div>
+
+    <main class="main-content">
+      <h1>Create new eco action</h1>
+
+      <form id="ecoActionForm" style="max-width: 600px; width: 100%;">
+        <label for="action">Action:</label>
+        <input type="text" id="action" name="action" placeholder="Describe your action..." required style="width:100%; padding: 10px; margin: 10px 0; border-radius: 8px; border: none; font-size: 16px;"/>
+
+        <label for="category">Category:</label>
+        <select id="category" name="category" required style="width:100%; padding: 10px; margin: 10px 0; border-radius: 8px; font-size: 16px;">
+          <option value="" disabled selected>Choose category</option>
+          <option value="transport">Transport</option>
+          <option value="energi">Energy</option>
+          <option value="återvinning">Recycling</option>
+          <option value="utbildning">Education and awareness</option>
+          <option value="other">Other</option>
+        </select>
+
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required style="width:100%; padding: 10px; margin: 10px 0 20px; border-radius: 8px; font-size: 16px;"/>
+
+        <button type="submit" class="top-button">➕ Add eco action</button>
+      </form>
+    </main>
+  </div>
+
+  <script>
+    document.querySelector('.signout').addEventListener('click', () => {
+      localStorage.clear();
+      window.location.href = 'login.html';
+    });
+
+    document.querySelectorAll('.nav button').forEach(button => {
+      button.addEventListener('click', () => {
+        const page = button.getAttribute('data-page');
+        window.location.href = `${page}.html`;
+      });
+    });
+
+    document.getElementById('ecoActionForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert("Eco Action skickad!");
+      // Här kan du lägga till funktionalitet för att spara datan
+    });
+  </script>
+</body>
+</html>
