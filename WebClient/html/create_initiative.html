@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Achievements</title>
-  <link rel="stylesheet" href="../css/achievements.css" />
+  <meta charset="UTF-8">
+  <title>Skapa initiativ</title>
+  <link rel="stylesheet" href="../css/create_initiative.css">
 </head>
 <body>
   <div class="container">
@@ -20,7 +19,6 @@
       </nav>
       <button class="signout">Sign out</button>
     </div>
-
     <main class="main-content">
       <div class="notification-wrapper">
         <div class="notification-icon" title="Notifications">
@@ -35,7 +33,7 @@
           </ul>
         </div>
       </div>  
-      <div class="dm-toggle">💬 Direktmeddelanden</div>
+      <div class="dm-toggle">💬 Direct messages</div>
     
       <div class="dm-panel hidden">
         <div class="dm-users">
@@ -50,39 +48,49 @@
           </ul>
         </div>
         <div class="dm-chat">
-          <h3 id="chatWith">Välj en kontakt</h3>
+          <h3 id="chatWith">Choose a contact</h3>
           <div class="messages"></div>
           <input type="text" placeholder="Skriv ett meddelande..." />
         </div>
-      </div>
-      <h1>Achievements</h1>
+      </div>  
+      <h1 class="page-title">Create initiativ</h1>
 
-      <div class="card">
-        <h2>Community Hero 🌟</h2>
-        <p>Participated in 10 sustainability initiatives!</p>
-        <p class="dates">Earned: 01/04/2025</p>
-      </div>
+      <form class="initiative-form">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" required>
 
-      <div class="card">
-        <h2>Green Steps 🚶</h2>
-        <p>Logged 50 eco actions in one month!</p>
-        <p class="dates">Earned: 28/03/2025</p>
-      </div>
+        <label for="description">Description</label>
+        <textarea id="description" name="description" rows="4" required></textarea>
+
+        <label for="location">Location</label>
+        <input type="text" id="location" name="location" required>
+
+        <label for="category">Category</label>
+        <input type="text" id="category" name="category" required>
+
+        <label>Visibility</label>
+        <div class="radio-group">
+          <label><input type="radio" name="visibility" value="public" required> Public</label>
+          <label><input type="radio" name="visibility" value="area"> Local (area-specific) </label>
+        </div>
+
+        <button type="submit" class="submit-button">Create initiative</button>
+      </form>
     </main>
-</div>
+  </div>
 
-<script>
-  document.querySelector('.signout').addEventListener('click', () => {
-    localStorage.clear();
-    window.location.href = 'login.html';
-  });
-
-  document.querySelectorAll('.nav button').forEach(button => {
-    button.addEventListener('click', () => {
-      const page = button.getAttribute('data-page');
-      window.location.href = `${page}.html`;
+  <script>
+    document.querySelector('.signout').addEventListener('click', () => {
+      localStorage.clear();
+      window.location.href = 'login.html';
     });
-  });
+
+    document.querySelectorAll('.nav button').forEach(button => {
+      button.addEventListener('click', () => {
+        const page = button.getAttribute('data-page');
+        window.location.href = `${page}.html`;
+      });
+    });
 
 const notifIcon = document.querySelector('.notification-icon');
 const notifDropdown = document.querySelector('.notification-dropdown');
@@ -92,30 +100,31 @@ const chatWith = document.getElementById('chatWith');
 const chatBox = document.querySelector('.dm-chat .messages');
 
 notifIcon.addEventListener('click', () => {
-notifDropdown.classList.toggle('hidden');
+  notifDropdown.classList.toggle('hidden');
 });
 
 document.addEventListener('click', (event) => {
-if (!notifIcon.contains(event.target) && !notifDropdown.contains(event.target)) {
-  notifDropdown.classList.add('hidden');
-}
+  if (!notifIcon.contains(event.target) && !notifDropdown.contains(event.target)) {
+    notifDropdown.classList.add('hidden');
+  }
 });
 
 dmToggle.addEventListener('click', (event) => {
-event.stopPropagation(); 
-dmPanel.classList.toggle('hidden');
+  event.stopPropagation(); 
+  dmPanel.classList.toggle('hidden');
 });
 
 document.addEventListener('click', (event) => {
-if (!dmToggle.contains(event.target) && !dmPanel.contains(event.target)) {
-  dmPanel.classList.add('hidden');
-}
+  if (!dmToggle.contains(event.target) && !dmPanel.contains(event.target)) {
+    dmPanel.classList.add('hidden');
+  }
 });
 
 function openChat(user) {
-chatWith.innerText = `Chattar med: ${user}`;
-chatBox.innerHTML = `<p><em>Startade chatt med ${user}</em></p>`;
+  chatWith.innerText = `Chattar med: ${user}`;
+  chatBox.innerHTML = `<p><em>Startade chatt med ${user}</em></p>`;
 }
-</script>
+  </script>
+<script src="../JS/script.js"></script>
 </body>
 </html>

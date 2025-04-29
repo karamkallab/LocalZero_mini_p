@@ -13,9 +13,10 @@ document.addEventListener("DOMContentLoaded", function() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ user_email: email, user_password: password})
       })
-      .then(res => res.text())
+      .then(res => res.json())
       .then(result => {
-        if (result.trim() === "true") {
+        if (result.success) {
+          localStorage.setItem('userId', result.userId);
           window.location.href = "dashboard.html";
         } else {
           alert("Your email or password is incorrect.");
@@ -26,9 +27,8 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     });
   }
-
+  let selectedRoles = [];
   if(registerForm){
-    let selectedRoles = [];
 
   document.querySelectorAll('.roleOption').forEach(option => {
   option.addEventListener('click', function () {
@@ -41,12 +41,13 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     document.getElementById('roleButton').textContent = selectedRoles.join(', ');
+    console.log(selectedRoles)
   });
 });
 }
 
 registerForm.addEventListener("submit", function (event) {
-  console.log("Form submitted");  // <--- Lägg till den
+  console.log("Form submitted");  
 
   event.preventDefault();
   const username = document.getElementById("username").value;
@@ -122,8 +123,6 @@ if (initiativeForm) {
     });
   });
 }
-
-
 
 
 

@@ -57,6 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('.nav button').forEach(button => {
     button.addEventListener('click', () => {
       const page = button.getAttribute('data-page');
+      console.log(page)
       window.location.href = `${page}.html`;
     });
   });

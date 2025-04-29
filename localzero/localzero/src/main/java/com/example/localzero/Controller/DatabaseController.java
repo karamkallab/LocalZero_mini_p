@@ -215,6 +215,135 @@ public class DatabaseController {
         return initiative;
     }
 
+    public boolean updateInitiative(InitiativeDTO initiative){
+        PreparedStatement stmt = null;
 
+        try {
+            String sql = "UPDATE initiatives SET title = ?, description = ?, location = ?, category = ?, visibility = ? WHERE id = ?::int";
+            stmt = conn.prepareStatement(sql);
+
+            stmt.setString(1, initiative.getTitle());
+            stmt.setString(2, initiative.getDescription());
+            stmt.setString(3, initiative.getLocation());
+            stmt.setString(4, initiative.getCategory());
+            stmt.setString(5, initiative.getVisibility());
+            stmt.setInt(6, Integer.parseInt(initiative.getId()));
+
+            int affectedRows = stmt.executeUpdate();
+
+            return affectedRows > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean likeInitiative(int userId, int initiativeId) {
+        PreparedStatement stmt = null;
+        try {
+            String sql = "INSERT INTO initiative_likes (user_id, initiative_id) VALUES (?, ?) ON CONFLICT (user_id, initiative_id) DO NOTHING";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, userId);
+            stmt.setInt(2, initiativeId);
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public int fetchUserIdByEmail(String email) {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        int userId = -1;
+    
+        try {
+            String sql = "SELECT user_id FROM users WHERE email = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, email);
+            rs = stmt.executeQuery();
+    
+            if (rs.next()) {
+                userId = rs.getInt("user_id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    
+        return userId;
+    }
+
+    public boolean joinInitiative(int userId, int initiativeId) {
+        PreparedStatement stmt = null;
+    
+        try {
+            String sql = "INSERT INTO initiative_participants (user_id, initiative_id) VALUES (?, ?) ON CONFLICT (user_id, initiative_id) DO NOTHING";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, userId);
+            stmt.setInt(2, initiativeId);
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    } 
+
+    public boolean checkJoinStatus(int userId, int initiativeId) {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        boolean joined = false;
+    
+        try {
+            String sql = "SELECT 1 FROM initiative_participants WHERE user_id = ? AND initiative_id = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, userId);
+            stmt.setInt(2, initiativeId);
+            rs = stmt.executeQuery();
+    
+            if (rs.next()) {
+                joined = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    
+        return joined;
+    }  
 }
 

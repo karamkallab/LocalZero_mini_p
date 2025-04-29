@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.localzero.DTO.InitiativeDTO;
@@ -42,20 +44,24 @@ public class ServerController {
     }
 
     @PostMapping("/authenticator")
-    public String loginUser(@RequestBody HashMap<String, String> user) {
-        System.out.println("JAAAAAG BEFINNNEER MIG HÄR");
+    public Map<String, Object> loginUser(@RequestBody HashMap<String, String> user) {
+        System.out.println("JAG BEFINNER MIG HÄR");
         String email = user.get("user_email");
         String password = user.get("user_password");
-
-        boolean success = userService.checkIfUserExistsBeforeLogIn(
-            email, password);
-
-        if(success) {
-            return "true";
+    
+        boolean success = userService.checkIfUserExistsBeforeLogIn(email, password);
+        Map<String, Object> response = new HashMap<>();
+    
+        if (success) {
+            int userId = userService.fetchUserIdByEmail(email); // hämtar userId från email
+            response.put("success", true);
+            response.put("userId", userId);
         } else {
-            return "Login failed!";
+            response.put("success", false);
         }
+        return response;
     }
+    
 
     @PostMapping("/CreateInitiative")
     public String createInitiative(@RequestBody InitiativeDTO data) {
@@ -66,7 +72,6 @@ public class ServerController {
             data.getCategory(),
             data.getVisibility()
         );
-
 
         if (success) {
             return "Initiative created!";
@@ -85,5 +90,48 @@ public class ServerController {
     public InitiativeDTO fetchInitiativeByID(@RequestBody String id) {
         return userService.fetchInitiativeByID(id);
     }
+
+    @PostMapping("/UpdateInitiative")
+    public String updateInitiative(@RequestBody InitiativeDTO initiative) {
+        boolean success = userService.updateInitiative(initiative);
+        if (success) {
+            return "Initiative updated!";
+        } else {
+            return "Something went wrong.";
+        }
+    }
+
+    @PostMapping("/LikeInitiative")
+public String likeInitiative(@RequestBody Map<String, Integer> data) {
+    int userId = data.get("userId");
+    int initiativeId = data.get("initiativeId");
+    boolean success = userService.likeInitiative(userId, initiativeId);
+
+    if (success) {
+        return "Liked successfully!";
+    } else {
+        return "Already liked or error.";
+    }
+}
+
+@PostMapping("/JoinInitiative")
+public String joinInitiative(@RequestBody Map<String, Integer> data) {
+    int userId = data.get("userId");
+    int initiativeId = data.get("initiativeId");
+    boolean success = userService.joinInitiative(userId, initiativeId);
+
+    if (success) {
+        return "Joined successfully!";
+    } else {
+        return "Already joined or error.";
+    }
+}
+
+@PostMapping("/CheckJoinStatus")
+public boolean checkJoinStatus(@RequestBody Map<String, Integer> data) {
+    int userId = data.get("userId");
+    int initiativeId = data.get("initiativeId");
+    return userService.checkJoinStatus(userId, initiativeId);
+}
 
 }

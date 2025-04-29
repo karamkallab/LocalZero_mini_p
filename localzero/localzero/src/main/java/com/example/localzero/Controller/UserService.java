@@ -46,4 +46,25 @@ public class UserService {
         return command.fetchInitiativeByID();
     }
 
+    public boolean updateInitiative(InitiativeDTO initiativeDTO) {
+        UserCommand command = new CommandUpdateInitiative(dbController, initiativeDTO);
+        return command.executeAction();
+    }
+
+    public boolean likeInitiative(int userId, int initiativeId) {
+        CommandLikeInitiative likeCommand = new CommandLikeInitiative(dbController, userId, initiativeId);
+        return likeCommand.executeAction();
+    }
+
+    public int fetchUserIdByEmail(String email) {
+        return dbController.fetchUserIdByEmail(email);
+    }
+    public boolean joinInitiative(int userId, int initiativeId) {
+        CommandJoinInitiative joinCommand = new CommandJoinInitiative(dbController, userId, initiativeId);
+        return joinCommand.executeAction();
+    }
+
+    public boolean checkJoinStatus(int userId, int initiativeId) {
+        return dbController.checkJoinStatus(userId, initiativeId);
+    }  
 }
