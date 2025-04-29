@@ -47,15 +47,11 @@ public class ServerController {
     public boolean logEcoAcions(@RequestBody Map<String, Object> data) {
         String action = (String) data.get("action");
         String category = (String) data.get("category");
-
         String date = (String) data.get("date");
+        String userID = (String) data.get("userId");
 
-        /*
-        boolean success = userService.logEcoActions(action, category, date);
+        boolean success = userService.logEcoActions(action, category, date, userID);
         return success;
-        */
-
-        return true;
     }
 
 

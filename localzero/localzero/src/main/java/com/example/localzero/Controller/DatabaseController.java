@@ -344,6 +344,10 @@ public class DatabaseController {
         }
     
         return joined;
+    }
+
+    public boolean logEcoActions(String action, String category, String date, String userId) {
+        
     }  
 }
 
