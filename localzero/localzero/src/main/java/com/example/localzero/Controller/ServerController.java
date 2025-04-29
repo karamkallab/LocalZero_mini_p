@@ -43,6 +43,22 @@ public class ServerController {
         }
     }
 
+    @PostMapping("/eco-actions-log")
+    public boolean logEcoAcions(@RequestBody Map<String, Object> data) {
+        String action = (String) data.get("action");
+        String category = (String) data.get("category");
+
+        String date = (String) data.get("date");
+
+        /*
+        boolean success = userService.logEcoActions(action, category, date);
+        return success;
+        */
+
+        return true;
+    }
+
+
     @PostMapping("/authenticator")
     public Map<String, Object> loginUser(@RequestBody HashMap<String, String> user) {
         System.out.println("JAG BEFINNER MIG HÄR");
@@ -102,17 +118,17 @@ public class ServerController {
     }
 
     @PostMapping("/LikeInitiative")
-public String likeInitiative(@RequestBody Map<String, Integer> data) {
-    int userId = data.get("userId");
-    int initiativeId = data.get("initiativeId");
-    boolean success = userService.likeInitiative(userId, initiativeId);
+    public String likeInitiative(@RequestBody Map<String, Integer> data) {
+        int userId = data.get("userId");
+        int initiativeId = data.get("initiativeId");
+        boolean success = userService.likeInitiative(userId, initiativeId);
 
-    if (success) {
-        return "Liked successfully!";
-    } else {
-        return "Already liked or error.";
+        if (success) {
+            return "Liked successfully!";
+        } else {
+            return "Already liked or error.";
+        }
     }
-}
 
 @PostMapping("/JoinInitiative")
 public String joinInitiative(@RequestBody Map<String, Integer> data) {

@@ -59,11 +59,41 @@
       });
     });
 
-    document.getElementById('ecoActionForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      alert("Eco Action skickad!");
-      // Här kan du lägga till funktionalitet för att spara datan
+    document.getElementById('ecoActionForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const action = document.getElementById('action').value;
+  const category = document.getElementById('category').value;
+  const date = document.getElementById('date').value;
+
+  const data = {
+    action: action,
+    category: category,
+    date: date
+  };
+
+  try {
+    const response = await fetch('"http://127.0.0.1:8080/api/eco-actions-log"', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
     });
+
+    const result = await response.json(); // true eller false
+
+    if (result === true) {
+      alert("Eco Action sparades framgångsrikt!");
+      document.getElementById('ecoActionForm').reset();
+    } else {
+      alert("Något gick fel. Försök igen.");
+    }
+  } catch (error) {
+    console.error("Fel vid anrop:", error);
+    alert("Serverfel. Kontrollera backend eller nätverket.");
+  }
+});
   </script>
 </body>
 </html>

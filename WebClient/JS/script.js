@@ -28,6 +28,8 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
   let selectedRoles = [];
+
+  //TODO: localstorage verkar inte spara användarens ID här?? ska det vara så? 
   if(registerForm){
 
   document.querySelectorAll('.roleOption').forEach(option => {
