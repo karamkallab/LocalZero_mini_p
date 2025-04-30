@@ -87,34 +87,6 @@ const dmToggle = document.querySelector('.dm-toggle');
       if (!dmToggle.contains(event.target) && !dmPanel.contains(event.target)) {
         dmPanel.classList.add('hidden');
       }
-    });
+});
     
-    function openChat(user) {
-      chatWith.innerText = `Chattar med: ${user}`;
-      chatBox.innerHTML = `<p><em>Startade chatt med ${user}</em></p>`;
-    }
     
-    // --- WEBSOCKET CHAT ---
-    const socket = new WebSocket("ws://localhost:8080/LocalZero_mini_p/chat");
-
-    socket.onmessage = function(event) {
-      const chatBox = document.getElementById("chatBox");
-      chatBox.innerHTML += `<div>${event.data}</div>`;
-      chatBox.scrollTop = chatBox.scrollHeight;
-    };
-
-    function sendMessage() {
-      const input = document.getElementById("messageInput");
-      const message = input.value;
-      if (message && socket.readyState === WebSocket.OPEN) {
-          socket.send(message); // Send message to WebSocket server
-          input.value = ""; // Clear input
-      }
-  }
-
-    function openChat(user) {
-      const chatWith = document.getElementById("chatWith");
-      const chatBox = document.getElementById("chatBox");
-      chatWith.innerText = `Chattar med: ${user}`;
-      chatBox.innerHTML = `<p><em>Startade chatt med ${user}</em></p>`;
-    }

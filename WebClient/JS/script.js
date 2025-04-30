@@ -26,7 +26,43 @@ document.addEventListener("DOMContentLoaded", function() {
         console.error("Login error:", error);
       });
     });
+
+    var stompClient = null;
+    var connectingElement = document.querySelector('.connecting');
+
+    function connect(event) {
+        username = localStorage.getItem('userId');
+
+        if(username) {
+            var socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+
+            stompClient.connect({}, onConnected, onError);
+        }
+        event.preventDefault();
+    }
+
+    function onConnected() {
+      // Subscribe to the Public Topic
+      stompClient.subscribe('/topic/public', onMessageReceived);
+  
+      // Tell your username to the server
+      stompClient.send("/app/chat.addUser",
+          {},
+          JSON.stringify({sender: username, type: 'JOIN'})
+      )
+  
+      connectingElement.classList.add('hidden');
+    }
+  
+    function onError(error) {
+        connectingElement.textContent = 'Could not connect to WebSocket server. Please refresh this page to try again!';
+        connectingElement.style.color = 'red';
+    }
   }
+
+
+
   let selectedRoles = [];
   if(registerForm){
 
