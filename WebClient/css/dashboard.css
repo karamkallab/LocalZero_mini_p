@@ -94,6 +94,7 @@ body {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
 }
+
 .card h2 {
   font-size: 16px;
   font-weight: bold;
@@ -168,13 +169,11 @@ body {
   display: none !important;
 }
 
-
 .initiative-box-link {
   text-decoration: none;
   color: inherit;
   display: block;
 }
-
 
 .card {
   background-color: #daf5d4;
@@ -182,143 +181,4 @@ body {
   border-radius: 10px;
   margin-bottom: 15px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  cursor: pointer;
-}
-
-.dm-toggle {
-  position: absolute;
-  top: 20px;
-  right: 80px;
-  background-color: #5f9e53;
-  color: white;
-  padding: 12px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 15px;
-  z-index: 1000;
-}
-
-.dm-panel {
-  position: absolute;
-  top: 75px;
-  right: 20px;
-  width: 500px;
-  height: 500px;
-  background-color: #ffffff;
-  color: #2e2e2e;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  display: flex;
-  overflow: hidden;
-  z-index: 1001;
-  flex-direction: row;
-  font-family: Arial, sans-serif;
-}
-
-.dm-users {
-  width: 35%;
-  background-color: #f4f4f4;
-  border-right: 1px solid #ddd;
-  padding: 10px;
-  overflow-y: auto;
-}
-
-.dm-users h3 {
-  margin-bottom: 10px;
-  font-size: 16px;
-  color: #333;
-}
-
-.dm-users ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.dm-users li {
-  padding: 8px;
-  border-radius: 6px;
-  margin-bottom: 6px;
-  cursor: pointer;
-  background-color: #eaeaea;
-  transition: background 0.2s;
-}
-
-.dm-users li:hover {
-  background-color: #dcdcdc;
-}
-
-.chat-container {
-  width: 65%;
-  display: flex;
-  flex-direction: column;
-  background-color: #fff;
-  position: relative;
-}
-
-#messageArea {
-  list-style: none;
-  margin: 0;
-  padding: 15px;
-  flex-grow: 1;
-  overflow-y: auto;
-  background-color: #f8f8f8;
-  border-bottom: 1px solid #ddd;
-}
-
-#messageArea li {
-  padding: 10px;
-  border-bottom: 1px solid #e0e0e0;
-  font-size: 14px;
-  color: #333;
-}
-
-#messageArea li:last-child {
-  border-bottom: none;
-}
-
-#messageArea .event-message {
-  text-align: center;
-  font-style: italic;
-  color: #888;
-}
-
-#messageForm {
-  padding: 10px;
-  background-color: #fff;
-  border-top: 1px solid #ddd;
-}
-
-.input-group {
-  display: flex;
-}
-
-.input-group input {
-  flex-grow: 1;
-  padding: 8px 10px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.input-group button {
-  background-color: #6db33f;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  margin-left: 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.2s ease;
-}
-
-.input-group button:hover {
-  background-color: #5a9a35;
 }

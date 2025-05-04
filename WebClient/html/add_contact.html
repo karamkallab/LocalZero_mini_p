@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Inbox</title>
-  <link rel="stylesheet" href="../css/inbox.css" />
+  <link rel="stylesheet" href="../css/add_contact.css" />
+  <link rel="stylesheet" href="../css/chat.css" />
 </head>
 <body>
   <div class="container">
@@ -12,7 +13,6 @@
       <div class="logo">LocalZero</div>
       <nav class="nav">
         <button data-page="dashboard">Dashboard</button>
-        <button data-page="tracker">Tracker</button>
         <button data-page="create_initiative">Create Initiative</button>
         <button data-page="ecoactions">Eco Actions</button>
         <button data-page="achievements">Achievements</button>
@@ -35,7 +35,7 @@
           </div>
         </div>  
         <div class="dm-toggle">💬 Direktmeddelanden</div>
-      
+
         <div class="dm-panel hidden">
           <div class="dm-users">
             <h3>Kontakter</h3>
@@ -48,13 +48,21 @@
               <li onclick="openChat('Karre')">Karre</li>
             </ul>
           </div>
-          <div class="dm-chat">
-            <h3 id="chatWith">Välj en kontakt</h3>
-            <div class="messages"></div>
-            <input type="text" placeholder="Skriv ett meddelande..." />
+          <div class="chat-container">
+            <ul id="messageArea">
+      
+            </ul>
+            <form id="messageForm" name="messageForm">
+                <div class="form-group">
+                    <div class="input-group clearfix">
+                        <input type="text" id="message" placeholder="Type a message..." autocomplete="off" class="form-control"/>
+                        <button type="submit" class="primary">Send</button>
+                    </div>
+                </div>
+            </form>
           </div>
         </div>
-        <h1>Inbox</h1>
+        <h1>Add Contact</h1>
   
         <div class="card">
           <h2>Tool Sharing Update</h2>
