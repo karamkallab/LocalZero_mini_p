@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
       .then(result => {
         if (result.success) {
           localStorage.setItem('userId', result.userId);
+          localStorage.setItem('name', result.name);
           window.location.href = "dashboard.html";
         } else {
           alert("Your email or password is incorrect.");
@@ -72,7 +73,8 @@ registerForm.addEventListener("submit", function (event) {
   .then(res => res.text())
   .then(result => {
     if (result.toLowerCase().includes("success")) {
-      window.location.href = "dashboard.html";
+      alert("Account created!");
+      window.location.href = "login.html";
     } else {
       alert("Something went wrong: " + result);
     }

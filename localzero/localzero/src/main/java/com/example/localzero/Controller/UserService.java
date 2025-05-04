@@ -66,5 +66,8 @@ public class UserService {
 
     public boolean checkJoinStatus(int userId, int initiativeId) {
         return dbController.checkJoinStatus(userId, initiativeId);
-    }  
+    }
+    public String fetchNameIdByEmail(String email) {
+        return dbController.fetchNameIdByEmail(email);
+    }
 }

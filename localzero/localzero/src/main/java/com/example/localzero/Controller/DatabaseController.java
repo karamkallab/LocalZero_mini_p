@@ -344,6 +344,34 @@ public class DatabaseController {
         }
     
         return joined;
-    }  
+    }
+
+    public String fetchNameIdByEmail(String email){
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        String name = "";
+
+        try {
+            String sql = "SELECT name FROM users WHERE email = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, email);
+            rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                name = rs.getString("name");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return name;
+    }
 }
 

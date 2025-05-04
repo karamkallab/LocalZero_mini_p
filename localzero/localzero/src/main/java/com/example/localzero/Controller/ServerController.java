@@ -45,7 +45,6 @@ public class ServerController {
 
     @PostMapping("/authenticator")
     public Map<String, Object> loginUser(@RequestBody HashMap<String, String> user) {
-        System.out.println("JAG BEFINNER MIG HÄR");
         String email = user.get("user_email");
         String password = user.get("user_password");
     
@@ -54,8 +53,10 @@ public class ServerController {
     
         if (success) {
             int userId = userService.fetchUserIdByEmail(email); // hämtar userId från email
+            String name = userService.fetchNameIdByEmail(email);
             response.put("success", true);
             response.put("userId", userId);
+            response.put("name", name);
         } else {
             response.put("success", false);
         }
