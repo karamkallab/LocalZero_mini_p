@@ -4,7 +4,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.localzero.Command.CommandFetchAllUser;
 import com.example.localzero.DTO.InitiativeDTO;
+import com.example.localzero.DTO.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -144,6 +146,40 @@ public class DatabaseController {
             }
         }
     }
+    public boolean fetchInitiativeCheck() {
+        List<InitiativeDTO> initiatives = new ArrayList<>();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            stmt = conn.prepareStatement("SELECT id, title, description, location, category, visibility FROM initiatives");
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                InitiativeDTO initiative = new InitiativeDTO();
+                initiative.setID(rs.getString("id"));
+                initiative.setTitle(rs.getString("title"));
+                initiative.setDescription(rs.getString("description"));
+                initiative.setLocation(rs.getString("location"));
+                initiative.setCategory(rs.getString("category"));
+                initiative.setVisibility(rs.getString("visibility"));
+                initiatives.add(initiative);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return !initiatives.isEmpty();
+    }
+
 
     public List<InitiativeDTO> fetchInitiative(){
         List<InitiativeDTO> initiatives = new ArrayList<>();
@@ -176,6 +212,10 @@ public class DatabaseController {
         }
 
         return initiatives;
+    }
+
+    public boolean fetchInitiativeByIDCheck() {
+        return true;
     }
 
     public InitiativeDTO fetchInitiativeByID(String id) {
@@ -372,6 +412,65 @@ public class DatabaseController {
         }
 
         return name;
+    }
+
+    public boolean fetchAllNameCheck(){
+        List<String> nameList = new ArrayList<>();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = conn.prepareStatement("SELECT name FROM users");
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String name = rs.getString("name");
+                nameList.add(name);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(!nameList.isEmpty()){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public ArrayList<String> fetchAllName(){
+        ArrayList<String> nameList = new ArrayList<>();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = conn.prepareStatement("SELECT name FROM users");
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String name = rs.getString("name");
+                nameList.add(name);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return nameList;
     }
 }
 

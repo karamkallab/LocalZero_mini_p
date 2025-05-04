@@ -3,9 +3,9 @@ package com.example.localzero.Controller;
 import com.example.localzero.Command.*;
 import com.example.localzero.DTO.InitiativeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // @Service marks this class as a service component in the Spring container.
@@ -36,14 +36,22 @@ public class UserService {
         return command.executeAction();
     }
 
-    public List<InitiativeDTO> fetchInitiative() {
+    public boolean fetchInitiativeCheck() {
         UserCommand command = new CommandFetchInitiative(dbController);
-        return command.fetchInitiatives();
+        return command.executeAction();
     }
 
-    public InitiativeDTO fetchInitiativeByID(String id) {
-        UserCommand command = new CommandFetchInitiativeByID(dbController, id);
-        return command.fetchInitiativeByID();
+    public List<InitiativeDTO> fetchInitiative(){
+        return dbController.fetchInitiative();
+    }
+
+    public boolean fetchInitiativeByIDCheck() {
+        UserCommand command = new CommandFetchInitiativeByID(dbController);
+        return command.executeAction();
+    }
+
+    public InitiativeDTO fetchInitiativeByID(String id){
+        return dbController.fetchInitiativeByID(id);
     }
 
     public boolean updateInitiative(InitiativeDTO initiativeDTO) {
@@ -69,5 +77,12 @@ public class UserService {
     }
     public String fetchNameIdByEmail(String email) {
         return dbController.fetchNameIdByEmail(email);
+    }
+    public boolean fetchAllNameCheck(){
+        UserCommand command = new CommandFetchAllUser(dbController);
+        return command.executeAction();
+    }
+    public ArrayList<String> fetchAllName(){
+        return dbController.fetchAllName();
     }
 }

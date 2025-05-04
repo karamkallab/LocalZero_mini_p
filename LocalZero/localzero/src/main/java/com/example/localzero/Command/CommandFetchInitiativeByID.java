@@ -7,27 +7,16 @@ import java.util.List;
 
 public class CommandFetchInitiativeByID implements UserCommand{
     private DatabaseController dbController;
-    private String id;
 
-    public CommandFetchInitiativeByID(DatabaseController dbController, String id) {
+    public CommandFetchInitiativeByID(DatabaseController dbController) {
         this.dbController = dbController;
-        this.id = id;
     }
 
     @Override
     public boolean executeAction() {
-        return true;
+        return dbController.fetchInitiativeByIDCheck();
     }
 
-    @Override
-    public List<InitiativeDTO> fetchInitiatives() {
-        return List.of();
-    }
-
-    @Override
-    public InitiativeDTO fetchInitiativeByID() {
-        return dbController.fetchInitiativeByID(id);
-    }
 
 
 }

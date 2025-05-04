@@ -29,13 +29,4 @@ public class CommandRegisterUser implements UserCommand {
         return dbController.registerUser(name, email, password, location, role);
     }
 
-    @Override
-    public List<InitiativeDTO> fetchInitiatives() {
-        return List.of();
-    }
-
-    @Override
-    public InitiativeDTO fetchInitiativeByID() {
-        return null;
-    }
 }

@@ -3,6 +3,7 @@ const messageInput = document.getElementById("message");
 const messageArea = document.getElementById("messageArea");
 const dmToggle = document.querySelector('.dm-toggle');
 const dmPanel = document.querySelector('.dm-panel');
+const contactList = document.getElementById("contactList");
 
 const username = localStorage.getItem('name') || "Anonymous";
 const colors = ['#2196F3', '#32c787', '#00BCD4', '#ff5652', '#ffc107', '#ff85af', '#FF9800', '#39bbb0'];
@@ -79,6 +80,25 @@ let stompClient = null;
   dmToggle.addEventListener('click', (e) => {
     e.stopPropagation();
     dmPanel.classList.toggle('hidden');
+      // Load Contact
+      if (contactList) {
+        fetch("http://localhost:8080/api/FetchAllName")
+          .then(res => res.json())
+          .then(data => {
+            contactList.innerHTML = '';
+      
+            data.forEach(user => {
+              // Skip yourself
+              if (user === localStorage.getItem('name')) return;
+      
+              const li = document.createElement('li');
+              li.textContent = user;
+              li.onclick = () => openChat(user);
+              contactList.appendChild(li);
+            });
+          })
+          .catch(err => console.error("Error fetching names:", err));
+      }
   });
 
   document.addEventListener('click', (e) => {
@@ -87,3 +107,4 @@ let stompClient = null;
     }
   });
   messageForm.addEventListener('submit', sendMessage);
+

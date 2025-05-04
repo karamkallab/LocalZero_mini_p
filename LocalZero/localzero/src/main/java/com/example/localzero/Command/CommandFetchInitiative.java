@@ -14,18 +14,7 @@ public class CommandFetchInitiative implements UserCommand{
 
     @Override
     public boolean executeAction() {
-
-        return true;
-    }
-
-    @Override
-    public List<InitiativeDTO> fetchInitiatives() {
-        return dbController.fetchInitiative();
-    }
-
-    @Override
-    public InitiativeDTO fetchInitiativeByID() {
-        return null;
+        return dbController.fetchInitiativeCheck();
     }
 
 

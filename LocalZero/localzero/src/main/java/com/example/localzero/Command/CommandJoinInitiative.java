@@ -19,14 +19,4 @@ public class CommandJoinInitiative implements UserCommand {
     public boolean executeAction() {
         return dbController.joinInitiative(userId, initiativeId);
     }
-
-    @Override
-    public List<InitiativeDTO> fetchInitiatives() {
-        return List.of();
-    }
-
-    @Override
-    public InitiativeDTO fetchInitiativeByID() {
-        return null;
-    }
 }

@@ -3,19 +3,19 @@ package com.example.localzero.Command;
 import com.example.localzero.Controller.DatabaseController;
 import com.example.localzero.DTO.InitiativeDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class CommandUpdateInitiative implements UserCommand{
+public class CommandFetchAllUser implements UserCommand{
     private DatabaseController dbController;
-    private InitiativeDTO initiativeDTO;
 
-    public  CommandUpdateInitiative(DatabaseController dbController, InitiativeDTO initiativeDTO) {
+    public CommandFetchAllUser(DatabaseController dbController){
         this.dbController = dbController;
-        this.initiativeDTO = initiativeDTO;
     }
     @Override
     public boolean executeAction() {
-        return dbController.updateInitiative(initiativeDTO);
+        return dbController.fetchAllNameCheck();
     }
+
 
 }

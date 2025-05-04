@@ -1,5 +1,6 @@
 package com.example.localzero.Controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,13 +84,26 @@ public class ServerController {
 
     @GetMapping("/FetchInitiatives")
     public List<InitiativeDTO> fetchInitiative() {
-        return userService.fetchInitiative();
+        boolean success = userService.fetchInitiativeCheck();
+        if(success){
+            return userService.fetchInitiative();
+        }
+        else {
+            return null;
+        }
     }
 
     @PostMapping("/FetchInitiativeByID")
     @ResponseBody
     public InitiativeDTO fetchInitiativeByID(@RequestBody String id) {
-        return userService.fetchInitiativeByID(id);
+
+        boolean success = userService.fetchInitiativeByIDCheck();
+        if(success){
+            return userService.fetchInitiativeByID(id);
+        }
+        else {
+            return null;
+        }
     }
 
     @PostMapping("/UpdateInitiative")
@@ -103,36 +117,46 @@ public class ServerController {
     }
 
     @PostMapping("/LikeInitiative")
-public String likeInitiative(@RequestBody Map<String, Integer> data) {
-    int userId = data.get("userId");
-    int initiativeId = data.get("initiativeId");
-    boolean success = userService.likeInitiative(userId, initiativeId);
+    public String likeInitiative(@RequestBody Map<String, Integer> data) {
+        int userId = data.get("userId");
+        int initiativeId = data.get("initiativeId");
+        boolean success = userService.likeInitiative(userId, initiativeId);
 
-    if (success) {
-        return "Liked successfully!";
-    } else {
-        return "Already liked or error.";
+        if (success) {
+            return "Liked successfully!";
+        } else {
+            return "Already liked or error.";
+        }
     }
-}
 
-@PostMapping("/JoinInitiative")
-public String joinInitiative(@RequestBody Map<String, Integer> data) {
-    int userId = data.get("userId");
-    int initiativeId = data.get("initiativeId");
-    boolean success = userService.joinInitiative(userId, initiativeId);
+    @PostMapping("/JoinInitiative")
+    public String joinInitiative(@RequestBody Map<String, Integer> data) {
+        int userId = data.get("userId");
+        int initiativeId = data.get("initiativeId");
+        boolean success = userService.joinInitiative(userId, initiativeId);
 
-    if (success) {
-        return "Joined successfully!";
-    } else {
-        return "Already joined or error.";
+        if (success) {
+            return "Joined successfully!";
+        } else {
+            return "Already joined or error.";
+        }
     }
-}
 
-@PostMapping("/CheckJoinStatus")
-public boolean checkJoinStatus(@RequestBody Map<String, Integer> data) {
-    int userId = data.get("userId");
-    int initiativeId = data.get("initiativeId");
-    return userService.checkJoinStatus(userId, initiativeId);
-}
+    @PostMapping("/CheckJoinStatus")
+    public boolean checkJoinStatus(@RequestBody Map<String, Integer> data) {
+        int userId = data.get("userId");
+        int initiativeId = data.get("initiativeId");
+        return userService.checkJoinStatus(userId, initiativeId);
+    }
 
+    @GetMapping("/FetchAllName")
+    public List<String> fetchAllName() {
+        boolean success = userService.fetchAllNameCheck();
+        ArrayList<String> nameList = userService.fetchAllName();
+        if (success) {
+            return nameList;
+        } else {
+            return null;
+        }
+    }
 }

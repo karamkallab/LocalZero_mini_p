@@ -22,21 +22,10 @@ public class CommandCreateInitiative implements UserCommand {
         this.db = db;
     }
 
-
-
     @Override
     public boolean executeAction() {
         return db.createInitiative(title, description, location, category, visibility);
     }
 
-    @Override
-    public List<InitiativeDTO> fetchInitiatives() {
-        return List.of();
-    }
-
-    @Override
-    public InitiativeDTO fetchInitiativeByID() {
-        return null;
-    }
 
 }

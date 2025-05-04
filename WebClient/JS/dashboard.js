@@ -2,8 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const initiativeList = document.getElementById("initiativeList");
   const notifIcon = document.querySelector('.notification-icon');
   const notifDropdown = document.querySelector('.notification-dropdown');
-
-
   
   document.querySelector('.signout').addEventListener('click', () => {
     localStorage.clear();
@@ -27,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
     notifDropdown.classList.toggle('hidden');
   });
 
-  // 🟢 Load Initiatives
+  // Load Initiatives
   if (initiativeList) {
     fetch("http://localhost:8080/api/FetchInitiatives")
       .then(res => res.json())
@@ -62,11 +60,10 @@ document.addEventListener("DOMContentLoaded", () => {
       .catch(err => console.error("Error fetching initiatives:", err));
   }
 
-  // 🟢 Connect WebSocket on load
   connectWebSocket();
 });
 
-// Optional: You can expand openChat() for direct chat logic
+// Optional: Expand openChat() for direct chat logic
 function openChat(user) {
   console.log("Chat opened with:", user);
 }

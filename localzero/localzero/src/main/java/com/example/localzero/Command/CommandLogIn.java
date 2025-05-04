@@ -20,17 +20,4 @@ public class CommandLogIn implements UserCommand {
     public boolean executeAction() {
         return dbController.checkIfUserExistsBeforeLogIn(email, password);
     }
-
-    @Override
-    public List<InitiativeDTO> fetchInitiatives() {
-        return List.of();
-    }
-
-    @Override
-    public InitiativeDTO fetchInitiativeByID() {
-        return null;
-    }
-
-
-
 }

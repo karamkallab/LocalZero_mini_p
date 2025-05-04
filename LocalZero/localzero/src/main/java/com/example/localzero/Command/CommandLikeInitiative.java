@@ -20,13 +20,4 @@ public class CommandLikeInitiative implements UserCommand {
         return dbController.likeInitiative(userId, initiativeId);
     }
 
-    @Override
-    public List<InitiativeDTO> fetchInitiatives() {
-        return List.of();
-    }
-
-    @Override
-    public InitiativeDTO fetchInitiativeByID() {
-        return null;
-    }
 }
