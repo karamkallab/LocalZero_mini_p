@@ -10,101 +10,104 @@ const colors = ['#2196F3', '#32c787', '#00BCD4', '#ff5652', '#ffc107', '#ff85af'
 
 let stompClient = null;
 
-  // 🟢 WebSocket Setup
-  function connectWebSocket() {
-    const socket = new SockJS('http://localhost:8080/ws');
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, onConnected, onError);
+function connectWebSocket() {
+  const socket = new SockJS('http://localhost:8080/ws');
+  stompClient = Stomp.over(socket);
+  stompClient.connect({}, onConnected, onError);
+}
+
+function onConnected() {
+  stompClient.subscribe('/topic/public', onMessageReceived);
+  stompClient.send("/app/chat.addUser", {}, JSON.stringify({ sender: username, type: 'JOIN' }));
+}
+
+function onError(error) {
+  console.error("WebSocket error:", error);
+}
+
+function sendMessage(event) {
+  event.preventDefault();
+  const content = messageInput.value.trim();
+  if (content && stompClient) {
+    const chatMessage = {
+      sender: username,
+      content: content,
+      type: 'CHAT'
+    };
+    stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+    messageInput.value = '';
+  }
+}
+
+function onMessageReceived(payload) {
+  const message = JSON.parse(payload.body);
+  const messageElement = document.createElement('li');
+
+  if (message.type === 'JOIN' || message.type === 'LEAVE') {
+    messageElement.classList.add('event-message');
+    message.content = message.sender + (message.type === 'JOIN' ? ' joined!' : ' left!');
+  } else {
+    messageElement.classList.add('chat-message');
+    const avatar = document.createElement('i');
+    avatar.textContent = message.sender[0];
+    avatar.style.backgroundColor = getAvatarColor(message.sender);
+
+    const name = document.createElement('span');
+    name.textContent = message.sender;
+
+    messageElement.appendChild(avatar);
+    messageElement.appendChild(name);
   }
 
-  function onConnected() {
-    stompClient.subscribe('/topic/public', onMessageReceived);
-    stompClient.send("/app/chat.addUser", {}, JSON.stringify({ sender: username, type: 'JOIN' }));
-  }
+  const text = document.createElement('p');
+  text.textContent = message.content;
+  messageElement.appendChild(text);
 
-  function onError(error) {
-    console.error("WebSocket error:", error);
-  }
+  messageArea.appendChild(messageElement);
+  messageArea.scrollTop = messageArea.scrollHeight;
+}
 
-  function sendMessage(event) {
-    event.preventDefault();
-    const content = messageInput.value.trim();
-    if (content && stompClient) {
-      const chatMessage = {
-        sender: username,
-        content: content,
-        type: 'CHAT'
-      };
-      stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
-      messageInput.value = '';
+function getAvatarColor(sender) {
+  let hash = 0;
+  for (let i = 0; i < sender.length; i++) {
+    hash = 31 * hash + sender.charCodeAt(i);
+  }
+  return colors[Math.abs(hash % colors.length)];
+}
+
+// 🟢 UI Behaviors
+dmToggle.addEventListener('click', (e) => {
+  e.stopPropagation();
+  dmPanel.classList.toggle('hidden');
+    // Load Contact
+    if (contactList) {
+      fetch("http://localhost:8080/api/FetchAllName")
+        .then(res => res.json())
+        .then(data => {
+          contactList.innerHTML = '';
+    
+          data.forEach(user => {
+            // Skip yourself
+            if (user === localStorage.getItem('name')) return;
+    
+            const li = document.createElement('li');
+            li.textContent = user;
+            li.onclick = () => openChat(user);
+            contactList.appendChild(li);
+          });
+        })
+        .catch(err => console.error("Error fetching names:", err));
     }
+});
+
+document.addEventListener('click', (e) => {
+  if (!dmPanel.contains(e.target) && !dmToggle.contains(e.target)) {
+    dmPanel.classList.add('hidden');
   }
+});
+messageForm.addEventListener('submit', sendMessage);
 
-  function onMessageReceived(payload) {
-    const message = JSON.parse(payload.body);
-    const messageElement = document.createElement('li');
-
-    if (message.type === 'JOIN' || message.type === 'LEAVE') {
-      messageElement.classList.add('event-message');
-      message.content = message.sender + (message.type === 'JOIN' ? ' joined!' : ' left!');
-    } else {
-      messageElement.classList.add('chat-message');
-      const avatar = document.createElement('i');
-      avatar.textContent = message.sender[0];
-      avatar.style.backgroundColor = getAvatarColor(message.sender);
-
-      const name = document.createElement('span');
-      name.textContent = message.sender;
-
-      messageElement.appendChild(avatar);
-      messageElement.appendChild(name);
-    }
-
-    const text = document.createElement('p');
-    text.textContent = message.content;
-    messageElement.appendChild(text);
-
-    messageArea.appendChild(messageElement);
-    messageArea.scrollTop = messageArea.scrollHeight;
-  }
-
-  function getAvatarColor(sender) {
-    let hash = 0;
-    for (let i = 0; i < sender.length; i++) {
-      hash = 31 * hash + sender.charCodeAt(i);
-    }
-    return colors[Math.abs(hash % colors.length)];
-  }
-
-  // 🟢 UI Behaviors
-  dmToggle.addEventListener('click', (e) => {
-    e.stopPropagation();
-    dmPanel.classList.toggle('hidden');
-      // Load Contact
-      if (contactList) {
-        fetch("http://localhost:8080/api/FetchAllName")
-          .then(res => res.json())
-          .then(data => {
-            contactList.innerHTML = '';
-      
-            data.forEach(user => {
-              // Skip yourself
-              if (user === localStorage.getItem('name')) return;
-      
-              const li = document.createElement('li');
-              li.textContent = user;
-              li.onclick = () => openChat(user);
-              contactList.appendChild(li);
-            });
-          })
-          .catch(err => console.error("Error fetching names:", err));
-      }
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!dmPanel.contains(e.target) && !dmToggle.contains(e.target)) {
-      dmPanel.classList.add('hidden');
-    }
-  });
-  messageForm.addEventListener('submit', sendMessage);
-
+// Optional: Expand openChat() for direct chat logic
+function openChat(user) {
+  console.log("Chat opened with:", user);
+}
