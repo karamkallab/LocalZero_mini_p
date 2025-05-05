@@ -31,6 +31,7 @@ public class UserService {
         return command.executeAction();
     }
 
+    //behöver user id
     public boolean createInitiative(String title, String description, String location, String category,
             String visibility) {
         UserCommand command = new CommandCreateInitiative(title, description, location, category, visibility, dbController);
@@ -47,13 +48,14 @@ public class UserService {
         return command.fetchInitiativeByID();
     }
 
+    //behöver user id
     public boolean updateInitiative(InitiativeDTO initiativeDTO) {
         UserCommand command = new CommandUpdateInitiative(dbController, initiativeDTO);
         return command.executeAction();
     }
 
     public boolean likeInitiative(int userId, int initiativeId) {
-        CommandLikeInitiative likeCommand = new CommandLikeInitiative(dbController, userId, initiativeId);
+        UserCommand likeCommand = new CommandLikeInitiative(dbController, userId, initiativeId);
         return likeCommand.executeAction();
     }
 
@@ -78,4 +80,12 @@ public class UserService {
     return dbController.fetchCommentsByInitiativeId(initiativeId);
 }
 
+    
+
+    
+    public boolean logEcoActions(String action, String category, String date, String userID) {
+        UserCommand logEcoActions = new CommandLogEcoActions(dbController, action, category, date, userID);
+        return logEcoActions.executeAction();
+    } 
+        
 }

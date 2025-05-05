@@ -56,6 +56,8 @@
         </div>
       </div> 
       <h1>Eco Actions</h1>
+      <button id="createEcoActionBtn" class="top-button">➕ Log new eco action</button>
+
 
       <div class="card">
         <h2>Biked to Work</h2>
@@ -116,6 +118,11 @@ function openChat(user) {
   chatWith.innerText = `Chattar med: ${user}`;
   chatBox.innerHTML = `<p><em>Startade chatt med ${user}</em></p>`;
 }
+
+document.getElementById('createEcoActionBtn').addEventListener('click', () => {
+  window.location.href = 'create_eco_action.html';
+});
+
   </script>
 </body>
 </html>

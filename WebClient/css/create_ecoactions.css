@@ -1,0 +1,132 @@
+/* Basdesign – samma som ecoactions.css */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  body {
+    background-color: #3f6537;
+    color: #fff;
+  }
+  
+  .container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 230px;
+    background-color: #2e4b27;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+  }
+  
+  .logo {
+    font-size: 40px;
+    font-weight: bolder;
+    margin-bottom: 10px;
+  }
+  
+  .nav {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .nav button {
+    padding: 37px 10px;
+    margin: 10% 0;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  
+  .nav button:hover {
+    background: #5f9e53;
+  }
+  
+  .signout {
+    background: #803b3b;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15%;
+    font-size: 16px;
+  }
+  
+  .signout:hover {
+    background: #a84545;
+  }
+  
+  /* Huvudinnehåll */
+  .main-content {
+    flex-grow: 1;
+    padding: 30px;
+    background-color: #4d7b3c;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    position: relative;
+  }
+  
+  .main-content h1 {
+    font-size: 36px;
+    margin-bottom: 25px;
+    max-width: 800px;
+    text-align: center;
+  }
+  
+  /* Formulär */
+  form label {
+    font-size: 18px;
+    font-weight: bold;
+    display: block;
+    margin-top: 15px;
+    color: #fff;
+  }
+  
+  form input[type="text"],
+  form input[type="date"],
+  form select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+    margin-top: 8px;
+    background-color: #e9f3da;
+    color: #2e2e2e;
+  }
+  
+  form input[type="text"]:focus,
+  form input[type="date"]:focus,
+  form select:focus {
+    outline: none;
+    border: 2px solid #5f9e53;
+  }
+  
+  /* Skicka-knappen */
+  .top-button {
+    background-color: #5f9e53;
+    color: white;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 25px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .top-button:hover {
+    background-color: #4d7b3c;
+  }
+  

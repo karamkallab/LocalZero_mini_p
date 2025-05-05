@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Inbox</title>
   <link rel="stylesheet" href="../css/inbox.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 </head>
 <body>
   <div class="container">
@@ -20,100 +22,161 @@
       </nav>
       <button class="signout">Sign out</button>
     </div>
-      <main class="main-content">
-        <div class="notification-wrapper">
-          <div class="notification-icon" title="Notifications">
-            🔔
-            <span class="notification-count">3</span>
-          </div>
-          <div class="notification-dropdown hidden">
-            <ul>
-              <li>New message from LocalZero</li>
-              <li>Your initiative was approved ✅</li>
-              <li>Achievement unlocked: Green Steps 🥾</li>
-            </ul>
-          </div>
-        </div>  
-        <div class="dm-toggle">💬 Direktmeddelanden</div>
-      
-        <div class="dm-panel hidden">
-          <div class="dm-users">
-            <h3>Kontakter</h3>
-            <ul>
-              <li onclick="openChat('Saman')">Saman</li>
-              <li onclick="openChat('Abdulkadir Adde')">Abdulkadir Adde</li>
-              <li onclick="openChat('Adam')">Adam</li>
-              <li onclick="openChat('S.A.K.')">S.A.K.</li>
-              <li onclick="openChat('Huy')">Huy</li>
-              <li onclick="openChat('Karre')">Karre</li>
-            </ul>
-          </div>
-          <div class="dm-chat">
-            <h3 id="chatWith">Välj en kontakt</h3>
-            <div class="messages"></div>
-            <input type="text" placeholder="Skriv ett meddelande..." />
-          </div>
+
+    <main class="main-content">
+      <div class="notification-wrapper">
+        <div class="notification-icon" title="Notifications">
+          🔔 <span class="notification-count">3</span>
         </div>
-        <h1>Inbox</h1>
-  
-        <div class="card">
-          <h2>Tool Sharing Update</h2>
-          <p>Hi! Are you still interested in borrowing the hedge trimmer this weekend?</p>
-          <p class="dates">From: Alex Green – 04/04/2025</p>
+        <div class="notification-dropdown hidden">
+          <ul>
+            <li>New message from LocalZero</li>
+            <li>Your initiative was approved ✅</li>
+            <li>Achievement unlocked: Green Steps 🥾</li>
+          </ul>
         </div>
-  
-        <div class="card">
-          <h2>Ride Sharing Available</h2>
-          <p>I’m driving to the farmer’s market Saturday morning. Want to come?</p>
-          <p class="dates">From: Lisa Blue – 03/04/2025</p>
+      </div>
+
+      <div class="dm-toggle">💬 Direktmeddelanden</div>
+
+      <div class="dm-panel hidden">
+        <div class="dm-users">
+          <h3>Kontakter</h3>
+          <ul>
+            <li onclick="openChat('Saman')">Saman</li>
+            <li onclick="openChat('Abdulkadir Adde')">Abdulkadir Adde</li>
+            <li onclick="openChat('Adam')">Adam</li>
+            <li onclick="openChat('S.A.K.')">S.A.K.</li>
+            <li onclick="openChat('Huy')">Huy</li>
+            <li onclick="openChat('Karre')">Karre</li>
+          </ul>
         </div>
-      </main>
-      <script>
-        document.querySelector('.signout').addEventListener('click', () => {
-          localStorage.clear();
-          window.location.href = 'login.html';
+        <div class="dm-chat">
+          <h3 id="chatWith">Välj en kontakt</h3>
+          <div class="messages"></div>
+          <input type="text" placeholder="Skriv ett meddelande..." />
+        </div>
+      </div>
+
+      <h1>Inbox</h1>
+
+      <div class="card">
+        <h2>Tool Sharing Update</h2>
+        <p>Hi! Are you still interested in borrowing the hedge trimmer this weekend?</p>
+        <p class="dates">From: Alex Green – 04/04/2025</p>
+      </div>
+
+      <div class="card">
+        <h2>Ride Sharing Available</h2>
+        <p>I’m driving to the farmer’s market Saturday morning. Want to come?</p>
+        <p class="dates">From: Lisa Blue – 03/04/2025</p>
+      </div>
+    </main>
+
+    <script>
+      // Navigation
+      document.querySelector('.signout').addEventListener('click', () => {
+        localStorage.clear();
+        window.location.href = 'login.html';
+      });
+      document.querySelectorAll('.nav button').forEach(button => {
+        button.addEventListener('click', () => {
+          const page = button.getAttribute('data-page');
+          window.location.href = `${page}.html`;
         });
-    
-        document.querySelectorAll('.nav button').forEach(button => {
-          button.addEventListener('click', () => {
-            const page = button.getAttribute('data-page');
-            window.location.href = `${page}.html`;
+      });
+
+      // Notifikationer
+      const notifIcon = document.querySelector('.notification-icon');
+      const notifDropdown = document.querySelector('.notification-dropdown');
+      notifIcon.addEventListener('click', () => {
+        notifDropdown.classList.toggle('hidden');
+      });
+      document.addEventListener('click', (event) => {
+        if (!notifIcon.contains(event.target) && !notifDropdown.contains(event.target)) {
+          notifDropdown.classList.add('hidden');
+        }
+      });
+
+      // DM-panel
+      const dmToggle = document.querySelector('.dm-toggle');
+      const dmPanel = document.querySelector('.dm-panel');
+      dmToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dmPanel.classList.toggle('hidden');
+      });
+      document.addEventListener('click', (e) => {
+        if (!dmToggle.contains(e.target) && !dmPanel.contains(e.target)) {
+          dmPanel.classList.add('hidden');
+        }
+      });
+
+      // WebSocket STOMP
+      const chatWith = document.getElementById('chatWith');
+      const chatBox = document.querySelector('.dm-chat .messages');
+      const input = document.querySelector('.dm-chat input');
+
+      let stompClient = null;
+      let currentUser = localStorage.getItem("username") || "Användare A";
+      let currentChatPartner = null;
+
+      function connectToWebSocket() {
+        const socket = new SockJS("http://127.0.0.1:8080/chat");
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, () => {
+          console.log("Ansluten till WebSocket via STOMP");
+
+          stompClient.subscribe("/topic/messages", (message) => {
+            const msg = JSON.parse(message.body);
+            if (msg.receiver === currentUser || msg.sender === currentChatPartner) {
+              chatBox.innerHTML += `<p><strong>${msg.sender}:</strong> ${msg.content}</p>`;
+            }
           });
         });
-    
-    const notifIcon = document.querySelector('.notification-icon');
-    const notifDropdown = document.querySelector('.notification-dropdown');
-    const dmToggle = document.querySelector('.dm-toggle');
-    const dmPanel = document.querySelector('.dm-panel');
-    const chatWith = document.getElementById('chatWith');
-    const chatBox = document.querySelector('.dm-chat .messages');
-    
-    notifIcon.addEventListener('click', () => {
-      notifDropdown.classList.toggle('hidden');
-    });
-    
-    document.addEventListener('click', (event) => {
-      if (!notifIcon.contains(event.target) && !notifDropdown.contains(event.target)) {
-        notifDropdown.classList.add('hidden');
       }
-    });
-    
-    dmToggle.addEventListener('click', (event) => {
-      event.stopPropagation(); 
-      dmPanel.classList.toggle('hidden');
-    });
-    
-    document.addEventListener('click', (event) => {
-      if (!dmToggle.contains(event.target) && !dmPanel.contains(event.target)) {
-        dmPanel.classList.add('hidden');
+
+      function openChat(user) {
+        currentChatPartner = user;
+        chatWith.innerText = `Chattar med: ${user}`;
+        chatBox.innerHTML = `<p><em>Hämtar gamla meddelanden...</em></p>`;
+
+        fetch(`/api/messages?user1=${currentUser}&user2=${user}`)
+          .then(res => res.json())
+          .then(messages => {
+            chatBox.innerHTML = "";
+            messages.forEach(msg => {
+              chatBox.innerHTML += `<p><strong>${msg.sender}:</strong> ${msg.content}</p>`;
+            });
+          })
+          .catch(err => {
+            chatBox.innerHTML = `<p><em>Kunde inte hämta meddelanden</em></p>`;
+            console.error("Fel vid hämtning:", err);
+          });
       }
-    });
-    
-    function openChat(user) {
-      chatWith.innerText = `Chattar med: ${user}`;
-      chatBox.innerHTML = `<p><em>Startade chatt med ${user}</em></p>`;
+
+      input.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    const raw = input.value;
+    const msg = raw.trim();
+
+    if (msg && stompClient) {
+      stompClient.send("/app/send", {}, JSON.stringify({
+        sender: currentUser,
+        receiver: currentChatPartner,
+        text: msg
+      }));
+      chatBox.innerHTML += `<p><strong>Du:</strong> ${msg}</p>`;
     }
-    
-      </script>
-    </body>
-    </html>
+
+    // Alltid rensa fältet
+    input.value = '';
+  }
+});
+
+      connectToWebSocket();
+    </script>
+  </div>
+</body>
+</html>
