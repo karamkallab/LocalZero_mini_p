@@ -347,7 +347,31 @@ public class DatabaseController {
     }
 
     public boolean logEcoActions(String action, String category, String date, String userId) {
-        
+        CallableStatement stmt = null;
+        System.out.println("Action: " + action + ", Category: " + category + ", Date: " + date + ", UserID: " + userId);
+
+        try {
+            stmt = conn.prepareCall("CALL log_eco_actions(?, ?, ?, ?)");
+    
+            stmt.setString(1, action);
+            stmt.setString(2, category);
+            stmt.setDate(3, Date.valueOf(date)); // Assuming date is in YYYY-MM-DD format
+            stmt.setInt(4, Integer.parseInt(userId));
+            stmt.executeUpdate();
+    
+            return true;
+    
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+    
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }  
 }
 

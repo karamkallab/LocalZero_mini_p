@@ -72,7 +72,7 @@ public class UserService {
 
     
     public boolean logEcoActions(String action, String category, String date, String userID) {
-        CommandLogEcoActions logEcoActions = new CommandLogEcoActions(dbController, action, category, date, userID);
+        UserCommand logEcoActions = new CommandLogEcoActions(dbController, action, category, date, userID);
         return logEcoActions.executeAction();
     } 
         

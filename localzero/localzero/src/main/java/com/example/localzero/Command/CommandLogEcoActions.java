@@ -15,7 +15,7 @@ public class CommandLogEcoActions implements UserCommand {
 
     public CommandLogEcoActions(DatabaseController dbController, String action, String category, String date, String userID) {
         this.dbController = dbController;
-        this.userId = userId;
+        this.userId = userID;
         this.action = action;
         this.category = category;
         this.date = date;
