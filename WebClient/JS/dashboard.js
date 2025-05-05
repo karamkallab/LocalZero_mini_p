@@ -63,7 +63,4 @@ document.addEventListener("DOMContentLoaded", () => {
   connectWebSocket();
 });
 
-// Optional: Expand openChat() for direct chat logic
-function openChat(user) {
-  console.log("Chat opened with:", user);
-}
+
