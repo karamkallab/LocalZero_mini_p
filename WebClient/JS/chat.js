@@ -85,6 +85,8 @@ function onMessageReceived(payload) {
 
   messageArea.appendChild(messageElement);
   messageArea.scrollTop = messageArea.scrollHeight;
+
+  //Save message to database
 }
 
 function getAvatarColor(sender) {
@@ -132,4 +134,6 @@ function openChat(user) {
   recipient = user.trim();
   subscribe(recipient);
   console.log("Chat opened with:", user);
+
+  //Load chat from database
 }
