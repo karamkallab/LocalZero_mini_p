@@ -2,6 +2,8 @@ package com.example.localzero.chat;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -13,4 +15,5 @@ public class ChatMessage {
     private String content;
     private String sender;
     private String recipient;
+    private LocalDateTime timestamp;
 }

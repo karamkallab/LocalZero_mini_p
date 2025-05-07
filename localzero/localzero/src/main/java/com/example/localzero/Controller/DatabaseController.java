@@ -4,13 +4,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.localzero.Command.CommandFetchAllUser;
 import com.example.localzero.DTO.InitiativeDTO;
-import com.example.localzero.DTO.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import io.github.cdimascio.dotenv.Dotenv;
 
 // @Repository is used for classes that handle communication with the database.
 @Repository
@@ -471,6 +467,91 @@ public class DatabaseController {
         }
 
         return nameList;
+    }
+
+    public void saveMessage(int fromUserId, int toUserId, String message) {
+        PreparedStatement stmt = null;
+        try {
+            String sql = "INSERT INTO chat_history (from_user_id, to_user_id, message) VALUES (?, ?, ?)";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, fromUserId);
+            stmt.setInt(2, toUserId);
+            stmt.setString(3, message);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public List<String> fetchMessagesBetweenUsers(int fromUserId, int toUserId) {
+        List<String> messages = new ArrayList<>();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            String sql = "SELECT from_user_id, to_user_id, message, date FROM messages " +
+                    "WHERE (from_user_id = ? AND to_user_id = ?) OR (from_user_id = ? AND to_user_id = ?) " +
+                    "ORDER BY date ASC";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, fromUserId);
+            stmt.setInt(2, toUserId);
+            stmt.setInt(3, toUserId);
+            stmt.setInt(4, fromUserId);
+
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                int from = rs.getInt("from_user_id");
+                String msg = rs.getString("message");
+                Timestamp ts = rs.getTimestamp("date");
+                messages.add("[" + ts + "] User " + from + ": " + msg);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return messages;
+    }
+
+    public int fetchIDbyName(String name) {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        int id = 0;
+
+        try {
+            // Corrected query without quotes around the placeholder
+            String sql = "SELECT user_id FROM users WHERE name = ?;";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, name);  // Correctly binds the name parameter
+            rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("user_id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return id;
     }
 }
 

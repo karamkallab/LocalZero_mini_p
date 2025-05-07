@@ -46,6 +46,7 @@ function sendMessage(event) {
     //displayMessage(chatMessage); // You must define this method
     messageInput.value = '';
   }
+
 }
 
 function displayMessage(message) {
@@ -85,8 +86,6 @@ function onMessageReceived(payload) {
 
   messageArea.appendChild(messageElement);
   messageArea.scrollTop = messageArea.scrollHeight;
-
-  //Save message to database
 }
 
 function getAvatarColor(sender) {
@@ -136,4 +135,26 @@ function openChat(user) {
   console.log("Chat opened with:", user);
 
   //Load chat from database
+  fetch(`http://localhost:8080/api/userId?name=${recipient}`)
+  .then(res => res.json())
+  .then(toUserId => {
+    fetch(`http://localhost:8080/api/userId?name=${username}`)
+      .then(res => res.json())
+      .then(fromUserId => {
+        loadChatHistory(fromUserId, toUserId);
+      });
+  });
+}
+
+function loadChatHistory(fromUserId, toUserId) {
+  fetch(`/messages/history?fromUserId=${fromUserId}&toUserId=${toUserId}`)
+    .then(response => response.json())
+    .then(data => {
+      data.forEach(msg => {
+        const messageElement = document.createElement('li');
+        messageElement.classList.add('chat-message');
+        messageElement.textContent = msg;
+        messageArea.appendChild(messageElement);
+      });
+    });
 }
