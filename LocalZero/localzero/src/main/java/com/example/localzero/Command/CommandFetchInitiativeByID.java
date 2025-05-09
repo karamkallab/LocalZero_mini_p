@@ -9,7 +9,7 @@ public class CommandFetchInitiativeByID implements UserCommand{
     private DatabaseController dbController;
     private String id;
 
-    public CommandFetchInitiativeByID(DatabaseController dbController, String id) {
+    public CommandFetchInitiativeByID(DatabaseController dbController, String id) {   
         this.dbController = dbController;
         this.id = id;
     }

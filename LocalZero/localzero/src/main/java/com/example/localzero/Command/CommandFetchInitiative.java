@@ -7,20 +7,21 @@ import java.util.List;
 
 public class CommandFetchInitiative implements UserCommand{
     private DatabaseController dbController;
+    private String email;
 
-    public CommandFetchInitiative(DatabaseController dbController) {
+    public CommandFetchInitiative(DatabaseController dbController, String email) {
         this.dbController = dbController;
+        this.email = email;
     }
 
     @Override
     public boolean executeAction() {
-
         return true;
     }
 
     @Override
     public List<InitiativeDTO> fetchInitiatives() {
-        return dbController.fetchInitiative();
+        return dbController.fetchInitiative(email);
     }
 
     @Override

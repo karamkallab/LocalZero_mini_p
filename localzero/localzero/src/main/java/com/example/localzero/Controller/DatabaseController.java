@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import io.netty.handler.codec.http.HttpContentEncoder.Result;
 
 // @Repository is used for classes that handle communication with the database.
 @Repository
@@ -28,7 +29,8 @@ public class DatabaseController {
 
     public boolean registerUser(String name, String email, String password, String location, String role) {
         CallableStatement stmt = null;
-        String[] array = role.split(",");
+        System.out.println(role);
+        String[] array = role.split(", ");
 
         try {
             stmt = conn.prepareCall("CALL new_register_user(?, ?, ?, ?)");
@@ -119,7 +121,7 @@ public class DatabaseController {
     }
 
 
-    public boolean createInitiative(String title, String description, String location, String category, String visibility) {
+    public boolean createInitiative(String title, String description, String location, String category, String[] visibility) {
         CallableStatement stmt = null;
     
         try {
@@ -129,7 +131,8 @@ public class DatabaseController {
             stmt.setString(2, description);
             stmt.setString(3, location);
             stmt.setString(4, category);
-            stmt.setString(5, visibility);
+            Array sqlArray = conn.createArrayOf("VARCHAR", visibility);
+            stmt.setArray(5, sqlArray);
     
             stmt.executeUpdate();
             return true;
@@ -147,7 +150,7 @@ public class DatabaseController {
         }
     }
 
-    public List<InitiativeDTO> fetchInitiative(){
+    public List<InitiativeDTO> fetchInitiative(String email){
         List<InitiativeDTO> initiatives = new ArrayList<>();
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -434,6 +437,65 @@ public class DatabaseController {
     }
 
     return comments;
-}    
+}
+public boolean getUserRole(String user_email) {
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
+    boolean result = false;
+
+    try {
+        String sql = "SELECT isCommunityOrganizer(?)";
+        stmt = conn.prepareStatement(sql);
+        stmt.setString(1, user_email);
+        rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            result = rs.getBoolean(1);
+            System.out.println("ROLLEN ÄR: " + result);
+
+            return result;
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    return false;
+}
+
+public boolean newUserRole(String user_email, String role) {
+    CallableStatement stmt = null;
+    if(role.equals("Community Organizer")){
+        role = "Comunity Organizer";
+    }
+
+    try {
+        stmt = conn.prepareCall("CALL giveUserNewRole(?, ?)");
+
+        stmt.setString(1, user_email);
+        stmt.setString(2, role);
+        stmt.executeUpdate();
+
+        return true;
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+
+    } finally {
+        try {
+            if (stmt != null) stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}   
 }
 

@@ -278,3 +278,20 @@ body {
   border-radius: 6px;
   border: none;
 }
+
+.manage-roles-btn {
+  position: absolute;
+  top: 75px;
+  right: 95px; /* Justeras så den inte krockar med andra knappar */
+  background-color: #5f9e53;
+  color: white;
+  padding: 12px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  z-index: 1000;
+}
+
+.manage-roles-btn:hover {
+  background-color: #4a7e43;
+}

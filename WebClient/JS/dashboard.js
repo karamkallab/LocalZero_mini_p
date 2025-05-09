@@ -1,11 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const email = localStorage.getItem("userEmail");
+
     const initiativeList = document.getElementById("initiativeList");
     if (!initiativeList) {
       console.warn("Element #initiativeList not found.");
       return;
     }
   
-    fetch("http://localhost:8080/api/FetchInitiatives")
+    fetch(`http://localhost:8080/api/FetchInitiatives?email=${encodeURIComponent(email)}`)
       .then(res => {
         if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
         return res.json();
@@ -44,6 +46,35 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(err => {
         console.error("Error fetching initiatives:", err);
+      });
+  });
+
+  document.querySelector('.manage-roles-btn')?.addEventListener('click', () => {
+    const email = localStorage.getItem("userEmail");
+
+    if (!email) {
+      alert("User ID not found in local storage.");
+      return;
+    }
+
+    fetch(`http://localhost:8080/api/user-role?email=${encodeURIComponent(email)}`, {
+      method: 'GET'
+    })
+  
+      .then(res => {
+        if (!res.ok) throw new Error("Failed to check role");
+        return res.json();
+      })
+      .then(isOrganizer => {
+        if (isOrganizer === true) {
+          window.location.href = 'communityOrganizer.html';
+        } else {
+          alert('You do not have the permission to manage user roles');
+        }
+      })
+      .catch(err => {
+        console.error("Error checking role:", err);
+        alert("You do not have the permission to manage user roles");
       });
   });
 

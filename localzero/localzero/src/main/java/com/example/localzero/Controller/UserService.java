@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,13 +34,13 @@ public class UserService {
 
     //behöver user id
     public boolean createInitiative(String title, String description, String location, String category,
-            String visibility) {
+            String[] visibility) {
         UserCommand command = new CommandCreateInitiative(title, description, location, category, visibility, dbController);
         return command.executeAction();
     }
 
-    public List<InitiativeDTO> fetchInitiative() {
-        UserCommand command = new CommandFetchInitiative(dbController);
+    public List<InitiativeDTO> fetchInitiative(String email) {
+        UserCommand command = new CommandFetchInitiative(dbController, email);
         return command.fetchInitiatives();
     }
 
@@ -80,12 +81,19 @@ public class UserService {
     return dbController.fetchCommentsByInitiativeId(initiativeId);
 }
 
-    
-
-    
     public boolean logEcoActions(String action, String category, String date, String userID) {
         UserCommand logEcoActions = new CommandLogEcoActions(dbController, action, category, date, userID);
         return logEcoActions.executeAction();
+    }
+
+    public boolean getUserRole(String user_email) {
+        UserCommand command = new CommandGetUserRole(dbController, user_email);
+        return command.executeAction();
+    }
+
+    public boolean giveNewUserRole(String email, String role) {
+        UserCommand command = new CommandNewUserRole(dbController, email, role);
+        return command.executeAction();
     } 
         
 }

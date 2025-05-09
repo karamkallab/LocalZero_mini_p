@@ -1,5 +1,7 @@
 package com.example.localzero.Controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,8 +45,18 @@ public class ServerController {
         }
     }
 
+    @PostMapping("/new-role")
+    public boolean giveNewUserRole(@RequestBody Map<String, String> data) {
+        String email = data.get("email");
+        String role = data.get("role");
+
+        boolean success = userService.giveNewUserRole(email, role);
+        return success;
+    }
+
     @PostMapping("/eco-actions-log")
     public boolean logEcoAcions(@RequestBody Map<String, Object> data) {
+        System.out.println("JAG BEFINNER MIG HÄR");
         String action = (String) data.get("action");
         String category = (String) data.get("category");
         String date = (String) data.get("date");
@@ -54,10 +66,23 @@ public class ServerController {
         return success;
     }
 
+    @GetMapping("/user-role")
+    public ResponseEntity<Boolean> getUserRole(@RequestParam String email) {
+        boolean isCommunityOrganizer = userService.getUserRole(email);
+        System.out.println("jag befinner mig här i getuserrole");
+
+        if(isCommunityOrganizer) {
+            return ResponseEntity.ok(true);
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(false);
+        }
+        
+    }
+
+
 
     @PostMapping("/authenticator")
     public Map<String, Object> loginUser(@RequestBody HashMap<String, String> user) {
-        System.out.println("JAG BEFINNER MIG HÄR");
         String email = user.get("user_email");
         String password = user.get("user_password");
     
@@ -77,12 +102,24 @@ public class ServerController {
 
     @PostMapping("/CreateInitiative")
     public String createInitiative(@RequestBody InitiativeDTO data) {
+        String regex = "\\s*,\\s*";
+        String visibility = data.getVisibility();
+        System.out.println("CURRENT STRING: " + visibility);
+        
+        String[] visibilityList = visibility.split(regex);
+
+        for(int i = 0; i < visibilityList.length; i++) {
+            if(visibilityList[i].equals("Community Organizer")) {
+                visibilityList[i] = "Comunity Organizer";
+            }
+        }
+
         boolean success = userService.createInitiative(
             data.getTitle(),
             data.getDescription(),
             data.getLocation(),
             data.getCategory(),
-            data.getVisibility()
+            visibilityList
         );
 
         if (success) {
@@ -93,8 +130,8 @@ public class ServerController {
     }
 
     @GetMapping("/FetchInitiatives")
-    public List<InitiativeDTO> fetchInitiative() {
-        return userService.fetchInitiative();
+    public List<InitiativeDTO> fetchInitiative(@RequestParam String email) {
+        return userService.fetchInitiative(email);
     }
 
     @PostMapping("/FetchInitiativeByID")
