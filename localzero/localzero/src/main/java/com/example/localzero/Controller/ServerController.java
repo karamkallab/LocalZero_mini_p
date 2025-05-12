@@ -56,7 +56,6 @@ public class ServerController {
 
     @PostMapping("/eco-actions-log")
     public boolean logEcoAcions(@RequestBody Map<String, Object> data) {
-        System.out.println("JAG BEFINNER MIG HÄR");
         String action = (String) data.get("action");
         String category = (String) data.get("category");
         String date = (String) data.get("date");
@@ -69,7 +68,6 @@ public class ServerController {
     @GetMapping("/user-role")
     public ResponseEntity<Boolean> getUserRole(@RequestParam String email) {
         boolean isCommunityOrganizer = userService.getUserRole(email);
-        System.out.println("jag befinner mig här i getuserrole");
 
         if(isCommunityOrganizer) {
             return ResponseEntity.ok(true);
@@ -104,7 +102,6 @@ public class ServerController {
     public String createInitiative(@RequestBody InitiativeDTO data) {
         String regex = "\\s*,\\s*";
         String visibility = data.getVisibility();
-        System.out.println("CURRENT STRING: " + visibility);
         
         String[] visibilityList = visibility.split(regex);
 

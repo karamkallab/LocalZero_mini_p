@@ -3,8 +3,10 @@ package com.example.localzero.Controller;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.example.localzero.DTO.InitiativeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,6 @@ public class DatabaseController {
 
     public boolean registerUser(String name, String email, String password, String location, String role) {
         CallableStatement stmt = null;
-        System.out.println(role);
         String[] array = role.split(", ");
 
         try {
@@ -46,8 +47,6 @@ public class DatabaseController {
             if(array.length == 2) {
                 addRole(email, array[1]);
             }
-
-            System.out.println("Lyckades skapa användare");
     
             return true;
     
@@ -155,12 +154,12 @@ public class DatabaseController {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            stmt = conn.prepareStatement("SELECT id, title, description, location, category, visibility FROM initiatives");
+            stmt = conn.prepareStatement("SELECT * FROM getPublicInitiatives()");
             rs = stmt.executeQuery();
 
             while (rs.next()) {
                 InitiativeDTO initiative = new InitiativeDTO();
-                initiative.setID(rs.getString("id"));
+                initiative.setID(String.valueOf(rs.getInt("id")));
                 initiative.setTitle(rs.getString("title"));
                 initiative.setDescription(rs.getString("description"));
                 initiative.setLocation(rs.getString("location"));
@@ -168,6 +167,31 @@ public class DatabaseController {
                 initiative.setVisibility(rs.getString("visibility"));
                 initiatives.add(initiative);
             }
+
+                List<String> userRoles = new ArrayList<>();
+                stmt = conn.prepareStatement("SELECT unnest(getUserRoles(?))");
+                stmt.setString(1, email);
+                rs = stmt.executeQuery();
+                while (rs.next()) {
+                    userRoles.add(rs.getString(1));
+                }
+
+                for (String role : userRoles) {
+                stmt = conn.prepareStatement("SELECT * FROM getInitiativesByRole(?)");
+                stmt.setString(1, role);
+                rs = stmt.executeQuery();
+
+                    while (rs.next()) {
+                        InitiativeDTO initiative = new InitiativeDTO();
+                        initiative.setID(rs.getString("id"));
+                        initiative.setTitle(rs.getString("title"));
+                        initiative.setDescription(rs.getString("description"));
+                        initiative.setLocation(rs.getString("location"));
+                        initiative.setCategory(rs.getString("category"));
+                        initiative.setVisibility(rs.getString("visibility"));
+                        initiatives.add(initiative);
+                    }
+}
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -180,7 +204,16 @@ public class DatabaseController {
             }
         }
 
-        return initiatives;
+            Set<String> seenIds = new HashSet<>();
+            List<InitiativeDTO> finalinitiatives = new ArrayList<>();
+
+            for (InitiativeDTO initiative : initiatives) {
+                if (seenIds.add(initiative.getId())) {
+                    finalinitiatives.add(initiative);
+                }
+            }
+
+        return finalinitiatives;
     }
 
     public InitiativeDTO fetchInitiativeByID(String id) {
@@ -193,7 +226,6 @@ public class DatabaseController {
                     "SELECT id, title, description, location, category, visibility FROM initiatives WHERE id = ?::int"
             );
             stmt.setString(1, String.valueOf(id));
-            System.out.println(stmt.toString());
             rs = stmt.executeQuery();
 
             if (rs.next()) {
@@ -353,7 +385,6 @@ public class DatabaseController {
 
     public boolean logEcoActions(String action, String category, String date, String userId) {
         CallableStatement stmt = null;
-        System.out.println("Action: " + action + ", Category: " + category + ", Date: " + date + ", UserID: " + userId);
 
         try {
             stmt = conn.prepareCall("CALL log_eco_actions(?, ?, ?, ?)");
@@ -451,7 +482,6 @@ public boolean getUserRole(String user_email) {
 
         if (rs.next()) {
             result = rs.getBoolean(1);
-            System.out.println("ROLLEN ÄR: " + result);
 
             return result;
         }
