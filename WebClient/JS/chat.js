@@ -152,3 +152,5 @@ function openChat(user) {
       alert('Error fetching messages');
     });
 }
+
+connectWebSocket();
