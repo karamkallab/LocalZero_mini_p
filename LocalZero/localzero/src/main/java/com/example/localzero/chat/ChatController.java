@@ -26,9 +26,10 @@ public class ChatController {
     public void sendMessage(@Payload ChatMessage chatMessage) {
         // Save message to DB
         try {
-            int fromUserId = databaseController.fetchIDbyName(chatMessage.getSender());
-            int toUserId = databaseController.fetchIDbyName(chatMessage.getRecipient());
+            int fromUserId = databaseController.fetchIDByName(chatMessage.getSender());
+            int toUserId = databaseController.fetchIDByName(chatMessage.getRecipient());
             databaseController.saveMessage(fromUserId, toUserId, chatMessage.getContent());
+            //Notify user
         } catch (Exception e) {
             e.printStackTrace(); // Log error (or handle more gracefully)
         }
@@ -54,18 +55,5 @@ public class ChatController {
         headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
         System.out.println("Assigned principal: " + (principal != null ? principal.getName() : "null"));
         return chatMessage;
-    }
-
-    @GetMapping("/messages/history")
-    public List<String> getMessageHistory(
-            @RequestParam int fromUserId,
-            @RequestParam int toUserId
-    ) {
-        return databaseController.fetchMessagesBetweenUsers(fromUserId, toUserId);
-    }
-
-    @GetMapping("/api/userId")
-    public int getUserIdByName(@RequestParam String name) {
-        return databaseController.fetchIDbyName(name);
     }
 }

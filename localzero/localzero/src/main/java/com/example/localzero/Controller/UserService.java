@@ -2,6 +2,7 @@ package com.example.localzero.Controller;
 
 import com.example.localzero.Command.*;
 import com.example.localzero.DTO.InitiativeDTO;
+import com.example.localzero.chat.ChatMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,18 +37,8 @@ public class UserService {
         return command.executeAction();
     }
 
-    public boolean fetchInitiativeCheck() {
-        UserCommand command = new CommandFetchInitiative(dbController);
-        return command.executeAction();
-    }
-
     public List<InitiativeDTO> fetchInitiative(){
         return dbController.fetchInitiative();
-    }
-
-    public boolean fetchInitiativeByIDCheck() {
-        UserCommand command = new CommandFetchInitiativeByID(dbController);
-        return command.executeAction();
     }
 
     public InitiativeDTO fetchInitiativeByID(String id){
@@ -76,13 +67,13 @@ public class UserService {
         return dbController.checkJoinStatus(userId, initiativeId);
     }
     public String fetchNameIdByEmail(String email) {
-        return dbController.fetchNameIdByEmail(email);
-    }
-    public boolean fetchAllNameCheck(){
-        UserCommand command = new CommandFetchAllUser(dbController);
-        return command.executeAction();
+        return dbController.fetchNameByEmail(email);
     }
     public ArrayList<String> fetchAllName(){
         return dbController.fetchAllName();
+    }
+
+    public ArrayList<ChatMessage> loadMessageHistory(String fromUsername, String toUsername){
+        return dbController.loadMessageHistory(dbController.fetchIDByName(fromUsername), dbController.fetchIDByName(toUsername));
     }
 }

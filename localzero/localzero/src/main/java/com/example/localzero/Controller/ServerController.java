@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.example.localzero.chat.ChatMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -84,26 +85,13 @@ public class ServerController {
 
     @GetMapping("/FetchInitiatives")
     public List<InitiativeDTO> fetchInitiative() {
-        boolean success = userService.fetchInitiativeCheck();
-        if(success){
-            return userService.fetchInitiative();
-        }
-        else {
-            return null;
-        }
+        return userService.fetchInitiative();
     }
 
     @PostMapping("/FetchInitiativeByID")
     @ResponseBody
     public InitiativeDTO fetchInitiativeByID(@RequestBody String id) {
-
-        boolean success = userService.fetchInitiativeByIDCheck();
-        if(success){
-            return userService.fetchInitiativeByID(id);
-        }
-        else {
-            return null;
-        }
+        return userService.fetchInitiativeByID(id);
     }
 
     @PostMapping("/UpdateInitiative")
@@ -151,12 +139,29 @@ public class ServerController {
 
     @GetMapping("/FetchAllName")
     public List<String> fetchAllName() {
-        boolean success = userService.fetchAllNameCheck();
         ArrayList<String> nameList = userService.fetchAllName();
-        if (success) {
-            return nameList;
-        } else {
-            return null;
-        }
+        return nameList;
     }
+
+    @PostMapping("/LoadMessageHistory")
+    @ResponseBody
+    public ArrayList<ChatMessage> loadMessageHistory(@RequestBody String usersReceived) {
+         ;
+
+        String[] parts = usersReceived.split(",");
+        if (parts.length != 2) {
+            throw new IllegalArgumentException("Expected two usernames separated by a comma");
+        }
+
+        String fromUsername = parts[0];
+        String toUsername = parts[1];
+
+        System.out.println("From username: " + fromUsername);
+        System.out.println("To username: " + toUsername);
+
+
+        return userService.loadMessageHistory(fromUsername, toUsername);
+    }
+
+
 }

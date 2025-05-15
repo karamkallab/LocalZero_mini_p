@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.localzero.DTO.InitiativeDTO;
+import com.example.localzero.chat.ChatMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -382,7 +383,7 @@ public class DatabaseController {
         return joined;
     }
 
-    public String fetchNameIdByEmail(String email){
+    public String fetchNameByEmail(String email){
         PreparedStatement stmt = null;
         ResultSet rs = null;
         String name = "";
@@ -477,7 +478,7 @@ public class DatabaseController {
             stmt.setInt(1, fromUserId);
             stmt.setInt(2, toUserId);
             stmt.setString(3, message);
-
+            stmt.execute();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -487,29 +488,35 @@ public class DatabaseController {
                 e.printStackTrace();
             }
         }
+
     }
 
-    public List<String> fetchMessagesBetweenUsers(int fromUserId, int toUserId) {
-        List<String> messages = new ArrayList<>();
+    public ArrayList<ChatMessage> loadMessageHistory(int fromUserId, int toUserId) {
+        ArrayList<ChatMessage> messages = new ArrayList<>();
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
-            String sql = "SELECT from_user_id, to_user_id, message, date FROM messages " +
-                    "WHERE (from_user_id = ? AND to_user_id = ?) OR (from_user_id = ? AND to_user_id = ?) " +
-                    "ORDER BY date ASC";
+            String sql = "SELECT * FROM chat_history " +
+                    "WHERE (from_user_id = ? AND to_user_id = ?) " +
+                    "   OR (from_user_id = ? AND to_user_id = ?) " +
+                    "ORDER BY message_id ASC";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, fromUserId);
             stmt.setInt(2, toUserId);
-            stmt.setInt(3, toUserId);
+            stmt.setInt(3, toUserId); // reversed direction
             stmt.setInt(4, fromUserId);
 
             rs = stmt.executeQuery();
             while (rs.next()) {
                 int from = rs.getInt("from_user_id");
+                int to = rs.getInt("to_user_id");
                 String msg = rs.getString("message");
-                Timestamp ts = rs.getTimestamp("date");
-                messages.add("[" + ts + "] User " + from + ": " + msg);
+                ChatMessage chatMessage = new ChatMessage();
+                chatMessage.setSender(fetchNameByID(from));
+                chatMessage.setRecipient(fetchNameByID(to));
+                chatMessage.setContent(msg);
+                messages.add(chatMessage);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -525,7 +532,7 @@ public class DatabaseController {
         return messages;
     }
 
-    public int fetchIDbyName(String name) {
+    public int fetchIDByName(String name) {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         int id = 0;
@@ -552,6 +559,34 @@ public class DatabaseController {
         }
 
         return id;
+    }
+
+    public String fetchNameByID(int id) {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        String name = "";
+
+        try {
+            String sql = "SELECT name FROM users WHERE user_id = ?;";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, id);
+            rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                name = rs.getString("name");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return name;
     }
 }
 

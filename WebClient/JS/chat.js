@@ -10,8 +10,10 @@ const colors = ['#2196F3', '#32c787', '#00BCD4', '#ff5652', '#ffc107', '#ff85af'
 
 let recipient = null;
 let stompClient = null;
+let currentSubscription = null;
 
 function connectWebSocket() {
+  console.log(username);
   const encodedUsername = encodeURIComponent(username);
   const socket = new SockJS(`http://localhost:8080/ws?username=${encodedUsername}`);
   stompClient = Stomp.over(socket);
@@ -25,7 +27,12 @@ function onConnected() {
 }
 
 function subscribe(username) {
-  stompClient.subscribe(`/user/${username}/queue/messages`, onMessageReceived);
+  if (currentSubscription !== null) {
+    currentSubscription.unsubscribe();
+    currentSubscription = null;
+  }
+
+  currentSubscription = stompClient.subscribe(`/user/${username}/queue/messages`, onMessageReceived);
 }
 
 function onError(error) {
@@ -65,27 +72,18 @@ function displayMessage(message) {
 }
 
 function onMessageReceived(payload) {
-  console.log("Payload: " + payload)
+  console.log("Payload: " + payload);
   const message = JSON.parse(payload.body);
-  const messageElement = document.createElement('li');
 
   if (message.type === 'JOIN' || message.type === 'LEAVE') {
+    const messageElement = document.createElement('li');
     messageElement.classList.add('event-message');
-    message.content = recipient + (message.type === 'JOIN' ? ' joined!' : ' left!');
-  } else {
-    console.log("Recipent:1q2321 " + recipient)
-    messageElement.classList.add('chat-message');
-    const name = document.createElement('span');
-    name.textContent = message.sender;
-    messageElement.appendChild(name);
+    messageElement.textContent = recipient + (message.type === 'JOIN' ? ' joined!' : ' left!');
+    messageArea.appendChild(messageElement);
+    messageArea.scrollTop = messageArea.scrollHeight;
+  } else if (message.recipient === username || message.sender === username) {
+    displayMessage(message);
   }
-
-  const text = document.createElement('p');
-  text.textContent = message.content;
-  messageElement.appendChild(text);
-
-  messageArea.appendChild(messageElement);
-  messageArea.scrollTop = messageArea.scrollHeight;
 }
 
 function getAvatarColor(sender) {
@@ -108,7 +106,6 @@ dmToggle.addEventListener('click', (e) => {
           contactList.innerHTML = '';
     
           data.forEach(user => {
-            // Skip yourself
             if (user === localStorage.getItem('name')) return;
     
             const li = document.createElement('li');
@@ -128,33 +125,30 @@ document.addEventListener('click', (e) => {
 });
 messageForm.addEventListener('submit', sendMessage);
 
-// Optional: Expand openChat() for direct chat logic
 function openChat(user) {
   recipient = user.trim();
   subscribe(recipient);
+  messageArea.innerHTML = "";
   console.log("Chat opened with:", user);
 
-  //Load chat from database
-  fetch(`http://localhost:8080/api/userId?name=${recipient}`)
-  .then(res => res.json())
-  .then(toUserId => {
-    fetch(`http://localhost:8080/api/userId?name=${username}`)
-      .then(res => res.json())
-      .then(fromUserId => {
-        loadChatHistory(fromUserId, toUserId);
-      });
-  });
-}
+  const usersToSend = username + "," + recipient;
+  console.log(usersToSend);
 
-function loadChatHistory(fromUserId, toUserId) {
-  fetch(`/messages/history?fromUserId=${fromUserId}&toUserId=${toUserId}`)
-    .then(response => response.json())
+  fetch('http://127.0.0.1:8080/api/LoadMessageHistory', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: usersToSend
+    })
+    .then(res => res.json())
     .then(data => {
-      data.forEach(msg => {
-        const messageElement = document.createElement('li');
-        messageElement.classList.add('chat-message');
-        messageElement.textContent = msg;
-        messageArea.appendChild(messageElement);
+      data.forEach(message => {
+        displayMessage(message);
       });
+    })
+    .catch(error => {
+      console.error('Error fetching messages:', error);
+      alert('Error fetching messages');
     });
 }
