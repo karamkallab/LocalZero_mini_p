@@ -31,7 +31,7 @@ public class ChatController {
             databaseController.saveMessage(fromUserId, toUserId, chatMessage.getContent());
             //Notify user
         } catch (Exception e) {
-            e.printStackTrace(); // Log error (or handle more gracefully)
+            e.printStackTrace();
         }
 
         // Send to both sender and recipient
@@ -49,7 +49,6 @@ public class ChatController {
     }
 
     @MessageMapping("/chat.addUser")
-    //@SendTo("/topic/public")
     public ChatMessage addUser(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor, Principal principal) {
         // Add username in web socket session
         headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
