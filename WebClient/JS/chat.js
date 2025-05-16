@@ -11,6 +11,7 @@ const colors = ['#2196F3', '#32c787', '#00BCD4', '#ff5652', '#ffc107', '#ff85af'
 let recipient = null;
 let stompClient = null;
 let currentSubscription = null;
+let notisSubscription = null;
 
 function connectWebSocket() {
   console.log(username);
@@ -24,6 +25,7 @@ function onConnected() {
   stompClient.subscribe(`/user/queue/messages`, onMessageReceived);
   stompClient.send("/app/chat.addUser", {}, JSON.stringify({ sender: username, type: 'JOIN' }));
   console.log("Connected and subscribed to /user/queue/messages");
+  subscribeToInitiatives()
 }
 
 function subscribe(username) {
@@ -50,7 +52,7 @@ function sendMessage(event) {
       type: 'CHAT'
     };
     stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
-    //displayMessage(chatMessage); // You must define this method
+    //displayMessage(chatMessage);
     messageInput.value = '';
   }
 
@@ -154,3 +156,58 @@ function openChat(user) {
 }
 
 connectWebSocket();
+
+function subscribeToInitiatives() {
+  console.log("Subscribing to /topic/initiatives..."); // ✅ ADD THIS
+
+  if (stompClient) {
+    notisSubscription = stompClient.subscribe('/topic/initiatives', (message) => {
+      console.log("Initiative update received!"); 
+      console.log(message);
+      const initiative = JSON.parse(message.body);
+      renderInitiativeCard(initiative);
+      showNotification("New initiative: " + initiative.title);
+    });
+  } else {
+    console.error("stompClient is not ready yet. Trying again in 500ms...");
+    setTimeout(subscribeToInitiatives, 500);
+  }
+}
+
+// Function to render initiative cards
+function renderInitiativeCard(initiative) {
+  const initiativeList = document.getElementById("initiativeList");
+
+  const link = document.createElement("a");
+  link.href = `initiative_view.html?id=${initiative.id}`;
+  link.className = "initiative-box-link";
+
+  const card = document.createElement("div");
+  card.className = "card";
+
+  const h2 = document.createElement("h2");
+  h2.textContent = `${initiative.title} – At ${initiative.location}`;
+
+  const p = document.createElement("p");
+  p.textContent = `Category: ${initiative.category}`;
+
+  const p1 = document.createElement("p");
+  p1.textContent = initiative.description;
+
+  const dates = document.createElement("p");
+  dates.className = "dates";
+  dates.textContent = "Posted by LocalZero";
+
+  card.append(h2, p, p1, dates);
+  link.appendChild(card);
+  initiativeList.prepend(link); // Add new initiative to top
+}
+
+// Function to show notification (if you want)
+function showNotification(message) {
+  const notifDropdown = document.querySelector('.notification-dropdown');
+  const notifItem = document.createElement("div");
+  notifItem.textContent = message;
+  notifDropdown.prepend(notifItem);
+  notifDropdown.classList.remove('hidden');
+}

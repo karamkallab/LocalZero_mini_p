@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const initiativeList = document.getElementById("initiativeList");
   const notifIcon = document.querySelector('.notification-icon');
   const notifDropdown = document.querySelector('.notification-dropdown');
-  
+
   document.querySelector('.signout').addEventListener('click', () => {
     localStorage.clear();
     window.location.href = 'login.html';
@@ -25,40 +25,55 @@ document.addEventListener("DOMContentLoaded", () => {
     notifDropdown.classList.toggle('hidden');
   });
 
-  // Load Initiatives
+  // Load initial initiatives
   if (initiativeList) {
     fetch("http://localhost:8080/api/FetchInitiatives")
       .then(res => res.json())
       .then(data => {
         initiativeList.innerHTML = '';
-        data.forEach(initiative => {
-          const link = document.createElement("a");
-          link.href = `initiative_view.html?id=${initiative.id}`;
-          link.className = "initiative-box-link";
-
-          const card = document.createElement("div");
-          card.className = "card";
-
-          const h2 = document.createElement("h2");
-          h2.textContent = `${initiative.title} – At ${initiative.location}`;
-
-          const p = document.createElement("p");
-          p.textContent = `Category: ${initiative.category}`;
-
-          const p1 = document.createElement("p");
-          p1.textContent = initiative.description;
-
-          const dates = document.createElement("p");
-          dates.className = "dates";
-          dates.textContent = "Posted by LocalZero";
-
-          card.append(h2, p, p1, dates);
-          link.appendChild(card);
-          initiativeList.appendChild(link);
-        });
+        data.forEach(renderInitiativeCard);
       })
       .catch(err => console.error("Error fetching initiatives:", err));
   }
+
 });
+
+// Function to render initiative cards
+function renderInitiativeCard(initiative) {
+  const initiativeList = document.getElementById("initiativeList");
+
+  const link = document.createElement("a");
+  link.href = `initiative_view.html?id=${initiative.id}`;
+  link.className = "initiative-box-link";
+
+  const card = document.createElement("div");
+  card.className = "card";
+
+  const h2 = document.createElement("h2");
+  h2.textContent = `${initiative.title} – At ${initiative.location}`;
+
+  const p = document.createElement("p");
+  p.textContent = `Category: ${initiative.category}`;
+
+  const p1 = document.createElement("p");
+  p1.textContent = initiative.description;
+
+  const dates = document.createElement("p");
+  dates.className = "dates";
+  dates.textContent = "Posted by LocalZero";
+
+  card.append(h2, p, p1, dates);
+  link.appendChild(card);
+  initiativeList.prepend(link); // Add new initiative to top
+}
+
+// Function to show notification (if you want)
+function showNotification(message) {
+  const notifDropdown = document.querySelector('.notification-dropdown');
+  const notifItem = document.createElement("div");
+  notifItem.textContent = message;
+  notifDropdown.prepend(notifItem);
+  notifDropdown.classList.remove('hidden');
+}
 
 

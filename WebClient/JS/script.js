@@ -124,7 +124,17 @@ if (initiativeForm) {
     .then(res => res.text())  
     .then(data => {
       alert("Server response: " + data);  
+      const stompClient = localStorage.getItem("lastname");
+      stompClient.send("/app/notificationInitiatives", {}, JSON.stringify({
+        title,
+        description,
+        location,
+        category,
+        visibility,
+        createdByUserID
+      }));
       initiativeForm.reset();
+     
     })
     .catch(err => {
       console.error("Error while sending:", err);

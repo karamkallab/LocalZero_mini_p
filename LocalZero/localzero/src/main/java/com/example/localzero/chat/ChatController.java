@@ -1,6 +1,7 @@
 package com.example.localzero.chat;
 
 import com.example.localzero.Controller.DatabaseController;
+import com.example.localzero.DTO.InitiativeDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -55,4 +56,5 @@ public class ChatController {
         System.out.println("Assigned principal: " + (principal != null ? principal.getName() : "null"));
         return chatMessage;
     }
+
 }

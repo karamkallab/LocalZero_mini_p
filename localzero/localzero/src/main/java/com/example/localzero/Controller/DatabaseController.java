@@ -5,15 +5,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.localzero.DTO.InitiativeDTO;
+import com.example.localzero.chat.ChatController;
 import com.example.localzero.chat.ChatMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestBody;
 
 // @Repository is used for classes that handle communication with the database.
 @Repository
 public class DatabaseController {
     private Connection conn;
     private DatabaseConnection dbConnection;
+    @Autowired
+    private NotificationService notificationService;
 
     //@Autowired is used to automatically inject (provide) an instance of 
     // a class that is managed by Spring.
@@ -22,6 +28,7 @@ public class DatabaseController {
         this.dbConnection = dbConnection;
         this.conn = dbConnection.getConnection();
     }
+
 
     public boolean registerUser(String name, String email, String password, String location, String role) {
         CallableStatement stmt = null;
@@ -115,10 +122,9 @@ public class DatabaseController {
         }
     }
 
-
     public boolean createInitiative(String title, String description, String location, String category, String[] visibility, int createdByUserID) {
         CallableStatement stmt = null;
-    
+
         try {
             stmt = conn.prepareCall("call create_initiative(?, ?, ?, ?, ?, ?)");
 
@@ -128,14 +134,26 @@ public class DatabaseController {
             stmt.setString(4, category);
             stmt.setArray(5, conn.createArrayOf("varchar", visibility));
             stmt.setInt(6, createdByUserID);
-    
+
             stmt.executeUpdate();
+
+            // Only broadcast after successful creation
+            InitiativeDTO initiativeDTO = new InitiativeDTO();
+            initiativeDTO.setTitle(title);
+            initiativeDTO.setDescription(description);
+            initiativeDTO.setLocation(location);
+            initiativeDTO.setCategory(category);
+            initiativeDTO.setVisibility(visibility);
+            initiativeDTO.setCreatedByUserID(createdByUserID);
+
+            notificationService.broadcastInitiative(initiativeDTO);
+
             return true;
-    
+
         } catch (Exception e) {
             e.printStackTrace();
             return false;
-    
+
         } finally {
             try {
                 if (stmt != null) stmt.close();
@@ -144,6 +162,7 @@ public class DatabaseController {
             }
         }
     }
+
     public boolean fetchInitiativeCheck() {
         List<InitiativeDTO> initiatives = new ArrayList<>();
         PreparedStatement stmt = null;
