@@ -8,7 +8,7 @@ public class InitiativeDTO {
     private String description;
     private String location;
     private String category;
-    private String visibility;
+    private String[] visibility;
     private int createdByUserID;
 
     public String getId() { return id; }
@@ -26,8 +26,8 @@ public class InitiativeDTO {
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
 
-    public String getVisibility() { return visibility; }
-    public void setVisibility(String visibility) { this.visibility = visibility; }
+    public String[] getVisibility() { return visibility; }
+    public void setVisibility(String[] visibility) { this.visibility = visibility; }
 
     public int getCreatedByUserID() { return createdByUserID; }
     public void setCreatedByUserID(int createdByUserID) { this.createdByUserID = createdByUserID; }

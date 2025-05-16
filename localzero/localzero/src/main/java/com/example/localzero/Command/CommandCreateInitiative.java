@@ -11,10 +11,10 @@ public class CommandCreateInitiative implements UserCommand {
     private String description;
     private String location;
     private String category;
-    private String visibility;
+    private String[] visibility;
     private int createdByUserID;
 
-    public CommandCreateInitiative(String title, String description, String location, String category, String visibility, int createdByUserID, DatabaseController db) {
+    public CommandCreateInitiative(String title, String description, String location, String category, String[] visibility, int createdByUserID, DatabaseController db) {
         this.title = title;
         this.description = description;
         this.location = location;

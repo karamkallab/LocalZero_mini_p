@@ -94,14 +94,17 @@ if (initiativeForm) {
     const description = document.getElementById("description").value;
     const location = document.getElementById("location").value;
     const category = document.getElementById("category").value;
-    const visibility = document.querySelector('input[name="visibility"]:checked').value;
+    const visibility = Array.from(document.querySelectorAll('input[name="visibility"]:checked')).map(input => input.value);
+    const createdByUserID = localStorage.getItem('userId');
+    console.log(createdByUserID);
 
     console.log("Sending data:", {
       title,
       description,
       location,
       category,
-      visibility
+      visibility,
+      createdByUserID
     });
 
     fetch("http://localhost:8080/api/CreateInitiative", {
@@ -114,7 +117,8 @@ if (initiativeForm) {
         description,
         location,
         category,
-        visibility
+        visibility,
+        createdByUserID
       })
     })
     .then(res => res.text())  

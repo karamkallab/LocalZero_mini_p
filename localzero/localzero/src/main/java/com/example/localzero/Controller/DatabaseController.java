@@ -116,7 +116,7 @@ public class DatabaseController {
     }
 
 
-    public boolean createInitiative(String title, String description, String location, String category, String visibility, int createdByUserID) {
+    public boolean createInitiative(String title, String description, String location, String category, String[] visibility, int createdByUserID) {
         CallableStatement stmt = null;
     
         try {
@@ -126,7 +126,7 @@ public class DatabaseController {
             stmt.setString(2, description);
             stmt.setString(3, location);
             stmt.setString(4, category);
-            stmt.setString(5, visibility);
+            stmt.setArray(5, conn.createArrayOf("varchar", visibility));
             stmt.setInt(6, createdByUserID);
     
             stmt.executeUpdate();
@@ -160,7 +160,7 @@ public class DatabaseController {
                 initiative.setDescription(rs.getString("description"));
                 initiative.setLocation(rs.getString("location"));
                 initiative.setCategory(rs.getString("category"));
-                initiative.setVisibility(rs.getString("visibility"));
+                initiative.setVisibility((String[]) rs.getArray("visibility").getArray());
                 initiative.setCreatedByUserID(rs.getInt("created_by_userid"));
                 initiatives.add(initiative);
             }
@@ -195,7 +195,7 @@ public class DatabaseController {
                 initiative.setDescription(rs.getString("description"));
                 initiative.setLocation(rs.getString("location"));
                 initiative.setCategory(rs.getString("category"));
-                initiative.setVisibility(rs.getString("visibility"));
+                initiative.setVisibility((String[]) rs.getArray("visibility").getArray());
                 initiatives.add(initiative);
             }
 
@@ -236,7 +236,7 @@ public class DatabaseController {
                 initiative.setDescription(rs.getString("description"));
                 initiative.setLocation(rs.getString("location"));
                 initiative.setCategory(rs.getString("category"));
-                initiative.setVisibility(rs.getString("visibility"));
+                initiative.setVisibility((String[]) rs.getArray("visibility").getArray());
                 initiative.setCreatedByUserID(rs.getInt("created_by_userid"));
             }
 
@@ -265,7 +265,7 @@ public class DatabaseController {
             stmt.setString(2, initiative.getDescription());
             stmt.setString(3, initiative.getLocation());
             stmt.setString(4, initiative.getCategory());
-            stmt.setString(5, initiative.getVisibility());
+            stmt.setArray(5, conn.createArrayOf("varchar", initiative.getVisibility()));
             stmt.setInt(6, Integer.parseInt(initiative.getId()));
 
             int affectedRows = stmt.executeUpdate();

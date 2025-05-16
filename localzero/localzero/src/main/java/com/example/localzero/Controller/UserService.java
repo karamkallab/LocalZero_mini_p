@@ -32,7 +32,7 @@ public class UserService {
     }
 
     public boolean createInitiative(String title, String description, String location, String category,
-            String visibility, int createdByUserID) {
+            String[] visibility, int createdByUserID) {
         UserCommand command = new CommandCreateInitiative(title, description, location, category, visibility, createdByUserID, dbController);
         return command.executeAction();
     }
