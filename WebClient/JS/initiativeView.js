@@ -41,18 +41,34 @@ document.addEventListener("DOMContentLoaded", () => {
   .then(data => {
     console.log("Fetched initiative:", data);
     initiativePost.innerHTML = '';
+    
+    if(localStorage.getItem('userId') == data.createdByUserID){
+      initiativePost.innerHTML = `
+        <h2>Title: ${data.title}</h2>
+        <p><strong>Description:</strong> ${data.description}</p>
+        <p><strong>Location:</strong> ${data.location}</p>
+        <p><strong>Category:</strong> ${data.category}</p>
 
-    initiativePost.innerHTML = `
-      <h2>Title: ${data.title}</h2>
-      <p><strong>Description:</strong> ${data.description}</p>
-      <p><strong>Location:</strong> ${data.location}</p>
-      <p><strong>Category:</strong> ${data.category}</p>
+        <button class="like-button">❤️ Like (7) </button>
+        <button class="show-comment">💬 Show Comments</button>
+        <button class="update-initiative-btn">📝 Update initiative</button>
+        <button class="join-initiative">✚ Join initiative</button>
+      `;
+    }
+    else{
+      initiativePost.innerHTML = `
+        <h2>Title: ${data.title}</h2>
+        <p><strong>Description:</strong> ${data.description}</p>
+        <p><strong>Location:</strong> ${data.location}</p>
+        <p><strong>Category:</strong> ${data.category}</p>
 
-      <button class="like-button">❤️ Like (7) </button>
-      <button class="show-comment">💬 Show Comments</button>
-      <button class="update-initiative-btn">📝 Update initiative</button>
-      <button class="join-initiative">✚ Join initiative</button>
-    `;
+        <button class="like-button">❤️ Like (7) </button>
+        <button class="show-comment">💬 Show Comments</button>
+        <button class="join-initiative">✚ Join initiative</button>
+      `;
+    }
+
+    
     const joinButton = document.querySelector('.join-initiative');
 
     if (joinButton) {
@@ -132,9 +148,12 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    document.querySelector('.update-initiative-btn').addEventListener('click', () => {
-      window.location.href = `update_initiative.html?id=${initiativeId}`;
-    });
+    const updateButton = document.querySelector('.update-initiative-btn');
+    if (updateButton) {
+      updateButton.addEventListener('click', () => {
+        window.location.href = `update_initiative.html?id=${initiativeId}`;
+      });
+    }
   })
   .catch(err => {
     console.error("Error fetching initiative:", err);

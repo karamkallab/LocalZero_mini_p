@@ -73,7 +73,8 @@ public class ServerController {
             data.getDescription(),
             data.getLocation(),
             data.getCategory(),
-            data.getVisibility()
+            data.getVisibility(),
+            data.getCreatedByUserID()
         );
 
         if (success) {

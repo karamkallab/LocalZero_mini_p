@@ -116,17 +116,18 @@ public class DatabaseController {
     }
 
 
-    public boolean createInitiative(String title, String description, String location, String category, String visibility) {
+    public boolean createInitiative(String title, String description, String location, String category, String visibility, int createdByUserID) {
         CallableStatement stmt = null;
     
         try {
-            stmt = conn.prepareCall("call create_initiative(?, ?, ?, ?, ?)");
+            stmt = conn.prepareCall("call create_initiative(?, ?, ?, ?, ?, ?)");
 
             stmt.setString(1, title);
             stmt.setString(2, description);
             stmt.setString(3, location);
             stmt.setString(4, category);
             stmt.setString(5, visibility);
+            stmt.setInt(6, createdByUserID);
     
             stmt.executeUpdate();
             return true;
@@ -149,7 +150,7 @@ public class DatabaseController {
         ResultSet rs = null;
 
         try {
-            stmt = conn.prepareStatement("SELECT id, title, description, location, category, visibility FROM initiatives");
+            stmt = conn.prepareStatement("SELECT id, title, description, location, category, visibility, created_by_userid FROM initiatives");
             rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -160,6 +161,7 @@ public class DatabaseController {
                 initiative.setLocation(rs.getString("location"));
                 initiative.setCategory(rs.getString("category"));
                 initiative.setVisibility(rs.getString("visibility"));
+                initiative.setCreatedByUserID(rs.getInt("created_by_userid"));
                 initiatives.add(initiative);
             }
 
@@ -222,10 +224,9 @@ public class DatabaseController {
 
         try {
             stmt = conn.prepareStatement(
-                    "SELECT id, title, description, location, category, visibility FROM initiatives WHERE id = ?::int"
+                    "SELECT id, title, description, location, category, visibility, created_by_userid FROM initiatives WHERE id = ?::int"
             );
             stmt.setString(1, String.valueOf(id));
-            System.out.println(stmt.toString());
             rs = stmt.executeQuery();
 
             if (rs.next()) {
@@ -236,6 +237,7 @@ public class DatabaseController {
                 initiative.setLocation(rs.getString("location"));
                 initiative.setCategory(rs.getString("category"));
                 initiative.setVisibility(rs.getString("visibility"));
+                initiative.setCreatedByUserID(rs.getInt("created_by_userid"));
             }
 
         } catch (Exception e) {
