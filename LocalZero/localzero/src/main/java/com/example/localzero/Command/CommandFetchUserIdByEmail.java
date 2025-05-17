@@ -5,29 +5,35 @@ import com.example.localzero.DTO.InitiativeDTO;
 
 import java.util.List;
 
-public class CommandFetchInitiativeByID implements UserCommand{
+public class CommandFetchUserIdByEmail implements UserCommand {
     private DatabaseController dbController;
-    private String id;
-    private InitiativeDTO initiative;
+    private String email;
+    private int userId;
+    
 
-    public CommandFetchInitiativeByID(DatabaseController dbController, String id) {   
+    public CommandFetchUserIdByEmail(DatabaseController dbController, String email) {
         this.dbController = dbController;
-        this.id = id;
+        this.email = email;
     }
 
     @Override
     public boolean executeAction() {
-        this.initiative = dbController.fetchInitiativeByID(id);
-        return true;
+       this.userId = dbController.fetchUserIdByEmail(email);
+        return true; 
     }
 
     @Override
     public List<InitiativeDTO> fetchInitiatives() {
-        return List.of();
+        return List.of(); 
     }
 
     @Override
     public InitiativeDTO fetchInitiativeByID() {
-        return initiative;
+        return null;
+    }
+
+    @Override
+    public int fetchUserIdByEmail() {
+        return userId;
     }
 }

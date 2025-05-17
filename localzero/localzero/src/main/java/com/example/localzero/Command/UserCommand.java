@@ -8,4 +8,13 @@ public interface UserCommand {
     boolean executeAction();
     List<InitiativeDTO> fetchInitiatives();
     InitiativeDTO fetchInitiativeByID();
+
+    default int fetchUserIdByEmail() {
+        return -1;
+    }
+    
+    default boolean checkJoinStatus() {
+        return false;
+    }
+    
 }

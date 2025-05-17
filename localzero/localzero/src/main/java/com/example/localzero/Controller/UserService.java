@@ -46,9 +46,10 @@ public class UserService {
 
     public InitiativeDTO fetchInitiativeByID(String id) {
         UserCommand command = new CommandFetchInitiativeByID(dbController, id);
+        command.executeAction();
         return command.fetchInitiativeByID();
     }
-
+    
     //behöver user id
     public boolean updateInitiative(InitiativeDTO initiativeDTO) {
         UserCommand command = new CommandUpdateInitiative(dbController, initiativeDTO);
@@ -61,25 +62,32 @@ public class UserService {
     }
 
     public int fetchUserIdByEmail(String email) {
-        return dbController.fetchUserIdByEmail(email);
+        UserCommand command = new CommandFetchUserIdByEmail(dbController, email);
+        command.executeAction();
+        return command.fetchUserIdByEmail();
     }
+    
     public boolean joinInitiative(int userId, int initiativeId) {
-        CommandJoinInitiative joinCommand = new CommandJoinInitiative(dbController, userId, initiativeId);
+        UserCommand joinCommand = new CommandJoinInitiative(dbController, userId, initiativeId);
         return joinCommand.executeAction();
     }
 
     public boolean checkJoinStatus(int userId, int initiativeId) {
-        return dbController.checkJoinStatus(userId, initiativeId);
-    }  
-
+        UserCommand command = new CommandCheckJoinStatus(dbController, userId, initiativeId);
+        command.executeAction(); 
+        return command.checkJoinStatus(); 
+    }
+    
     public boolean commentInitiative(int userId, int initiativeId, String comment) {
-        CommandCommentInitiative commentCommand = new CommandCommentInitiative(dbController, userId, initiativeId, comment);
+        UserCommand commentCommand = new CommandCommentInitiative(dbController, userId, initiativeId, comment);
         return commentCommand.executeAction();
     } 
 
     public List<Map<String, String>> getCommentsByInitiativeId(int initiativeId) {
-    return dbController.fetchCommentsByInitiativeId(initiativeId);
-}
+        UserCommand command = new CommandGetCommentsByInitiativeId(dbController, initiativeId);
+        command.executeAction();
+        return ((CommandGetCommentsByInitiativeId) command).getComments();
+    }    
 
     public boolean logEcoActions(String action, String category, String date, String userID) {
         UserCommand logEcoActions = new CommandLogEcoActions(dbController, action, category, date, userID);
@@ -94,6 +102,5 @@ public class UserService {
     public boolean giveNewUserRole(String email, String role) {
         UserCommand command = new CommandNewUserRole(dbController, email, role);
         return command.executeAction();
-    } 
-        
+    }      
 }
