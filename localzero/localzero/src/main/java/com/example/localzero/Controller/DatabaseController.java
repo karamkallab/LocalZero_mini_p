@@ -146,7 +146,7 @@ public class DatabaseController {
             initiativeDTO.setVisibility(visibility);
             initiativeDTO.setCreatedByUserID(createdByUserID);
 
-            notificationService.broadcastInitiative(initiativeDTO);
+            //notificationService.broadcastInitiative(initiativeDTO);
 
             return true;
 

@@ -25,7 +25,6 @@ public class ChatController {
 
     @MessageMapping("/chat.sendMessage")
     public void sendMessage(@Payload ChatMessage chatMessage) {
-        // Save message to DB
         try {
             int fromUserId = databaseController.fetchIDByName(chatMessage.getSender());
             int toUserId = databaseController.fetchIDByName(chatMessage.getRecipient());
@@ -55,6 +54,11 @@ public class ChatController {
         headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
         System.out.println("Assigned principal: " + (principal != null ? principal.getName() : "null"));
         return chatMessage;
+    }
+
+    @MessageMapping("/notis.initiative")
+    public void sendInitiativeNoti(@Payload ChatMessage chatMessage) {
+        messagingTemplate.convertAndSend("/queue/messages", chatMessage);
     }
 
 }
