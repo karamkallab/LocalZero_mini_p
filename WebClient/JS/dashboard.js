@@ -67,13 +67,4 @@ function renderInitiativeCard(initiative) {
   initiativeList.prepend(link); // Add new initiative to top
 }
 
-// Function to show notification (if you want)
-function showNotification(message) {
-  const notifDropdown = document.querySelector('.notification-dropdown');
-  const notifItem = document.createElement("div");
-  notifItem.textContent = message;
-  notifDropdown.prepend(notifItem);
-  notifDropdown.classList.remove('hidden');
-}
-
 

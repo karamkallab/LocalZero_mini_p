@@ -7,6 +7,8 @@ import java.util.List;
 import com.example.localzero.DTO.InitiativeDTO;
 import com.example.localzero.chat.ChatController;
 import com.example.localzero.chat.ChatMessage;
+import com.example.localzero.chat.MessageType;
+import com.example.localzero.chat.NotificationInitiatives;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -146,7 +148,11 @@ public class DatabaseController {
             initiativeDTO.setVisibility(visibility);
             initiativeDTO.setCreatedByUserID(createdByUserID);
 
-            //notificationService.broadcastInitiative(initiativeDTO);
+            NotificationInitiatives notificationInitiatives = new NotificationInitiatives();
+            notificationInitiatives.setContent(description);
+            notificationInitiatives.setSender(createdByUserID);
+            notificationInitiatives.setType(MessageType.INI_NOTIS);
+            notificationService.sendInitiativeNotification(notificationInitiatives);
 
             return true;
 

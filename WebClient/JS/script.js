@@ -125,16 +125,16 @@ if (initiativeForm) {
     .then(data => {
       alert("Server response: " + data);  
       const stompClient = localStorage.getItem("lastname");
-      stompClient.send("/app/notificationInitiatives", {}, JSON.stringify({
+      /*stompClient.send("/app/notificationInitiatives", {}, JSON.stringify({
         title,
         description,
         location,
         category,
         visibility,
         createdByUserID
-      }));
+      }));*/
+      sendNotis(description);
       initiativeForm.reset();
-      sendNotis(description, createdByUserID);
     })
     .catch(err => {
       console.error("Error while sending:", err);

@@ -23,9 +23,13 @@ function connectWebSocket() {
 
 function onConnected() {
   stompClient.subscribe(`/user/queue/messages`, onMessageReceived);
+    stompClient.subscribe("/topic/initiative-notifications", (payload) => {
+    console.log("✅ Subscribed to /topic/initiative-notifications");
+    onMessageReceived(payload);
+  });
   stompClient.send("/app/chat.addUser", {}, JSON.stringify({ sender: username, type: 'JOIN' }));
-  console.log("Connected and subscribed to /user/queue/messages");
-  subscribeToInitiatives()
+  //console.log("Connected and subscribed to /user/queue/messages");
+  //subscribeToInitiatives()
 }
 
 function subscribe(username) {
@@ -78,9 +82,10 @@ function onMessageReceived(payload) {
   if (message.type === 'CHAT' && message.recipient === username || message.sender === username) {
     displayMessage(message);
   }
-  else if(message.type === 'INI_NOTIS'){
-
-  }
+  else if (message.type === 'INI_NOTIS') {
+  console.log("Received initiative notification:", message);
+  showNotification(message);
+}
 }
 
 function getAvatarColor(sender) {
@@ -152,73 +157,42 @@ function openChat(user) {
 
 connectWebSocket();
 
-function sendNotis(description, createdByUserID) {
+function sendNotis(description) {
   //const content = messageInput.value.trim();
   if (stompClient) {
     const notisMessage = {
       sender: username,
-      recipient: createdByUserID,
       content: description,
       type: 'INI_NOTIS'
     };
+    console.log("Sending notis... " + notisMessage)
     stompClient.send("/app/notis.initiative", {}, JSON.stringify(notisMessage));
+    console.log("Notis sent!" + notisMessage)
     //displayMessage(chatMessage);
     //messageInput.value = '';
   }
-
-}
-
-/*function subscribeToInitiatives() {
-  console.log("Subscribing to /topic/initiatives..."); // ✅ ADD THIS
-
-  if (stompClient) {
-    notisSubscription = stompClient.subscribe('/topic/initiatives', (message) => {
-      console.log("Initiative update received!"); 
-      console.log(message);
-      const initiative = JSON.parse(message.body);
-      renderInitiativeCard(initiative);
-      showNotification("New initiative: " + initiative.title);
-    });
-  } else {
-    console.error("stompClient is not ready yet. Trying again in 500ms...");
-    setTimeout(subscribeToInitiatives, 500);
-  }
-}
-
-// Function to render initiative cards
-function renderInitiativeCard(initiative) {
-  const initiativeList = document.getElementById("initiativeList");
-
-  const link = document.createElement("a");
-  link.href = `initiative_view.html?id=${initiative.id}`;
-  link.className = "initiative-box-link";
-
-  const card = document.createElement("div");
-  card.className = "card";
-
-  const h2 = document.createElement("h2");
-  h2.textContent = `${initiative.title} – At ${initiative.location}`;
-
-  const p = document.createElement("p");
-  p.textContent = `Category: ${initiative.category}`;
-
-  const p1 = document.createElement("p");
-  p1.textContent = initiative.description;
-
-  const dates = document.createElement("p");
-  dates.className = "dates";
-  dates.textContent = "Posted by LocalZero";
-
-  card.append(h2, p, p1, dates);
-  link.appendChild(card);
-  initiativeList.prepend(link); // Add new initiative to top
 }
 
 // Function to show notification (if you want)
 function showNotification(message) {
   const notifDropdown = document.querySelector('.notification-dropdown');
-  const notifItem = document.createElement("div");
-  notifItem.textContent = message;
-  notifDropdown.prepend(notifItem);
+  const notifList = notifDropdown.querySelector('ul');
+  const notifCount = document.querySelector('.notification-count');
+
+  // ✅ Safely extract the text content
+  const text = typeof message === "string" ? message : message.content || "New notification";
+
+  const notifItem = document.createElement("li");
+  notifItem.textContent = `📢 ${text}`;
+  notifList.prepend(notifItem);
+
+  // 🔄 Update count
+  let currentCount = parseInt(notifCount.textContent) || 0;
+  notifCount.textContent = currentCount + 1;
+
+  // 🔔 Optional: Show dropdown for a few seconds
   notifDropdown.classList.remove('hidden');
-}*/
+  setTimeout(() => {
+    notifDropdown.classList.add('hidden');
+  }, 5000);
+}

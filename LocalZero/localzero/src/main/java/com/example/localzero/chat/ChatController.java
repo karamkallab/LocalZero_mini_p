@@ -29,7 +29,6 @@ public class ChatController {
             int fromUserId = databaseController.fetchIDByName(chatMessage.getSender());
             int toUserId = databaseController.fetchIDByName(chatMessage.getRecipient());
             databaseController.saveMessage(fromUserId, toUserId, chatMessage.getContent());
-            //Notify user
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -56,9 +55,6 @@ public class ChatController {
         return chatMessage;
     }
 
-    @MessageMapping("/notis.initiative")
-    public void sendInitiativeNoti(@Payload ChatMessage chatMessage) {
-        messagingTemplate.convertAndSend("/queue/messages", chatMessage);
-    }
+
 
 }
