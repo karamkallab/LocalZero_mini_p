@@ -55,7 +55,6 @@ function sendMessage(event) {
     //displayMessage(chatMessage);
     messageInput.value = '';
   }
-
 }
 
 function displayMessage(message) {
@@ -76,15 +75,11 @@ function displayMessage(message) {
 function onMessageReceived(payload) {
   console.log("Payload: " + payload);
   const message = JSON.parse(payload.body);
-
-  if (message.type === 'JOIN' || message.type === 'LEAVE') {
-    const messageElement = document.createElement('li');
-    messageElement.classList.add('event-message');
-    messageElement.textContent = recipient + (message.type === 'JOIN' ? ' joined!' : ' left!');
-    messageArea.appendChild(messageElement);
-    messageArea.scrollTop = messageArea.scrollHeight;
-  } else if (message.recipient === username || message.sender === username) {
+  if (message.type === 'CHAT' && message.recipient === username || message.sender === username) {
     displayMessage(message);
+  }
+  else if(message.type === 'INI_NOTIS'){
+
   }
 }
 
@@ -157,7 +152,23 @@ function openChat(user) {
 
 connectWebSocket();
 
-function subscribeToInitiatives() {
+function sendNotis(description, createdByUserID) {
+  //const content = messageInput.value.trim();
+  if (stompClient) {
+    const notisMessage = {
+      sender: username,
+      recipient: createdByUserID,
+      content: description,
+      type: 'INI_NOTIS'
+    };
+    stompClient.send("/app/notis.initiative", {}, JSON.stringify(notisMessage));
+    //displayMessage(chatMessage);
+    //messageInput.value = '';
+  }
+
+}
+
+/*function subscribeToInitiatives() {
   console.log("Subscribing to /topic/initiatives..."); // ✅ ADD THIS
 
   if (stompClient) {
@@ -210,4 +221,4 @@ function showNotification(message) {
   notifItem.textContent = message;
   notifDropdown.prepend(notifItem);
   notifDropdown.classList.remove('hidden');
-}
+}*/

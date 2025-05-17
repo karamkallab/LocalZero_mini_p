@@ -134,7 +134,7 @@ if (initiativeForm) {
         createdByUserID
       }));
       initiativeForm.reset();
-     
+      sendNotis(description, createdByUserID);
     })
     .catch(err => {
       console.error("Error while sending:", err);
