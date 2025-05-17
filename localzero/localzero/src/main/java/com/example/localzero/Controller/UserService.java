@@ -105,7 +105,13 @@ public class UserService {
     }
 
     public boolean unlikeInitiative(int userId, int initiativeId) {
-        CommandUnlikeInitiative command = new CommandUnlikeInitiative(dbController, userId, initiativeId);
+        UserCommand command = new CommandUnlikeInitiative(dbController, userId, initiativeId);
         return command.executeAction();
     }  
+
+    public boolean leaveInitiative(int userId, int initiativeId) {
+        UserCommand command = new CommandLeaveInitiative(dbController, userId, initiativeId);
+        return command.executeAction();
+    }
+    
 }

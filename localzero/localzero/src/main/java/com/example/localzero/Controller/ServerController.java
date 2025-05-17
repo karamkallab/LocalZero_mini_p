@@ -210,4 +210,13 @@ public String unlike(@RequestBody Map<String, Integer> data) {
     return success ? "Like removed!" : "No like to remove.";
 }
 
+@PostMapping("/LeaveInitiative")
+public String leaveInitiative(@RequestBody Map<String, Integer> data) {
+    int userId = data.get("userId");
+    int initiativeId = data.get("initiativeId");
+
+    boolean success = userService.leaveInitiative(userId, initiativeId);
+    return success ? "Left initiative!" : "Error leaving.";
+}
+
 }

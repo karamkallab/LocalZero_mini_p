@@ -549,5 +549,26 @@ public boolean unlikeInitiative(int userId, int initiativeId) {
     }
 }
 
+public boolean leaveInitiative(int userId, int initiativeId) {
+    PreparedStatement stmt = null;
+    try {
+        String sql = "DELETE FROM initiative_participants WHERE user_id = ? AND initiative_id = ?";
+        stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, userId);
+        stmt.setInt(2, initiativeId);
+        int rows = stmt.executeUpdate();
+        return rows > 0;
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+    } finally {
+        try {
+            if (stmt != null) stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
 }
 
