@@ -102,5 +102,10 @@ public class UserService {
     public boolean giveNewUserRole(String email, String role) {
         UserCommand command = new CommandNewUserRole(dbController, email, role);
         return command.executeAction();
-    }      
+    }
+
+    public boolean unlikeInitiative(int userId, int initiativeId) {
+        CommandUnlikeInitiative command = new CommandUnlikeInitiative(dbController, userId, initiativeId);
+        return command.executeAction();
+    }  
 }

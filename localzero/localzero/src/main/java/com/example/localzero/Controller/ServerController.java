@@ -201,5 +201,13 @@ public List<Map<String, String>> getComments(@RequestBody Map<String, Integer> d
     return userService.getCommentsByInitiativeId(initiativeId);
 }
 
+@PostMapping("/UnlikeInitiative")
+public String unlike(@RequestBody Map<String, Integer> data) {
+    int userId = data.get("userId");
+    int initiativeId = data.get("initiativeId");
+
+    boolean success = userService.unlikeInitiative(userId, initiativeId);
+    return success ? "Like removed!" : "No like to remove.";
+}
 
 }

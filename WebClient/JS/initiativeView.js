@@ -155,35 +155,34 @@ if (showCommentButton) {
     const likeButton = document.querySelector('.like-button');
 
     if (likeButton) {
+      let liked = false; // Justera baserat på backend-status om du vill
+    
       likeButton.addEventListener('click', function () {
         const userId = localStorage.getItem('userId');
         const initiativeId = localStorage.getItem('initiativeId');
-      
-        console.log("Trying to like: ", userId, initiativeId);
-      
-        fetch('http://127.0.0.1:8080/api/LikeInitiative', {
+    
+        const endpoint = liked ? '/UnlikeInitiative' : '/LikeInitiative';
+    
+        fetch(`http://127.0.0.1:8080/api${endpoint}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId: userId, initiativeId: initiativeId })
+          body: JSON.stringify({ userId, initiativeId })
         })
         .then(res => res.text())
         .then(data => {
           alert(data);
-        
-          if (data.trim().toLowerCase().includes("success")) {
-            const likeText = likeButton.innerText;
-            const likeMatch = likeText.match(/\d+/);
-        
-            if (likeMatch) {
-              const currentLikes = parseInt(likeMatch[0]);
-              const newLikes = currentLikes + 1;
-              likeButton.innerText = `❤️ Like (${newLikes})`;
-            }
-          }
+          liked = !liked;
+    
+          // Uppdatera räknare
+          const likeText = likeButton.innerText;
+          const countMatch = likeText.match(/\d+/);
+          const currentLikes = countMatch ? parseInt(countMatch[0]) : 0;
+          const newLikes = liked ? currentLikes + 1 : Math.max(0, currentLikes - 1);
+          likeButton.innerText = `❤️ Like (${newLikes})`;
         })
         .catch(error => {
-          console.error('Error liking initiative:', error);
-        });        
+          console.error('Error handling like/unlike:', error);
+        });
       });
     }
 
@@ -220,6 +219,7 @@ function loadComments(initiativeId) {
   .catch(error => {
     console.error("Error loading comments:", error);
   });
+
 }
 
 
