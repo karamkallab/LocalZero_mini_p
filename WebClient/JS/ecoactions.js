@@ -1,32 +1,40 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const container = document.getElementById('ecoActionsContainer');
+document.addEventListener("DOMContentLoaded", () => {
+  const ecoActionsContainer = document.getElementById("ecoActionsContainer");
 
-  fetch('http://127.0.0.1:8080/api/ecoActions') // Kontrollera att din backend har denna route
-    .then(res => {
-      if (!res.ok) throw new Error('Kunde inte hämta ecoActions');
-      return res.json();
-    })
-    .then(actions => {
-      if (actions.length === 0) {
-        container.innerHTML = '<p>Inga miljövänliga handlingar ännu.</p>';
-        return;
-      }
-
-      actions.forEach(action => {
-        const card = document.createElement('div');
-        card.classList.add('card');
-
-        card.innerHTML = `
-          <h2>${action.category}</h2>
-          <p>${action.action}</p>
-          <p class="dates">${action.username || 'Okänd'} – ${new Date(action.date_submitted).toLocaleDateString('sv-SE')}</p>
-        `;
-
-        container.appendChild(card);
-      });
-    })
-    .catch(err => {
-      console.error(err);
-      container.innerHTML = '<p>Fel vid hämtning av data.</p>';
-    });
+  if (ecoActionsContainer) {
+    fetch("http://localhost:8080/api/ecoactions")
+      .then(res => res.json())
+      .then(data => {
+        ecoActionsContainer.innerHTML = '';
+        data.forEach(renderEcoactionCard);
+      })
+      .catch(err => console.error("Kunde inte hämta eco actions:", err));
+  }
 });
+
+function renderEcoactionCard(action) {
+  const container = document.getElementById("ecoActionsContainer");
+
+  const card = document.createElement("div");
+  card.className = "card";
+
+  const title = document.createElement("h2");
+  title.textContent = `${action.action} – ${action.location}`;
+
+  const category = document.createElement("p");
+  category.textContent = `Kategori: ${action.category}`;
+
+  const description = document.createElement("p");
+  description.textContent = action.description;
+
+  const postedBy = document.createElement("p");
+  postedBy.className = "posted-by";
+  postedBy.textContent = `Registrerad av: ${action.user || "LocalZero"}`;
+
+  const date = document.createElement("p");
+  date.className = "date";
+  date.textContent = `Datum: ${new Date(action.date).toLocaleDateString()}`;
+
+  card.append(title, category, description, postedBy, date);
+  container.prepend(card); 
+}

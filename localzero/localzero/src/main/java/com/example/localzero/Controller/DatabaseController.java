@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.example.localzero.DTO.EcoactionsDTO;
 import com.example.localzero.DTO.InitiativeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -569,6 +570,39 @@ public boolean leaveInitiative(int userId, int initiativeId) {
         }
     }
 }
+
+public List<EcoactionsDTO> FetchEcoactions() {
+    List<EcoactionsDTO> ecoActionsList = new ArrayList<>();
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
+    try {
+        stmt = conn.prepareStatement("SELECT id, user_id, action, category, date_submitted, co2_savings FROM ecoActions");
+        rs = stmt.executeQuery();
+        while (rs.next()) {
+            EcoactionsDTO ecoAction = new EcoactionsDTO();
+            ecoAction.setId(rs.getInt("id"));
+            ecoAction.setUserId(rs.getInt("user_id"));
+            ecoAction.setAction(rs.getString("action"));
+            ecoAction.setCategory(rs.getString("category"));
+            ecoAction.setDateSubmitted(rs.getDate("date_submitted"));
+
+            ecoActionsList.add(ecoAction);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    return ecoActionsList;
+}
+
 
 }
 

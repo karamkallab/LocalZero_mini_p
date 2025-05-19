@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.localzero.DTO.EcoactionsDTO;
 import com.example.localzero.DTO.InitiativeDTO;
 import com.example.localzero.DTO.UserDTO;
 
@@ -218,9 +219,10 @@ public String leaveInitiative(@RequestBody Map<String, Integer> data) {
     boolean success = userService.leaveInitiative(userId, initiativeId);
     return success ? "Left initiative!" : "Error leaving.";
 }
-@GetMapping("/ecoactions")
-public List<Map<String, Object>> getEcoActions() {
-    return userService.fetchEcoActions();
-}
+
+ @GetMapping("/ecoactions")
+  public List<EcoactionsDTO> fetchEcoactions() {
+      return userService.fetchEcoactions();
+  }
 
 }

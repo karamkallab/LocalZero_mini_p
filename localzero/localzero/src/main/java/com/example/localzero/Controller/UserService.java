@@ -1,6 +1,7 @@
 package com.example.localzero.Controller;
 
 import com.example.localzero.Command.*;
+import com.example.localzero.DTO.EcoactionsDTO;
 import com.example.localzero.DTO.InitiativeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
@@ -114,5 +115,8 @@ public class UserService {
         return command.executeAction();
     }
 
-    
+    public List<EcoactionsDTO> fetchEcoactions(){
+        return dbController.FetchEcoactions();
+    }
+
 }
