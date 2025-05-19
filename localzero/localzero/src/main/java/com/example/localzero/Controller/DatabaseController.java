@@ -139,17 +139,8 @@ public class DatabaseController {
 
             stmt.executeUpdate();
 
-            // Only broadcast after successful creation
-            InitiativeDTO initiativeDTO = new InitiativeDTO();
-            initiativeDTO.setTitle(title);
-            initiativeDTO.setDescription(description);
-            initiativeDTO.setLocation(location);
-            initiativeDTO.setCategory(category);
-            initiativeDTO.setVisibility(visibility);
-            initiativeDTO.setCreatedByUserID(createdByUserID);
-
             NotificationInitiatives notificationInitiatives = new NotificationInitiatives();
-            notificationInitiatives.setContent(description);
+            notificationInitiatives.setContent(title);
             notificationInitiatives.setSender(createdByUserID);
             notificationInitiatives.setType(MessageType.INI_NOTIS);
             notificationService.sendInitiativeNotification(notificationInitiatives);
@@ -294,6 +285,12 @@ public class DatabaseController {
             stmt.setInt(6, Integer.parseInt(initiative.getId()));
 
             int affectedRows = stmt.executeUpdate();
+
+            NotificationInitiatives notificationInitiatives = new NotificationInitiatives();
+            notificationInitiatives.setContent(initiative.getTitle());
+            notificationInitiatives.setSender(initiative.getCreatedByUserID());
+            notificationInitiatives.setType(MessageType.UPDATE_NOTIS);
+            notificationService.sendInitiativeNotification(notificationInitiatives);
 
             return affectedRows > 0;
 
@@ -614,6 +611,37 @@ public class DatabaseController {
         }
 
         return name;
+    }
+
+    public String fetchRoleByID(String email){
+        StringBuilder role = new StringBuilder();
+
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            String sql = "SELECT user_role FROM user_roles WHERE user_email = ?;";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, email);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                if (!role.isEmpty()) {
+                    role.append(", ");
+                }
+                role.append(rs.getString("user_role"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return role.toString();
     }
 }
 

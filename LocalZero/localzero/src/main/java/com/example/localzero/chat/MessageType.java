@@ -5,6 +5,7 @@ public enum MessageType {
     CHAT,
     JOIN,
     LEAVE,
-    INI_NOTIS
+    INI_NOTIS,
+    UPDATE_NOTIS
 
 }

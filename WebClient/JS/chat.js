@@ -15,6 +15,7 @@ let notisSubscription = null;
 
 function connectWebSocket() {
   console.log(username);
+  updateCurrentUser();
   const encodedUsername = encodeURIComponent(username);
   const socket = new SockJS(`http://localhost:8080/ws?username=${encodedUsername}`);
   stompClient = Stomp.over(socket);
@@ -24,12 +25,10 @@ function connectWebSocket() {
 function onConnected() {
   stompClient.subscribe(`/user/queue/messages`, onMessageReceived);
     stompClient.subscribe("/topic/initiative-notifications", (payload) => {
-    console.log("✅ Subscribed to /topic/initiative-notifications");
+    console.log("Subscribed to /topic/initiative-notifications");
     onMessageReceived(payload);
   });
   stompClient.send("/app/chat.addUser", {}, JSON.stringify({ sender: username, type: 'JOIN' }));
-  //console.log("Connected and subscribed to /user/queue/messages");
-  //subscribeToInitiatives()
 }
 
 function subscribe(username) {
@@ -56,7 +55,6 @@ function sendMessage(event) {
       type: 'CHAT'
     };
     stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
-    //displayMessage(chatMessage);
     messageInput.value = '';
   }
 }
@@ -84,19 +82,14 @@ function onMessageReceived(payload) {
   }
   else if (message.type === 'INI_NOTIS') {
   console.log("Received initiative notification:", message);
-  showNotification(message);
-}
-}
-
-function getAvatarColor(sender) {
-  let hash = 0;
-  for (let i = 0; i < sender.length; i++) {
-    hash = 31 * hash + sender.charCodeAt(i);
+  showNotification(message, "New initiative:");
   }
-  return colors[Math.abs(hash % colors.length)];
+  else if (message.type === 'UPDATE_NOTIS') {
+  console.log("Received initiative notification:", message);
+  showNotification(message, "New update:");
+  }
 }
 
-// 🟢 UI Behaviors
 dmToggle.addEventListener('click', (e) => {
   e.stopPropagation();
   dmPanel.classList.toggle('hidden');
@@ -125,8 +118,12 @@ document.addEventListener('click', (e) => {
     dmPanel.classList.add('hidden');
   }
 });
-messageForm.addEventListener('submit', sendMessage);
 
+if(messageForm){
+messageForm.addEventListener('submit', sendMessage);
+}
+
+//Connect to the user and load chat history
 function openChat(user) {
   recipient = user.trim();
   subscribe(recipient);
@@ -157,42 +154,46 @@ function openChat(user) {
 
 connectWebSocket();
 
-function sendNotis(description) {
-  //const content = messageInput.value.trim();
+//Send a notification to server and then the server will send it to all user
+function sendNotis(title, messageType) {
   if (stompClient) {
     const notisMessage = {
       sender: username,
-      content: description,
-      type: 'INI_NOTIS'
+      content: title,
+      type: messageType
     };
     console.log("Sending notis... " + notisMessage)
     stompClient.send("/app/notis.initiative", {}, JSON.stringify(notisMessage));
     console.log("Notis sent!" + notisMessage)
-    //displayMessage(chatMessage);
-    //messageInput.value = '';
   }
 }
 
-// Function to show notification (if you want)
-function showNotification(message) {
+//This method show the notification on receiving
+function showNotification(message, updateType) {
   const notifDropdown = document.querySelector('.notification-dropdown');
   const notifList = notifDropdown.querySelector('ul');
   const notifCount = document.querySelector('.notification-count');
 
-  // ✅ Safely extract the text content
-  const text = typeof message === "string" ? message : message.content || "New notification";
-
   const notifItem = document.createElement("li");
-  notifItem.textContent = `📢 ${text}`;
+  notifItem.textContent = updateType + " " + message.content;
   notifList.prepend(notifItem);
 
-  // 🔄 Update count
   let currentCount = parseInt(notifCount.textContent) || 0;
   notifCount.textContent = currentCount + 1;
 
-  // 🔔 Optional: Show dropdown for a few seconds
   notifDropdown.classList.remove('hidden');
+
   setTimeout(() => {
     notifDropdown.classList.add('hidden');
   }, 5000);
+}
+
+function updateCurrentUser(){
+  const name = localStorage.getItem('name') || 'Unknown';
+  const roles = localStorage.getItem('role') || '';
+
+  console.log("Rolse: " + roles);
+
+  const currentUserP = document.querySelector('.current-user');
+  currentUserP.textContent = `Current User: ${name} - ${roles}`;
 }

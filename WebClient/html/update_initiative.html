@@ -27,9 +27,6 @@
         </div>
         <div class="notification-dropdown hidden">
           <ul>
-            <li>New message from LocalZero</li>
-            <li>Your initiative was approved ✅</li>
-            <li>Achievement unlocked: Green Steps 🥾</li>
           </ul>
         </div>
       </div>  
@@ -77,7 +74,11 @@
         <button type="submit" class="submit-button">Update initiative</button>
       </form>
     </main>
-  </div>
+  </div>¨
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+  <script src="../JS/chat.js"></script>
 
   <script>
     document.querySelector('.signout').addEventListener('click', () => {
@@ -94,10 +95,6 @@
 
 const notifIcon = document.querySelector('.notification-icon');
 const notifDropdown = document.querySelector('.notification-dropdown');
-const dmToggle = document.querySelector('.dm-toggle');
-const dmPanel = document.querySelector('.dm-panel');
-const chatWith = document.getElementById('chatWith');
-const chatBox = document.querySelector('.dm-chat .messages');
 
 notifIcon.addEventListener('click', () => {
   notifDropdown.classList.toggle('hidden');
@@ -109,21 +106,6 @@ document.addEventListener('click', (event) => {
   }
 });
 
-dmToggle.addEventListener('click', (event) => {
-  event.stopPropagation(); 
-  dmPanel.classList.toggle('hidden');
-});
-
-document.addEventListener('click', (event) => {
-  if (!dmToggle.contains(event.target) && !dmPanel.contains(event.target)) {
-    dmPanel.classList.add('hidden');
-  }
-});
-
-function openChat(user) {
-  chatWith.innerText = `Chattar med: ${user}`;
-  chatBox.innerHTML = `<p><em>Startade chatt med ${user}</em></p>`;
-}
 </script>
 <script src="../JS/updateInitiatives.js"></script>
 </body>

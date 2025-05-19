@@ -18,6 +18,8 @@ document.addEventListener("DOMContentLoaded", function() {
         if (result.success) {
           localStorage.setItem('userId', result.userId);
           localStorage.setItem('name', result.name);
+          localStorage.setItem('role', result.role);
+          alert(localStorage.getItem('role'));
           window.location.href = "dashboard.html";
         } else {
           alert("Your email or password is incorrect.");
@@ -124,16 +126,7 @@ if (initiativeForm) {
     .then(res => res.text())  
     .then(data => {
       alert("Server response: " + data);  
-      const stompClient = localStorage.getItem("lastname");
-      /*stompClient.send("/app/notificationInitiatives", {}, JSON.stringify({
-        title,
-        description,
-        location,
-        category,
-        visibility,
-        createdByUserID
-      }));*/
-      sendNotis(description);
+      sendNotis(title, 'INI_NOTIS');
       initiativeForm.reset();
     })
     .catch(err => {
@@ -142,6 +135,38 @@ if (initiativeForm) {
     });
   });
 }
+
+function getCurrentUserInfo(){ 
+  const role = "";
+
+  fetch("http://127.0.0.1:8080/api/registration", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name: username,
+      email: email,
+      password: password,
+      location: location,
+      role: selectedRoles.join(', ')
+    })
+  })
+  .then(res => res.text())
+  .then(result => {
+    if (result.toLowerCase().includes("success")) {
+      alert("Account created!");
+      window.location.href = "login.html";
+    } else {
+      alert("Something went wrong: " + result);
+    }
+  })
+  .catch(error => {
+    console.error("Registration error:", error);
+  });
+}
+
+
+
+
 
 
 

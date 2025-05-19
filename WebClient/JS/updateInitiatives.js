@@ -41,7 +41,8 @@ form.addEventListener('submit', (e) => {
     description: document.getElementById('description').value,
     location: document.getElementById('location').value,
     category: document.getElementById('category').value,
-    visibility: document.querySelector('input[name="visibility"]:checked')?.value
+    //const visibility = Array.from(document.querySelectorAll('input[name="visibility"]:checked')).map(input => input.value);
+    visibility: Array.from(document.querySelectorAll('input[name="visibility"]:checked')).map(input => input.value)
   };
 
   fetch('http://127.0.0.1:8080/api/UpdateInitiative', {
@@ -54,6 +55,7 @@ form.addEventListener('submit', (e) => {
   .then(response => response.text()) 
     .then(message => {
         console.log(message);
+        sendNotis(title, 'UPDATE_NOTIS');
         alert(message);
     })
     .catch(err => {

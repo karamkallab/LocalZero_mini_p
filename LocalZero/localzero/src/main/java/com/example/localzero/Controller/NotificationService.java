@@ -19,8 +19,7 @@ public class NotificationService {
     }
 
     public void sendInitiativeNotification(@Payload NotificationInitiatives chatMessage) {
-
         messagingTemplate.convertAndSend("/topic/initiative-notifications", chatMessage);
-
     }
+
 }

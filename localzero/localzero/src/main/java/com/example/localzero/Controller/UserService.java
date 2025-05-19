@@ -72,8 +72,10 @@ public class UserService {
     public ArrayList<String> fetchAllName(){
         return dbController.fetchAllName();
     }
-
     public ArrayList<ChatMessage> loadMessageHistory(String fromUsername, String toUsername){
         return dbController.loadMessageHistory(dbController.fetchIDByName(fromUsername), dbController.fetchIDByName(toUsername));
+    }
+    public String fetchRoleByID(String email    ){
+        return dbController.fetchRoleByID(email);
     }
 }
