@@ -113,5 +113,6 @@ public class UserService {
         UserCommand command = new CommandLeaveInitiative(dbController, userId, initiativeId);
         return command.executeAction();
     }
+
     
 }

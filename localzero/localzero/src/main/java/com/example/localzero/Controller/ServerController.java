@@ -218,5 +218,9 @@ public String leaveInitiative(@RequestBody Map<String, Integer> data) {
     boolean success = userService.leaveInitiative(userId, initiativeId);
     return success ? "Left initiative!" : "Error leaving.";
 }
+@GetMapping("/ecoactions")
+public List<Map<String, Object>> getEcoActions() {
+    return userService.fetchEcoActions();
+}
 
 }
