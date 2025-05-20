@@ -14,7 +14,7 @@ public class WebSocketUserLogger {
 
     private final SimpUserRegistry simpUserRegistry;
 
-    // Log connected users every 10 seconds
+    // This will log connected users every 10 seconds
     @Scheduled(fixedRate = 10000)
     public void logConnectedUsers() {
         log.info("Connected WebSocket Users:");

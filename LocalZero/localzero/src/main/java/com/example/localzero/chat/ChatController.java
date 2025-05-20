@@ -33,8 +33,6 @@ public class ChatController {
             e.printStackTrace();
         }
 
-        System.out.println("Received Message: " + chatMessage.getContent() + " Recipient: " + chatMessage.getRecipient() + " Sender: " + chatMessage.getSender());
-
         // Send to both sender and recipient
         messagingTemplate.convertAndSend("/user/" + chatMessage.getRecipient() + "/queue/messages", chatMessage);
 

@@ -76,7 +76,6 @@ function onMessageReceived(payload) {
   console.log("Payload: " + payload);
   const message = JSON.parse(payload.body);
   if (message.type === 'CHAT' && message.recipient === username || message.sender === username) {
-    console.log("Displaying message!!!!!!!!!!!!!!!!!!!!")
     displayMessage(message);
   }
   else if (message.type === 'INI_NOTIS') {
@@ -191,7 +190,7 @@ function updateCurrentUser(){
   const name = localStorage.getItem('name') || 'Unknown';
   const roles = localStorage.getItem('role') || '';
 
-  console.log("Role: " + roles);
+  console.log("Rolse: " + roles);
 
   const currentUserP = document.querySelector('.current-user');
   currentUserP.textContent = `Current User: ${name} - ${roles}`;
