@@ -276,14 +276,14 @@ public class DatabaseController {
         return initiative;
     }
 
-    public boolean updateInitiative(String title, String description, String location, String category, String[] visibility, int createdByUserID){
+    public boolean updateInitiative(String initiativeID, String title, String description, String location, String category, String[] visibility, int createdByUserID){
         PreparedStatement stmt = null;
 
         System.out.println("Update\nTitle: " + title);
         System.out.println("Description: " + description);
         System.out.println("Location: " + location);
         System.out.println("Category: " + category);
-        System.out.println("Visibility: " + Arrays.toString(visibility));
+
         System.out.println("CreatedByUserID: " + createdByUserID);
 
         try {
@@ -295,8 +295,9 @@ public class DatabaseController {
             stmt.setString(3, location);
             stmt.setString(4, category);
             Array sqlArray = conn.createArrayOf("VARCHAR", visibility);
+            System.out.println("Visibility: " + sqlArray.toString());
             stmt.setArray(5, sqlArray);
-            stmt.setInt(6, createdByUserID);
+            stmt.setInt(6, Integer.parseInt(initiativeID));
 
             int affectedRows = stmt.executeUpdate();
 

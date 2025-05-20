@@ -157,7 +157,9 @@ public class ServerController {
                 visibilityList[i] = "Comunity Organizer";
             }
         }
-        boolean success = userService.updateInitiative(initiative.getTitle(),
+        boolean success = userService.updateInitiative(
+                initiative.getId(),
+                initiative.getTitle(),
                 initiative.getDescription(),
                 initiative.getLocation(),
                 initiative.getCategory(),

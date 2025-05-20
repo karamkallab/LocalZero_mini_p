@@ -53,9 +53,9 @@ public class UserService {
     }
     
     //behöver user id
-    public boolean updateInitiative(String title, String description, String location, String category,
+    public boolean updateInitiative(String initiativeID, String title, String description, String location, String category,
                                     String[] visibility, int createdByUserID) {
-        UserCommand command = new CommandUpdateInitiative(title, description, location, category,
+        UserCommand command = new CommandUpdateInitiative(initiativeID, title, description, location, category,
                 visibility, createdByUserID, dbController);
         return command.executeAction();
     }

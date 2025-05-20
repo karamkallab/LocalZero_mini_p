@@ -7,6 +7,7 @@ import java.util.List;
 
 public class CommandUpdateInitiative implements UserCommand{
     private DatabaseController db;
+    private String initiativeID;
     private String title;
     private String description;
     private String location;
@@ -14,7 +15,8 @@ public class CommandUpdateInitiative implements UserCommand{
     private String[] visibility;
     private int createdByUserID;
 
-    public CommandUpdateInitiative(String title, String description, String location, String category, String[] visibility, int createdByUserID, DatabaseController db) {
+    public CommandUpdateInitiative(String initiativeID, String title, String description, String location, String category, String[] visibility, int createdByUserID, DatabaseController db) {
+        this.initiativeID = initiativeID;
         this.title = title;
         this.description = description;
         this.location = location;
@@ -25,7 +27,7 @@ public class CommandUpdateInitiative implements UserCommand{
     }
     @Override
     public boolean executeAction() {
-        return db.updateInitiative(title, description, location, category, visibility, createdByUserID);
+        return db.updateInitiative(initiativeID, title, description, location, category, visibility, createdByUserID);
     }
 
     @Override
