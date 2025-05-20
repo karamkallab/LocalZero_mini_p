@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.localzero.DTO.InitiativeDTO;
-import com.example.localzero.chat.ChatController;
 import com.example.localzero.chat.ChatMessage;
 import com.example.localzero.chat.MessageType;
 import com.example.localzero.chat.NotificationInitiatives;
