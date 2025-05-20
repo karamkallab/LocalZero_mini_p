@@ -69,8 +69,11 @@
 
         <label>Visibility</label>
         <div class="radio-group">
-          <label><input type="radio" name="visibility" value="public" required> Public</label>
-          <label><input type="radio" name="visibility" value="area"> Local (area-specific) </label>
+          <label><input type="radio" name="visibilityOption" value="public" required> Public</label>
+          <label>
+            <input type="radio" name="visibilityOption" value="custom"> Custom:
+            <input type="text" id="customVisibility" placeholder="e.g., Resident, Community Organizer" style="margin-left: 10px;" />
+          </label>
         </div>
 
         <button type="submit" class="submit-button">Update initiative</button>

@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
       .then(result => {
         if (result.success) {
           localStorage.setItem('userId', result.userId);
+          localStorage.setItem('userEmail', email);
           localStorage.setItem('name', result.name);
           localStorage.setItem('role', result.role);
           window.location.href = "dashboard.html";
@@ -93,9 +94,16 @@ if (initiativeForm) {
     const description = document.getElementById("description").value;
     const location = document.getElementById("location").value;
     const category = document.getElementById("category").value;
-    const visibility = Array.from(document.querySelectorAll('input[name="visibility"]:checked')).map(input => input.value);
+
+    const selectedOption = document.querySelector('input[name="visibilityOption"]:checked').value;
+    let visibility = "";
+
+    if (selectedOption === "public") {
+      visibility = "Public";
+    } else {
+      visibility = document.getElementById("customVisibility").value.trim();
+    }
     const createdByUserID = localStorage.getItem('userId');
-    console.log(createdByUserID);
 
     console.log("Sending data:", {
       title,
@@ -132,33 +140,7 @@ if (initiativeForm) {
   });
 }
 
-function getCurrentUserInfo(){ 
-  const role = "";
 
-  fetch("http://127.0.0.1:8080/api/registration", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      name: username,
-      email: email,
-      password: password,
-      location: location,
-      role: selectedRoles.join(', ')
-    })
-  })
-  .then(res => res.text())
-  .then(result => {
-    if (result.toLowerCase().includes("success")) {
-      alert("Account created!");
-      window.location.href = "login.html";
-    } else {
-      alert("Something went wrong: " + result);
-    }
-  })
-  .catch(error => {
-    console.error("Registration error:", error);
-  });
-}
 
 
 

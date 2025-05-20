@@ -147,7 +147,22 @@ public class ServerController {
 
     @PostMapping("/UpdateInitiative")
     public String updateInitiative(@RequestBody InitiativeDTO initiative) {
-        boolean success = userService.updateInitiative(initiative);
+        String regex = "\\s*,\\s*";
+        String visibility = initiative.getVisibility();
+
+        String[] visibilityList = visibility.split(regex);
+
+        for(int i = 0; i < visibilityList.length; i++) {
+            if(visibilityList[i].equals("Community Organizer")) {
+                visibilityList[i] = "Comunity Organizer";
+            }
+        }
+        boolean success = userService.updateInitiative(initiative.getTitle(),
+                initiative.getDescription(),
+                initiative.getLocation(),
+                initiative.getCategory(),
+                visibilityList,
+                initiative.getCreatedByUserID());
         if (success) {
             return "Initiative updated!";
         } else {

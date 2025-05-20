@@ -15,7 +15,9 @@ let notisSubscription = null;
 
 function connectWebSocket() {
   console.log(username);
-  updateCurrentUser();
+  if (window.location.pathname.endsWith("dashboard.html")) {
+    updateCurrentUser();
+  }
   const encodedUsername = encodeURIComponent(username);
   const socket = new SockJS(`http://localhost:8080/ws?username=${encodedUsername}`);
   stompClient = Stomp.over(socket);

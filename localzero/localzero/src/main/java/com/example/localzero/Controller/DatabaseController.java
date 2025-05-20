@@ -1,12 +1,8 @@
 package com.example.localzero.Controller;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.sql.Date;
+import java.util.*;
 
 import com.example.localzero.DTO.EcoactionsDTO;
 import com.example.localzero.DTO.InitiativeDTO;
@@ -280,25 +276,33 @@ public class DatabaseController {
         return initiative;
     }
 
-    public boolean updateInitiative(InitiativeDTO initiative){
+    public boolean updateInitiative(String title, String description, String location, String category, String[] visibility, int createdByUserID){
         PreparedStatement stmt = null;
+
+        System.out.println("Update\nTitle: " + title);
+        System.out.println("Description: " + description);
+        System.out.println("Location: " + location);
+        System.out.println("Category: " + category);
+        System.out.println("Visibility: " + Arrays.toString(visibility));
+        System.out.println("CreatedByUserID: " + createdByUserID);
 
         try {
             String sql = "UPDATE initiatives SET title = ?, description = ?, location = ?, category = ?, visibility = ? WHERE id = ?::int";
             stmt = conn.prepareStatement(sql);
 
-            stmt.setString(1, initiative.getTitle());
-            stmt.setString(2, initiative.getDescription());
-            stmt.setString(3, initiative.getLocation());
-            stmt.setString(4, initiative.getCategory());
-            stmt.setString(5, initiative.getVisibility());
-            stmt.setInt(6, Integer.parseInt(initiative.getId()));
+            stmt.setString(1, title);
+            stmt.setString(2, description);
+            stmt.setString(3, location);
+            stmt.setString(4, category);
+            Array sqlArray = conn.createArrayOf("VARCHAR", visibility);
+            stmt.setArray(5, sqlArray);
+            stmt.setInt(6, createdByUserID);
 
             int affectedRows = stmt.executeUpdate();
 
             NotificationInitiatives notificationInitiatives = new NotificationInitiatives();
-            notificationInitiatives.setContent(initiative.getTitle());
-            notificationInitiatives.setSender(initiative.getCreatedByUserID());
+            notificationInitiatives.setContent(title);
+            notificationInitiatives.setSender(createdByUserID);
             notificationInitiatives.setType(MessageType.UPDATE_NOTIS);
             notificationService.sendInitiativeNotification(notificationInitiatives);
 
