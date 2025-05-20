@@ -2,6 +2,8 @@ package com.example.localzero.chat;
 
 import com.example.localzero.Controller.DatabaseController;
 import com.example.localzero.DTO.InitiativeDTO;
+import com.example.localzero.Observer.ChatBroadcaster;
+import com.example.localzero.Observer.WebSocketChatClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -21,7 +23,7 @@ public class ChatController {
 
     private final SimpMessageSendingOperations messagingTemplate;
     private final DatabaseController databaseController;
-
+    private final ChatBroadcaster chatBroadcaster;
 
     @MessageMapping("/chat.sendMessage")
     public void sendMessage(@Payload ChatMessage chatMessage) {
@@ -29,24 +31,25 @@ public class ChatController {
             int fromUserId = databaseController.fetchIDByName(chatMessage.getSender());
             int toUserId = databaseController.fetchIDByName(chatMessage.getRecipient());
             databaseController.saveMessage(fromUserId, toUserId, chatMessage.getContent());
+
+            chatBroadcaster.register(chatMessage.getSender(),
+                    new WebSocketChatClient(chatMessage.getSender(), messagingTemplate));
+
+            chatBroadcaster.register(chatMessage.getRecipient(),
+                    new WebSocketChatClient(chatMessage.getRecipient(), messagingTemplate));
+
+            chatBroadcaster.sendToBoth(chatMessage.getSender(), chatMessage.getRecipient(), chatMessage);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        // Send to both sender and recipient
-        messagingTemplate.convertAndSend("/user/" + chatMessage.getRecipient() + "/queue/messages", chatMessage);
-
-        messagingTemplate.convertAndSend("/user/" + chatMessage.getSender() + "/queue/messages", chatMessage);
     }
 
     @MessageMapping("/chat.addUser")
-    public ChatMessage addUser(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor, Principal principal) {
-        // Add username in web socket session
+    public void addUser(@Payload ChatMessage chatMessage,
+                               SimpMessageHeaderAccessor headerAccessor,
+                               Principal principal) {
         headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
-        System.out.println("Assigned principal: " + (principal != null ? principal.getName() : "null"));
-        return chatMessage;
+        chatBroadcaster.register(chatMessage.getSender(), new WebSocketChatClient(chatMessage.getSender(), messagingTemplate));
     }
-
-
-
 }
