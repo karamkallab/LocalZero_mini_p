@@ -19,7 +19,7 @@ function renderEcoactionCard(action) {
   card.className = "card";
 
   const title = document.createElement("h2");
-  title.textContent = `${action.action} – ${action.location}`;
+  title.textContent = `${action.action}`;
 
   const category = document.createElement("p");
   category.textContent = `Kategori: ${action.category}`;
@@ -31,10 +31,7 @@ function renderEcoactionCard(action) {
   postedBy.className = "posted-by";
   postedBy.textContent = `Registrerad av: ${action.user || "LocalZero"}`;
 
-  const date = document.createElement("p");
-  date.className = "date";
-  date.textContent = `Datum: ${new Date(action.date).toLocaleDateString()}`;
 
-  card.append(title, category, description, postedBy, date);
+  card.append(title, category, description, postedBy);
   container.prepend(card); 
 }

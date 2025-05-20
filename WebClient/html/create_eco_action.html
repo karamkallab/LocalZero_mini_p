@@ -12,16 +12,24 @@
       <div class="logo">LocalZero</div>
       <nav class="nav">
         <button data-page="dashboard">Dashboard</button>
-        <button data-page="tracker">Tracker</button>
         <button data-page="create_initiative">Create Initiative</button>
         <button data-page="ecoactions">Eco Actions</button>
-        <button data-page="inbox">Inbox</button>
         <button data-page="achievements">Achievements</button>
       </nav>
       <button class="signout">Sign out</button>
     </div>
 
     <main class="main-content">
+      <div class="notification-wrapper">
+        <div class="notification-icon" title="Notifications">
+          🔔
+          <span class="notification-count">0</span>
+        </div>
+        <div class="notification-dropdown hidden">
+          <ul>
+          </ul>
+        </div>
+      </div>
       <h1>Create new eco action</h1>
 
       <form id="ecoActionForm" style="max-width: 600px; width: 100%;">

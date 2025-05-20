@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Eco Actions</title>
   <link rel="stylesheet" href="../css/ecoactions.css" />
+  <link rel="stylesheet" href="../css/chat.css" />
 </head>
 <body>
   <div class="container">
@@ -12,10 +13,8 @@
       <div class="logo">LocalZero</div>
       <nav class="nav">
         <button data-page="dashboard">Dashboard</button>
-        <button data-page="tracker">Tracker</button>
         <button data-page="create_initiative">Create Initiative</button>
         <button data-page="ecoactions">Eco Actions</button>
-        <button data-page="inbox">Inbox</button>
         <button data-page="achievements">Achievements</button>
       </nav>
       <button class="signout">Sign out</button>
@@ -25,36 +24,37 @@
       <div class="notification-wrapper">
         <div class="notification-icon" title="Notifications">
           🔔
-          <span class="notification-count">3</span>
+          <span class="notification-count">0</span>
         </div>
         <div class="notification-dropdown hidden">
           <ul>
-            <li>New message from LocalZero</li>
-            <li>Your initiative was approved ✅</li>
-            <li>Achievement unlocked: Green Steps 🥾</li>
           </ul>
         </div>
-      </div>  
-      <div class="dm-toggle">💬 Direktmeddelanden</div>
-    
+      </div>
+
+      <div class="dm-toggle">💬 Direct Message</div>
+
       <div class="dm-panel hidden">
         <div class="dm-users">
-          <h3>Kontakter</h3>
-          <ul>
-            <li onclick="openChat('Saman')">Saman</li>
-            <li onclick="openChat('Abdulkadir Adde')">Abdulkadir Adde</li>
-            <li onclick="openChat('Adam')">Adam</li>
-            <li onclick="openChat('S.A.K.')">S.A.K.</li>
-            <li onclick="openChat('Huy')">Huy</li>
-            <li onclick="openChat('Karre')">Karre</li>
+          <h3>Contact</h3>
+          <ul id="contactList">
+
           </ul>
         </div>
-        <div class="dm-chat">
-          <h3 id="chatWith">Välj en kontakt</h3>
-          <div class="messages"></div>
-          <input type="text" placeholder="Skriv ett meddelande..." />
+        <div class="chat-container">
+          <ul id="messageArea">
+
+          </ul>
+          <form id="messageForm" name="messageForm">
+              <div class="form-group">
+                  <div class="input-group clearfix">
+                      <input type="text" id="message" placeholder="Type a message..." autocomplete="off" class="form-control"/>
+                      <button type="submit" class="primary">Send</button>
+                  </div>
+              </div>
+          </form>
         </div>
-      </div> 
+      </div>
 
       <h1>Eco Actions</h1>
       <button id="createEcoActionBtn" class="top-button">➕ Log new eco action</button>
@@ -63,7 +63,10 @@
       <div id="ecoActionsContainer"></div>
     </main>
   </div>
-
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+  <script src="../JS/chat.js"></script>
   <script>
     document.querySelector('.signout').addEventListener('click', () => {
       localStorage.clear();
@@ -79,10 +82,6 @@
 
     const notifIcon = document.querySelector('.notification-icon');
     const notifDropdown = document.querySelector('.notification-dropdown');
-    const dmToggle = document.querySelector('.dm-toggle');
-    const dmPanel = document.querySelector('.dm-panel');
-    const chatWith = document.getElementById('chatWith');
-    const chatBox = document.querySelector('.dm-chat .messages');
 
     notifIcon.addEventListener('click', () => {
       notifDropdown.classList.toggle('hidden');
@@ -94,28 +93,12 @@
       }
     });
 
-    dmToggle.addEventListener('click', (event) => {
-      event.stopPropagation(); 
-      dmPanel.classList.toggle('hidden');
-    });
-
-    document.addEventListener('click', (event) => {
-      if (!dmToggle.contains(event.target) && !dmPanel.contains(event.target)) {
-        dmPanel.classList.add('hidden');
-      }
-    });
-
-    function openChat(user) {
-      chatWith.innerText = `Chattar med: ${user}`;
-      chatBox.innerHTML = `<p><em>Startade chatt med ${user}</em></p>`;
-    }
-
-    document.getElementById('createEcoActionBtn').addEventListener('click', () => {
+     document.getElementById('createEcoActionBtn').addEventListener('click', () => {
       window.location.href = 'create_eco_action.html';
     });
+
   </script>
 
-  <!-- Dynamisk datahämtning -->
   <script src="../js/ecoactions.js"></script>
 </body>
 </html>

@@ -18,6 +18,8 @@ document.addEventListener("DOMContentLoaded", function() {
         if (result.success) {
           localStorage.setItem('userId', result.userId);
           localStorage.setItem('userEmail', email);
+          localStorage.setItem('name', result.name);
+          localStorage.setItem('role', result.role);
           window.location.href = "dashboard.html";
         } else {
           alert("Your email or password is incorrect.");
@@ -28,9 +30,8 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     });
   }
-  let selectedRoles = [];
 
-  //TODO: localstorage verkar inte spara användarens ID här?? ska det vara så? 
+  let selectedRoles = [];
   if(registerForm){
 
   document.querySelectorAll('.roleOption').forEach(option => {
@@ -93,6 +94,7 @@ if (initiativeForm) {
     const description = document.getElementById("description").value;
     const location = document.getElementById("location").value;
     const category = document.getElementById("category").value;
+
     const selectedOption = document.querySelector('input[name="visibilityOption"]:checked').value;
     let visibility = "";
 
@@ -101,13 +103,15 @@ if (initiativeForm) {
     } else {
       visibility = document.getElementById("customVisibility").value.trim();
     }
+    const createdByUserID = localStorage.getItem('userId');
 
     console.log("Sending data:", {
       title,
       description,
       location,
       category,
-      visibility
+      visibility,
+      createdByUserID
     });
 
     fetch("http://localhost:8080/api/CreateInitiative", {
@@ -120,12 +124,13 @@ if (initiativeForm) {
         description,
         location,
         category,
-        visibility
+        visibility,
+        createdByUserID
       })
     })
     .then(res => res.text())  
     .then(data => {
-      alert("Server response: " + data);  
+      sendNotis(title, 'INI_NOTIS');
       initiativeForm.reset();
     })
     .catch(err => {
@@ -134,6 +139,12 @@ if (initiativeForm) {
     });
   });
 }
+
+
+
+
+
+
 
 
 

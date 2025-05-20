@@ -3,6 +3,7 @@ package com.example.localzero.Controller;
 import com.example.localzero.Command.*;
 import com.example.localzero.DTO.EcoactionsDTO;
 import com.example.localzero.DTO.InitiativeDTO;
+import com.example.localzero.chat.ChatMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
@@ -35,8 +36,8 @@ public class UserService {
 
     //behöver user id
     public boolean createInitiative(String title, String description, String location, String category,
-            String[] visibility) {
-        UserCommand command = new CommandCreateInitiative(title, description, location, category, visibility, dbController);
+            String[] visibility, int createdByUserID) {
+        UserCommand command = new CommandCreateInitiative(title, description, location, category, visibility, createdByUserID, dbController);
         return command.executeAction();
     }
 
@@ -52,8 +53,10 @@ public class UserService {
     }
     
     //behöver user id
-    public boolean updateInitiative(InitiativeDTO initiativeDTO) {
-        UserCommand command = new CommandUpdateInitiative(dbController, initiativeDTO);
+    public boolean updateInitiative(String initiativeID, String title, String description, String location, String category,
+                                    String[] visibility, int createdByUserID) {
+        UserCommand command = new CommandUpdateInitiative(initiativeID, title, description, location, category,
+                visibility, createdByUserID, dbController);
         return command.executeAction();
     }
 
@@ -119,4 +122,19 @@ public class UserService {
         return dbController.FetchEcoactions();
     }
 
+    public String fetchNameIdByEmail(String email) {
+        return dbController.fetchNameByEmail(email);
+    }
+
+    public String fetchRoleByEmail(String email){
+        return dbController.fetchRoleByEmail(email);
+    }
+
+    public ArrayList<String> fetchAllName(){
+        return dbController.fetchAllName();
+    }
+
+    public ArrayList<ChatMessage> loadMessageHistory(String fromUsername, String toUsername){
+        return dbController.loadMessageHistory(dbController.fetchIDByName(fromUsername), dbController.fetchIDByName(toUsername));
+    }
 }
