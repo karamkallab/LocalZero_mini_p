@@ -24,9 +24,7 @@ function connectWebSocket() {
 
 function onConnected() {
   stompClient.subscribe(`/user/queue/messages`, onMessageReceived);
-    stompClient.subscribe("/topic/initiative-notifications", (payload) => {
-    console.log("Subscribed to /topic/initiative-notifications");
-    onMessageReceived(payload);
+    stompClient.subscribe("/topic/initiative-notifications", (payload) => {onMessageReceived(payload);
   });
   stompClient.send("/app/chat.addUser", {}, JSON.stringify({ sender: username, type: 'JOIN' }));
 }
@@ -78,6 +76,7 @@ function onMessageReceived(payload) {
   console.log("Payload: " + payload);
   const message = JSON.parse(payload.body);
   if (message.type === 'CHAT' && message.recipient === username || message.sender === username) {
+    console.log("Displaying message!!!!!!!!!!!!!!!!!!!!")
     displayMessage(message);
   }
   else if (message.type === 'INI_NOTIS') {

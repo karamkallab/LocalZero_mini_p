@@ -34,17 +34,9 @@ public class ChatController {
         }
 
         // Send to both sender and recipient
-        messagingTemplate.convertAndSendToUser(
-                chatMessage.getRecipient(),
-                "/queue/messages",
-                chatMessage
-        );
+        messagingTemplate.convertAndSend("/user/" + chatMessage.getRecipient() + "/queue/messages", chatMessage);
 
-        messagingTemplate.convertAndSendToUser(
-                chatMessage.getSender(),
-                "/queue/messages",
-                chatMessage
-        );
+        messagingTemplate.convertAndSend("/user/" + chatMessage.getSender() + "/queue/messages", chatMessage);
     }
 
     @MessageMapping("/chat.addUser")
