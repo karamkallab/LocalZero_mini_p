@@ -8,12 +8,9 @@ import com.example.localzero.DTO.EcoactionsDTO;
 import com.example.localzero.DTO.InitiativeDTO;
 import com.example.localzero.chat.ChatMessage;
 import com.example.localzero.chat.MessageType;
-import com.example.localzero.chat.NotificationInitiatives;
+import com.example.localzero.DTO.NotificationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import io.github.cdimascio.dotenv.Dotenv;
-import io.netty.handler.codec.http.HttpContentEncoder.Result;
 
 // @Repository is used for classes that handle communication with the database.
 @Repository
@@ -138,7 +135,7 @@ public class DatabaseController {
     
             stmt.executeUpdate();
 
-            NotificationInitiatives notificationInitiatives = new NotificationInitiatives();
+            NotificationDTO notificationInitiatives = new NotificationDTO();
             notificationInitiatives.setContent(title);
             notificationInitiatives.setSender(createdByUserID);
             notificationInitiatives.setType(MessageType.INI_NOTIS);
@@ -301,7 +298,7 @@ public class DatabaseController {
 
             int affectedRows = stmt.executeUpdate();
 
-            NotificationInitiatives notificationInitiatives = new NotificationInitiatives();
+            NotificationDTO notificationInitiatives = new NotificationDTO();
             notificationInitiatives.setContent(title);
             notificationInitiatives.setSender(createdByUserID);
             notificationInitiatives.setType(MessageType.UPDATE_NOTIS);

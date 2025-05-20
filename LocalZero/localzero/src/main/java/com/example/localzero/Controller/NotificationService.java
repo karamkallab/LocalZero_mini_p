@@ -1,10 +1,7 @@
 package com.example.localzero.Controller;
 
-import com.example.localzero.DTO.InitiativeDTO;
-import com.example.localzero.chat.ChatMessage;
-import com.example.localzero.chat.NotificationInitiatives;
+import com.example.localzero.DTO.NotificationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
@@ -18,7 +15,7 @@ public class NotificationService {
         this.messagingTemplate = messagingTemplate;
     }
 
-    public void sendInitiativeNotification(@Payload NotificationInitiatives chatMessage) {
+    public void sendInitiativeNotification(@Payload NotificationDTO chatMessage) {
         messagingTemplate.convertAndSend("/topic/initiative-notifications", chatMessage);
     }
 
