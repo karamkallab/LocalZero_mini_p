@@ -9,6 +9,7 @@ public class InitiativeDTO {
     private String location;
     private String category;
     private String visibility;
+    private int createdByUserID;
 
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
@@ -27,4 +28,7 @@ public class InitiativeDTO {
 
     public String getId() { return id; }
     public void setID(String id) { this.id = id; }
+
+    public int getCreatedByUserID() { return createdByUserID; }
+    public void setCreatedByUserID(int createdByUserID) { this.createdByUserID = createdByUserID; }
 }

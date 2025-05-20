@@ -13,13 +13,15 @@ public class CommandCreateInitiative implements UserCommand {
     private String location;
     private String category;
     private String[] visibility;
+    private int createdByUserID;
 
-    public CommandCreateInitiative(String title, String description, String location, String category, String[] visibility, DatabaseController db) {
+    public CommandCreateInitiative(String title, String description, String location, String category, String[] visibility, int createdByUserID, DatabaseController db) {
         this.title = title;
         this.description = description;
         this.location = location;
         this.category = category;
         this.visibility = visibility;
+        this.createdByUserID = createdByUserID;
         this.db = db;
     }
 
@@ -27,7 +29,7 @@ public class CommandCreateInitiative implements UserCommand {
 
     @Override
     public boolean executeAction() {
-        return db.createInitiative(title, description, location, category, visibility);
+        return db.createInitiative(title, description, location, category, visibility, createdByUserID);
     }
 
     @Override

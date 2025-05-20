@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.example.localzero.chat.ChatMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -90,8 +91,13 @@ public class ServerController {
     
         if (success) {
             int userId = userService.fetchUserIdByEmail(email); // hämtar userId från email
+            String name = userService.fetchNameIdByEmail(email);
+            String role = userService.fetchRoleByEmail(email);
+
             response.put("success", true);
             response.put("userId", userId);
+            response.put("name", name);
+            response.put("role", role);
         } else {
             response.put("success", false);
         }
@@ -117,7 +123,8 @@ public class ServerController {
             data.getDescription(),
             data.getLocation(),
             data.getCategory(),
-            visibilityList
+            visibilityList,
+            data.getCreatedByUserID()
         );
 
         if (success) {
@@ -161,68 +168,91 @@ public class ServerController {
         }
     }
 
-@PostMapping("/JoinInitiative")
-public String joinInitiative(@RequestBody Map<String, Integer> data) {
-    int userId = data.get("userId");
-    int initiativeId = data.get("initiativeId");
-    boolean success = userService.joinInitiative(userId, initiativeId);
+    @PostMapping("/JoinInitiative")
+    public String joinInitiative(@RequestBody Map<String, Integer> data) {
+        int userId = data.get("userId");
+        int initiativeId = data.get("initiativeId");
+        boolean success = userService.joinInitiative(userId, initiativeId);
 
-    if (success) {
-        return "Joined successfully!";
-    } else {
-        return "Already joined or error.";
+        if (success) {
+            return "Joined successfully!";
+        } else {
+            return "Already joined or error.";
+        }
     }
-}
 
-@PostMapping("/CheckJoinStatus")
-public boolean checkJoinStatus(@RequestBody Map<String, Integer> data) {
-    int userId = data.get("userId");
-    int initiativeId = data.get("initiativeId");
-    return userService.checkJoinStatus(userId, initiativeId);
-}
-
-@PostMapping("/CommentInitiative")
-public String commentInitiative(@RequestBody Map<String, String> data) {
-    int userId = Integer.parseInt(data.get("userId"));
-    int initiativeId = Integer.parseInt(data.get("initiativeId"));
-    String comment = data.get("comment");
-
-    boolean success = userService.commentInitiative(userId, initiativeId, comment);
-
-    if (success) {
-        return "Comment added successfully!";
-    } else {
-        return "Failed to add comment.";
+    @PostMapping("/CheckJoinStatus")
+    public boolean checkJoinStatus(@RequestBody Map<String, Integer> data) {
+        int userId = data.get("userId");
+        int initiativeId = data.get("initiativeId");
+        return userService.checkJoinStatus(userId, initiativeId);
     }
-}
 
-@PostMapping("/GetCommentsByInitiativeId")
-public List<Map<String, String>> getComments(@RequestBody Map<String, Integer> data) {
-    int initiativeId = data.get("initiativeId");
-    return userService.getCommentsByInitiativeId(initiativeId);
-}
+    @PostMapping("/CommentInitiative")
+    public String commentInitiative(@RequestBody Map<String, String> data) {
+        int userId = Integer.parseInt(data.get("userId"));
+        int initiativeId = Integer.parseInt(data.get("initiativeId"));
+        String comment = data.get("comment");
 
-@PostMapping("/UnlikeInitiative")
-public String unlike(@RequestBody Map<String, Integer> data) {
-    int userId = data.get("userId");
-    int initiativeId = data.get("initiativeId");
+        boolean success = userService.commentInitiative(userId, initiativeId, comment);
 
-    boolean success = userService.unlikeInitiative(userId, initiativeId);
-    return success ? "Like removed!" : "No like to remove.";
-}
+        if (success) {
+            return "Comment added successfully!";
+        } else {
+            return "Failed to add comment.";
+        }
+    }
 
-@PostMapping("/LeaveInitiative")
-public String leaveInitiative(@RequestBody Map<String, Integer> data) {
-    int userId = data.get("userId");
-    int initiativeId = data.get("initiativeId");
+    @PostMapping("/GetCommentsByInitiativeId")
+    public List<Map<String, String>> getComments(@RequestBody Map<String, Integer> data) {
+        int initiativeId = data.get("initiativeId");
+        return userService.getCommentsByInitiativeId(initiativeId);
+    }
 
-    boolean success = userService.leaveInitiative(userId, initiativeId);
-    return success ? "Left initiative!" : "Error leaving.";
-}
+    @PostMapping("/UnlikeInitiative")
+    public String unlike(@RequestBody Map<String, Integer> data) {
+        int userId = data.get("userId");
+        int initiativeId = data.get("initiativeId");
 
- @GetMapping("/ecoactions")
-  public List<EcoactionsDTO> fetchEcoactions() {
+        boolean success = userService.unlikeInitiative(userId, initiativeId);
+        return success ? "Like removed!" : "No like to remove.";
+    }
+
+    @PostMapping("/LeaveInitiative")
+    public String leaveInitiative(@RequestBody Map<String, Integer> data) {
+        int userId = data.get("userId");
+        int initiativeId = data.get("initiativeId");
+
+        boolean success = userService.leaveInitiative(userId, initiativeId);
+        return success ? "Left initiative!" : "Error leaving.";
+    }
+
+    @GetMapping("/ecoactions")
+    public List<EcoactionsDTO> fetchEcoactions() {
       return userService.fetchEcoactions();
-  }
+    }
+
+    @GetMapping("/FetchAllName")
+    public List<String> fetchAllName() {
+        ArrayList<String> nameList = userService.fetchAllName();
+        return nameList;
+    }
+
+    @PostMapping("/LoadMessageHistory")
+    @ResponseBody
+    public ArrayList<ChatMessage> loadMessageHistory(@RequestBody String usersReceived) {
+        ;
+
+        String[] parts = usersReceived.split(",");
+        if (parts.length != 2) {
+            throw new IllegalArgumentException("Expected two usernames separated by a comma");
+        }
+
+        String fromUsername = parts[0];
+        String toUsername = parts[1];
+
+        return userService.loadMessageHistory(fromUsername, toUsername);
+    }
+
 
 }
