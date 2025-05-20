@@ -33,20 +33,12 @@ public class ChatController {
             e.printStackTrace();
         }
 
+        System.out.println("Received Message: " + chatMessage.getContent() + " Recipient: " + chatMessage.getRecipient() + " Sender: " + chatMessage.getSender());
 
-        messagingTemplate.convertAndSendToUser(
-                chatMessage.getRecipient(),
-                "/queue/messages",
-                chatMessage
-        );
-        System.out.println("Send to " + chatMessage.getRecipient());
+        // Send to both sender and recipient
+        messagingTemplate.convertAndSend("/user/" + chatMessage.getRecipient() + "/queue/messages", chatMessage);
 
-        messagingTemplate.convertAndSendToUser(
-                chatMessage.getSender(),
-                "/queue/messages",
-                chatMessage
-        );
-        System.out.println("Send to " + chatMessage.getSender());
+        messagingTemplate.convertAndSend("/user/" + chatMessage.getSender() + "/queue/messages", chatMessage);
     }
 
     @MessageMapping("/chat.addUser")
