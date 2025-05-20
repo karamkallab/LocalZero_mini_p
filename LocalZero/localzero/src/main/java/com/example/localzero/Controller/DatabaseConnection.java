@@ -16,16 +16,17 @@ public class DatabaseConnection {
 
     public DatabaseConnection() {
         try {
-            dotenv = Dotenv.configure()
-        .directory(System.getProperty("user.dir"))
-        .filename("LocalZero/localzero/.env")
-        .load();
+            dotenv = loadDotenv("LocalZero/localzero/.env");
+
+            // Try loading a key to verify it's the correct file
+            if (dotenv.get("SQL_PASSWORD") == null) {
+                dotenv = loadDotenv(".env"); // fallback
+            }
 
             String databasename = getDatabaseName();
             String user = getSQLUserName();
             String password = getSQLPassword();
             String url = "jdbc:postgresql://pgserver.mau.se:5432/" + databasename;
-
 
             connection = DriverManager.getConnection(url, user, password);
             System.out.println("Database connection successful!");
@@ -56,6 +57,15 @@ public class DatabaseConnection {
         }
 
         return null;
+    }
+
+    private Dotenv loadDotenv(String filename) {
+        return Dotenv.configure()
+                .directory(System.getProperty("user.dir"))
+                .filename(filename)
+                .ignoreIfMalformed()
+                .ignoreIfMissing()
+                .load();
     }
 }
 
