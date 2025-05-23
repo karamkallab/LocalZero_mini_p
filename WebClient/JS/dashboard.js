@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+  updateCurrentUser();
   const email = localStorage.getItem("userEmail");
 
     const initiativeList = document.getElementById("initiativeList");
@@ -78,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
-      
+
 
   document.querySelector('.signout').addEventListener('click', () => {
     localStorage.clear();
@@ -92,8 +93,9 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = `${page}.html`;
     });
   });
+  
 
-  const notifIcon = document.querySelector('.notification-icon');
+const notifIcon = document.querySelector('.notification-icon');
 const notifDropdown = document.querySelector('.notification-dropdown');
 
 notifIcon.addEventListener('click', () => {
@@ -105,3 +107,33 @@ if (!notifIcon.contains(event.target) && !notifDropdown.contains(event.target)) 
   notifDropdown.classList.add('hidden');
 }
 });
+
+//Update Current User, get from databse instead for localStorage !!!!!!!!!!!
+function updateCurrentUser() {
+  const email = localStorage.getItem('userEmail');
+  if (!email) {
+    console.warn("No email found in localStorage");
+    return;
+  }
+
+  fetch("http://127.0.0.1:8080/api/FetchCurrentRole", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(email)
+  })
+  .then(res => {
+    if (!res.ok) throw new Error("Failed to fetch role");
+    return res.text();
+  })
+  .then(role => {
+    localStorage.setItem('role', role);
+    const currentUserP = document.querySelector('.current-user');
+    if (currentUserP) {
+      currentUserP.textContent = `Current User: ${localStorage.getItem('name')} - ${role}`;
+    }
+    console.log("Rolse: " + role);
+  })
+  .catch(err => {
+    console.error("Error fetching current role:", err);
+  });
+}

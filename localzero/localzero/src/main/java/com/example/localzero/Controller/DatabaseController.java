@@ -710,6 +710,7 @@ public class DatabaseController {
 
     public String fetchRoleByEmail(String email){
         StringBuilder role = new StringBuilder();
+        email = email.replaceAll("^[\"']+|[\"']+$", "");
 
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -736,6 +737,7 @@ public class DatabaseController {
                 e.printStackTrace();
             }
         }
+        System.out.println("Role from database: " + role.toString());
         return role.toString();
     }
 

@@ -12,6 +12,6 @@ public class WebSocketChatClient implements ChatClientObserver {
 
     @Override
     public void receiveMessage(ChatMessage message) {
-        messagingTemplate.convertAndSend("/user/" + username + "/queue/messages", message);
+        messagingTemplate.convertAndSend("/topic/messages." + username, message);
     }
 }

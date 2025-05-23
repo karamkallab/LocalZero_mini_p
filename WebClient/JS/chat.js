@@ -15,9 +15,6 @@ let notisSubscription = null;
 
 function connectWebSocket() {
   console.log(username);
-  if (window.location.pathname.endsWith("dashboard.html")) {
-    updateCurrentUser();
-  }
   const encodedUsername = encodeURIComponent(username);
   const socket = new SockJS(`http://localhost:8080/ws?username=${encodedUsername}`);
   stompClient = Stomp.over(socket);
@@ -25,20 +22,20 @@ function connectWebSocket() {
 }
 
 function onConnected() {
-  stompClient.subscribe(`/user/queue/messages`, onMessageReceived);
-    stompClient.subscribe("/topic/initiative-notifications", (payload) => {onMessageReceived(payload);
+  stompClient.subscribe(`/topic/messages.${username}`, onMessageReceived);
+  stompClient.subscribe("/topic/initiative-notifications", (payload) => {onMessageReceived(payload);
   });
   stompClient.send("/app/chat.addUser", {}, JSON.stringify({ sender: username, type: 'JOIN' }));
 }
 
-function subscribe(username) {
+/*function subscribe(username) {
   if (currentSubscription !== null) {
     currentSubscription.unsubscribe();
     currentSubscription = null;
   }
 
   currentSubscription = stompClient.subscribe(`/user/${username}/queue/messages`, onMessageReceived);
-}
+}*/
 
 function onError(error) {
   console.error("WebSocket error:", error);
@@ -59,6 +56,31 @@ function sendMessage(event) {
   }
 }
 
+function onMessageReceived(payload) {
+  const message = JSON.parse(payload.body);
+  if (message.type === 'CHAT' && message.recipient === username || message.sender === username) {
+    displayMessage(message);
+    console.log("Message" + message);
+    const messageNotis = {
+      sender: message.sender,
+      content: message.content,
+      type: message.type
+    }
+    if(message.sender != localStorage.getItem('name')){
+      showNotification(messageNotis, "New message from: ");
+    }
+    
+  }
+  else if (message.type === 'INI_NOTIS') {
+  console.log("Received initiative notification:", message);
+  showNotification(message, "New initiative:");
+  }
+  else if (message.type === 'UPDATE_NOTIS') {
+  console.log("Received initiative notification:", message);
+  showNotification(message, "New update:");
+  }
+}
+
 function displayMessage(message) {
   const messageArea = document.getElementById('messageArea');
   const messageElement = document.createElement('li');
@@ -74,21 +96,6 @@ function displayMessage(message) {
   messageArea.scrollTop = messageArea.scrollHeight;
 }
 
-function onMessageReceived(payload) {
-  console.log("Payload: " + payload);
-  const message = JSON.parse(payload.body);
-  if (message.type === 'CHAT' && message.recipient === username || message.sender === username) {
-    displayMessage(message);
-  }
-  else if (message.type === 'INI_NOTIS') {
-  console.log("Received initiative notification:", message);
-  showNotification(message, "New initiative:");
-  }
-  else if (message.type === 'UPDATE_NOTIS') {
-  console.log("Received initiative notification:", message);
-  showNotification(message, "New update:");
-  }
-}
 
 dmToggle.addEventListener('click', (e) => {
   e.stopPropagation();
@@ -126,7 +133,7 @@ messageForm.addEventListener('submit', sendMessage);
 //Connect to the user and load chat history
 function openChat(user) {
   recipient = user.trim();
-  subscribe(recipient);
+  //subscribe(recipient);
   messageArea.innerHTML = "";
   console.log("Chat opened with:", user);
 
@@ -170,12 +177,19 @@ function sendNotis(title, messageType) {
 
 //This method show the notification on receiving
 function showNotification(message, updateType) {
+  console.log(message)
   const notifDropdown = document.querySelector('.notification-dropdown');
   const notifList = notifDropdown.querySelector('ul');
   const notifCount = document.querySelector('.notification-count');
 
   const notifItem = document.createElement("li");
-  notifItem.textContent = updateType + " " + message.content;
+  if(message.type == "CHAT"){
+    notifItem.textContent = updateType + " " + message.sender;
+  }
+  else{
+    notifItem.textContent = updateType + " " + message.content;
+  }
+  
   notifList.prepend(notifItem);
 
   let currentCount = parseInt(notifCount.textContent) || 0;
@@ -188,12 +202,3 @@ function showNotification(message, updateType) {
   }, 5000);
 }
 
-function updateCurrentUser(){
-  const name = localStorage.getItem('name') || 'Unknown';
-  const roles = localStorage.getItem('role') || '';
-
-  console.log("Rolse: " + roles);
-
-  const currentUserP = document.querySelector('.current-user');
-  currentUserP.textContent = `Current User: ${name} - ${roles}`;
-}

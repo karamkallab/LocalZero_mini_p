@@ -29,10 +29,10 @@ public class WebSocketEventListener {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
         String username = (String) headerAccessor.getSessionAttributes().get("username");
         Principal user = (Principal) event.getUser();
-        if (username != null) {
+        /*if (username != null) {
             chatBroadcaster.unregister(user.getName());
             System.out.println("Unregistered user: " + user.getName());
-        }
+        }*/
     }
 
 }
