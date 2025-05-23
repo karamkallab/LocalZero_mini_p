@@ -21,19 +21,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
-                .setHandshakeHandler(new DefaultHandshakeHandler() {
-                    @Override
-                    protected Principal determineUser(ServerHttpRequest request,
-                                                      WebSocketHandler wsHandler,
-                                                      Map<String, Object> attributes) {
-                        String query = request.getURI().getQuery();
-                        if (query != null && query.startsWith("username=")) {
-                            final String username = query.substring("username=".length());
-                            return () -> username;
-                        }
-                        return null;
-                    }
-                })
+                .setHandshakeHandler(new DefaultHandshakeHandler())
                 .setAllowedOriginPatterns("*")
                 .withSockJS();
     }
@@ -41,8 +29,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/topic", "/queue", "/user");
+        registry.enableSimpleBroker("/topic", "/queue");
         registry.setApplicationDestinationPrefixes("/app");
+        registry.setUserDestinationPrefix("/user");
     }
 
 }

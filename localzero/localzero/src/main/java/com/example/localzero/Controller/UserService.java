@@ -137,4 +137,8 @@ public class UserService {
     public ArrayList<ChatMessage> loadMessageHistory(String fromUsername, String toUsername){
         return dbController.loadMessageHistory(dbController.fetchIDByName(fromUsername), dbController.fetchIDByName(toUsername));
     }
+
+    public String fetchCurrentRole(String email){
+        return dbController.fetchRoleByEmail(email);
+    }
 }

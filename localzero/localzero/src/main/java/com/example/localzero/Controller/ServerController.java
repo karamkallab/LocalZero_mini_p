@@ -271,5 +271,9 @@ public class ServerController {
         return userService.loadMessageHistory(fromUsername, toUsername);
     }
 
-
+    @PostMapping("/FetchCurrentRole")
+        public String fetchCurrentRole(@RequestBody String email) {
+        String roles = userService.fetchCurrentRole(email);
+        return roles;
+    }
 }
