@@ -12,9 +12,9 @@ It includes features like real-time messaging, initiative management, and progre
 
 ---
 
-## 🔧 Getting Started
+## Getting Started
 
-### 🖥 Start the Server (Backend)
+### Start the Server (Backend)
 
 You can run the backend using **any Java IDE** (such as IntelliJ IDEA or Eclipse):
 
@@ -27,7 +27,7 @@ This starts the Spring Boot WebSocket and REST server on port **8080**.
 
 ---
 
-### 🌐 Start the Client (Frontend)
+### Start the Client (Frontend)
 
 You can launch the frontend using **Live Server** in **Visual Studio Code**:
 
@@ -40,7 +40,7 @@ This runs the client at `http://127.0.0.1:5500`.
 
 ---
 
-### 👥 Open Multiple Clients
+### Open Multiple Clients
 
 To simulate multiple users:
 
@@ -50,7 +50,7 @@ To simulate multiple users:
 
 ---
 
-## 📌 Key Features
+## Key Features
 
 - Community-based sustainability initiatives
 - Direct messaging between users
@@ -60,7 +60,7 @@ To simulate multiple users:
 
 ---
 
-## 🛠 Technologies Used
+## Technologies Used
 
 - Java 17
 - Spring Boot (WebSocket + REST)
@@ -69,8 +69,3 @@ To simulate multiple users:
 - SockJS & STOMP
 - Visual Studio Code (Live Server)
 
----
-
-## 📬 Contact
-
-For support or collaboration inquiries, feel free to open an issue or reach out to the project maintainer.
