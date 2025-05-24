@@ -18,10 +18,11 @@ It includes features like real-time messaging, initiative management, and progre
 
 You can run the backend using **any Java IDE** (such as IntelliJ IDEA or Eclipse):
 
-1. Open the `LocalZero` project folder in your IDE.
-2. Navigate to:  
+1. Navigate to the LocalZero_mini_p folder.
+2. Open the `LocalZero` project folder in your IDE.
+3. Navigate to:  
    `Localzero/localzero/src/main/java/com/example/localzero`
-3. Run the `LocalzeroApplication.java` file.
+4. Run the `LocalzeroApplication.java` file.
 
 This starts the Spring Boot WebSocket and REST server on port **8080**.
 
