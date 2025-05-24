@@ -49,15 +49,6 @@ To simulate multiple users:
 2. In the new workspace, open the `login.html` file again.
 3. Click **Go Live** to open another browser window with a second user.
 
----
-
-## Key Features
-
-- Community-based sustainability initiatives
-- Direct messaging between users
-- Initiative creation and tracking
-- Chat history persistence via PostgreSQL
-- REST API for user and message operations
 
 ---
 
